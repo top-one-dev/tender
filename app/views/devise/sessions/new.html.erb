@@ -1,0 +1,42 @@
+<% provide(:title, "Log In") %>
+<section>
+  <div class="container">
+    <div class="row">
+      <%= devise_error_messages! %>
+      <div class="col-md-4 col-md-offset-4">
+        <h2 class="text-blue text-center">Log in to Tenderbooks</h2>
+        <hr>
+        <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+        <div class="form-group">
+          <%= f.email_field :email, class: 'form-control input-lg', placeholder: 'E-mail addresss', autofocus: true, autocomplete: "off" %>
+        </div>
+        <div class="form-group">
+          <%= f.password_field :password, class: "form-control input-lg", placeholder: "Password" , autocomplete: "off" %>
+        </div>
+        <div class="checkbox">
+          <% if devise_mapping.rememberable? -%>
+            <label>
+              <%= f.check_box :remember_me %>
+              Remember me
+            </label>
+          <% end -%>          
+        </div>
+        <div class="form-group">
+          <%= f.submit "Log in", class: "btn btn-info btn-lg btn-block" %>
+        </div>
+        <div class="form-group text-center">
+          <b>
+            <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
+              <%= link_to "Forgot password?", new_password_path(resource_name), class: 'text-muted' %><br />
+            <% end -%>
+          </b>
+          <hr>
+          <b>
+            <a href="#" class="text-muted" >Use single-sign-on</a>
+          </b>
+        </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</section>

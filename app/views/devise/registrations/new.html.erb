@@ -1,0 +1,72 @@
+<% provide(:title, "Sign Up") %>
+<section>
+    <div class="container">
+      <h1 class="text-blue text-center">
+        Try Tenderbooks free for 30 days
+      </h1>
+      <p class="text-center text-muted">See how you can save time and get better overview of your procurement</p>
+      <br>
+      <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+          <div class="pull-right">
+            <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+            <%= devise_error_messages! %>
+            <div class="form-group">
+              <%= f.text_field :name, placeholder: "Your name", class: "form-control input-lg", 'required': true %>
+            </div>
+            <div class="form-group">
+              <%= f.email_field :email, placeholder: "Email address", class: "form-control input-lg", 'required': true %>
+            </div>
+            <!-- <div class="form-group">
+              <input type="text" placeholder="Phone number" class="form-control input-lg" required>
+            </div>
+            <div class="form-group">
+              <input type="text" placeholder="Company name" class="form-control input-lg" required>
+            </div>
+            <div class="form-group">
+              <input type="text" placeholder="Country name" class="form-control input-lg" required>
+            </div> -->
+            <div class="form-group">              
+              <%= f.password_field :password, placeholder: "Password", class: "form-control input-lg", autocomplete: "off", required: true %>
+              <% if @minimum_password_length %>
+              <br/><em class="text-muted">(<%= @minimum_password_length %> characters minimum)</em>
+              <% end %>
+            </div>
+            <div class="form-group">              
+              <%= f.password_field :password_confirmation, placeholder: "Confirm Password", class: "form-control input-lg", autocomplete: "off", required: true %>
+            </div>            
+            <div class="checkbox">
+              <label class="text-muted">
+                <input type="checkbox" name="" required>
+                Receive useful procurement tips and news about TenderBooks( once a month )
+              </label>
+            </div>
+            <div class="form-group">
+              <%= f.submit 'Get started', class: 'btn btn-block btn-info btn-lg' %>
+            </div>
+            <div class="form-group">
+              <small class="text-muted">
+                By signing up, you are indicating that you have read and agree to <%= link_to 'Terms of use', terms_of_use_path %> and <%= link_to 'Privacy and policy', privacy_policy_path %>
+              </small>
+            </div>
+            <% end %>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="well pull-right" style="width: 70%;">
+            <p class="text-muted">
+              <i class="glyphicon glyphicon-credit-card"></i> No credit card requried
+            </p>
+            <p class="text-muted">
+              <i class="glyphicon glyphicon-envelope"></i> We won't spam you
+            </p>
+            <p class="text-muted">
+              <i class="glyphicon glyphicon-log-out"></i> You can quit your trial anytime
+            </p>
+          </div>
+        </div>
+      </div>
+      <br>
+
+    </div>
+  </section>

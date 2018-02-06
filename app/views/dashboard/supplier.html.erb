@@ -1,0 +1,217 @@
+<% provide(:title, "Suppliers") %>
+<section>
+	<div class="wrapper">
+		<nav id="sidebar">
+			<h3 class="text-center">Categories</h3>
+			<hr>
+			<div class="text-center" style="padding: 20vh 20px;">
+				<p>Organize your Supplier list and keep track of yoru most important Suppliers by defining a category structure.</p>
+				<button class="btn btn-success">
+					CREATE CATEGORY
+				</button>
+			</div>
+			<hr>
+			<div>
+				<button class="btn pull-right text-muted">
+					<smalll>
+						<i class="glyphicon glyphicon-edit"></i>
+						EDIT CATEGORIES
+					</smalll>
+				</button>
+			</div>
+		</nav>
+		<div>
+			<br>
+			<ul class="nav nav-tabs">
+				<li>
+					<button class="sidebar-toggle btn" >
+						<i class="glyphicon glyphicon-triangle-left"></i>
+						<a href="javascript:;" class="text-muted" data-toggle="tooltip" data-placement="bottom" title="Hide/Show Categories" >
+							<i class="glyphicon glyphicon-info-sign"></i>
+						</a>
+						<i class="glyphicon glyphicon-triangle-right"></i>
+					</button>
+				</li>
+				<li class="active"><a data-toggle="pill" href="#suppliers">Suppliers</a></li>
+				<li><a data-toggle="pill" href="#contacts">Contacts</a></li>
+				<li class="pull-right">
+					<button class="btn btn-default btn-sm">
+						<i class="glyphicon glyphicon-search"></i>
+					</button>
+					<button class="btn btn-default btn-sm">
+						<i class="glyphicon glyphicon-filter"></i>
+					</button>
+					<button class="btn btn-success btn-sm">
+						<i class="glyphicon glyphicon-plus"></i>
+						ADD NEW SUPPLIER
+					</button>
+				</li>
+			</ul>
+
+			<div class="tab-content" style="width: 100%;">
+				<div id="suppliers" class="tab-pane fade in active">
+					<div class="table-responsive">
+						<table class="table">
+							<thead>
+								<tr class="text-muted">
+									<th>
+										<input type="checkbox" name="">
+									</th>
+									<th><small>Name</small></th>
+									<th><small>Categories</small></th>
+									<th><small>Contacts</small></th>
+									<th>
+										<small>
+											<i class="glyphicon glyphicon-send"></i> &nbsp;
+											<i class="glyphicon glyphicon-envelope"></i> &nbsp;
+											<i class="glyphicon glyphicon-usd"></i> &nbsp;
+											<i class="glyphicon glyphicon-certificate"></i>
+										</small>
+									</th>
+									<th></th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>
+										<input type="checkbox" name="">
+									</td>
+									<td>
+										<i class="glyphicon glyphicon-certificate text-success"></i>
+										Mulei Advertising Limited
+									</td>
+									<td>
+										<small>
+											Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+										</small>
+									</td>
+									<td>
+										Peter Mulei
+									</td>
+									<td>
+										<span class="label label-info">2</span>
+										<span class="label label-warning">1</span>
+										<span class="label label-warning">1</span>
+										<span class="label label-success">3</span>
+									</td>
+									<td></td>
+									<td>
+										<button class="btn btn-default btn-sm">View</button>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<input type="checkbox" name="">
+									</td>
+									<td>
+										<i class="glyphicon glyphicon-certificate text-success"></i>
+										Mulei Advertising Limited
+									</td>
+									<td>
+										<small>
+											Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+										</small>
+									</td>
+									<td>
+										Peter Mulei
+									</td>
+									<td>
+										<span class="label label-info">2</span>
+										<span class="label label-warning">1</span>
+										<span class="label label-warning">1</span>
+										<span class="label label-success">3</span>
+									</td>
+									<td></td>
+									<td>
+										<button class="btn btn-default btn-sm">View</button>
+									</td>
+								</tr>
+							</tbody>						
+						</table>
+					</div>						
+				</div>
+				<div id="contacts" class="tab-pane fade">
+					<div class="table-responsive">
+						<table class="table">
+							<thead>
+								<tr class="text-muted">
+									<th>
+										<input type="checkbox" name="">
+									</th>
+									<th><small>Name</small></th>
+									<th><small>Email</small></th>
+									<th><small>Phone</small></th>
+									<th><small>Title</small></th>
+									<th><small>Supplier</small></th>
+									<th></th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>
+										<input type="checkbox" name="">
+									</td>
+									<td>
+										<small>John</small>
+									</td>
+									<td>
+										<small>
+											partner@gmail.com
+										</small>
+									</td>
+									<td>
+										<small>roger ngungu</small>										
+									</td>
+									<td>
+										<small>
+										Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et.</small>
+									</td>
+									<td></td>
+									<td>
+										<small>John Programming</small>
+									</td>
+									<td></td>
+									<td>
+										<button class="btn btn-default btn-sm">View</button>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<input type="checkbox" name="">
+									</td>
+									<td>
+										<small>John</small>
+									</td>
+									<td>
+										<small>
+											partner@gmail.com
+										</small>
+									</td>
+									<td>
+										<small>roger ngungu</small>										
+									</td>
+									<td>
+										<small>
+										Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et.</small>
+									</td>
+									<td></td>
+									<td>
+										<small>John Programming</small>
+									</td>
+									<td></td>
+									<td>
+										<button class="btn btn-default btn-sm">View</button>
+									</td>
+								</tr>
+
+							</tbody>						
+						</table>
+					</div>					
+				</div>
+			</div>
+
+		</div>
+	</div>
+</section>
