@@ -1,8 +1,9 @@
 class DashboardController < ApplicationController
   
   def trequest
-    @countries = country_list
-    @timezones = timezone_list
+    @countries      = country_list
+    @timezones      = timezone_list
+    @business_types = business_type_list
   end
 
   def requisition
@@ -1645,6 +1646,21 @@ class DashboardController < ApplicationController
         ]
       }
     ]    
+  end
+
+  def business_type_list
+    [
+      { name: 'Manufacturer' },
+      { name: 'Wholesaler/distributor' },
+      { name: 'Retailer' },
+      { name: 'Agent' },
+      { name: 'Trading company' },
+      { name: 'Subcontractor' },
+      { name: 'Public sector institution' },
+      { name: 'Non profit' },
+      { name: 'Service provider' },
+      { name: 'Association' }
+    ]
   end
 
 end
