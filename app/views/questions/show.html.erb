@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @question.title %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @question.description %>
+</p>
+
+<p>
+  <strong>Type:</strong>
+  <%= @question.type %>
+</p>
+
+<p>
+  <strong>Enable attatch:</strong>
+  <%= @question.enable_attatch %>
+</p>
+
+<p>
+  <strong>Mandatory:</strong>
+  <%= @question.mandatory %>
+</p>
+
+<p>
+  <strong>Options:</strong>
+  <%= @question.options %>
+</p>
+
+<p>
+  <strong>Request:</strong>
+  <%= @question.request %>
+</p>
+
+<%= link_to 'Edit', edit_question_path(@question) %> |
+<%= link_to 'Back', questions_path %>

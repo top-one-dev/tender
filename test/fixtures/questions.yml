@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  description: MyText
+  type: 
+  enable_attatch: false
+  mandatory: false
+  options: MyString
+  request: one
+
+two:
+  title: MyString
+  description: MyText
+  type: 
+  enable_attatch: false
+  mandatory: false
+  options: MyString
+  request: two
