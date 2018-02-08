@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  unit: MyString
+  quantity: 1.5
+  description: MyText
+  request: one
+
+two:
+  name: MyString
+  unit: MyString
+  quantity: 1.5
+  description: MyText
+  request: two

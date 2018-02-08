@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :items
   resources :requests
   resources :suppliers
   resources :companies
