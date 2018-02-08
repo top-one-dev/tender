@@ -1641,5 +1641,13 @@ module ApplicationHelper
       { name: 'Association' }
     ]
   end
+
+  def language_list
+    [
+      {name: 'English', code: 'EN'},
+      {name: 'Estonian', code: 'ES'},
+      {name: 'Spanish', code: 'SP'} 
+    ]
+  end
   
 end

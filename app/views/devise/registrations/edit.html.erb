@@ -1,43 +1,159 @@
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
+<% provide(:title, "Profile") %>
+<section style="min-height: 60vh;">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8">
+          <div class="panel-group" id="accordion">
+            <div class="panel panel-info">
+              <div class="panel-heading">
+                <h4 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
+                  GENERAL DETAILS</a>
+                </h4>
+              </div>
+              <div id="collapse1" class="panel-collapse collapse in">
+                <div class="panel-body">
+                  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+                    <%= devise_error_messages! %>
+                  <div class="row">                    
+                    <div class="col-md-6">
+                      <div class="form-group required">
+                        <%= f.label :name, class: 'control-label' %>
+                        <%= f.text_field :name, class: 'form-control' %>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group required">
+                        <%= f.label :email, class: 'control-label' %>
+                        <%= f.email_field :email, class: 'form-control' %>
+                        <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+                          <div class="alert alert-info">Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+                        <% end %>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <%= f.label :phone, class: 'control-label' %>
+                        <%= f.text_field :phone, class: 'form-control' %>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <%= f.label :mobile, class: 'control-label' %>
+                        <%= f.text_field :mobile, class: 'form-control' %>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <%= f.label :job_title, class: 'control-label' %>
+                        <%= f.text_field :job_title, class: 'form-control' %>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <%= f.label 'Display language', class: 'control-label' %>
+                        <%= f.select(:language, language_list.collect {|s| [s[:name].to_s, s[:name].to_s]}, {:include_blank => "Select Language"}, {:class => "form-control", placeholder: 'Select Language' } ) %>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label class="control-label">Timezone </label>
+                        <%= f.select(:country, timezone_list.collect {|s| [s[:text].to_s, s[:text].to_s]}, {:include_blank => "Select Timezone"}, {:class => "form-control", requried: true, placeholder: 'Select Timezone' } ) %>
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-md-7">
+                      <div class="form-group">
+                        <%= f.label :password %> <i class="text-info">(leave blank if you don't want to change it)</i><br />
+                        <%= f.password_field :password, class: 'form-control', autocomplete: "off" %>
+                        <% if @minimum_password_length %>
+                          <em class="text-danger"><%= @minimum_password_length %> characters minimum</em>
+                        <% end %>
+                      </div>
+                    </div>
+                    <div class="col-md-7">
+                      <div class="form-group">
+                        <%= f.label :password_confirmation %><br />
+                        <%= f.password_field :password_confirmation, class: 'form-control', autocomplete: "off" %>
+                      </div>
+                    </div>
+                    <div class="col-md-7">
+                      <div class="form-group">
+                        <%= f.label :current_password %> <i class="text-info">(current password to confirm changes)</i><br />
+                        <%= f.password_field :current_password, class: 'form-control', autocomplete: "off" %>
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+                  <div>                    
+                    <span class="pull-right">
+                      <%= f.submit 'SAVE', class: 'btn btn-info btn-sm' %>                      
+                    </span>
+                  </div>
+                  <div class="clearfix"></div>
+                  <!-- <div>
+                    <span><b class="text-muted">Unhappy?</b> <%= button_to "Cancel account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete, class: 'btn btn-danger btn-xs' %></span>
+                  </div> -->
+                  <% end %>
+                </div>
+              </div>
+            </div>
+            <div class="panel panel-info">
+              <div class="panel-heading">
+                <h4 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
+                  API TOKENS</a>
+                </h4>
+              </div>
+              <div id="collapse2" class="panel-collapse collapse in">
+                <div class="panel-body">
+                  <p>API tokens can be used for programmatic access to Tendorbooks data. If you are interested in intergrating Tendorbooks with yoru applications, contact team@tendorbooks.com</p>
+                  <div>
+                    <button class="btn btn-info btn-sm pull-right">
+                      <b>GENERATE NEW</b>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="panel-group">
+            <div class="panel panel-info">
+              <div class="panel-heading">Tenderbooks <i class="glyphicon glyphicon-triangle-bottom pull-right"></i></div>
+              <div class="panel-body">
+                <img src="assets/img/buyer/noimageCompany.gif" class="img-responsive" style="margin: 0 auto;">
+              </div>
+            </div>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-  <%= devise_error_messages! %>
+            <div class="panel panel-info">
+              <div class="panel-heading"><i class="glyphicon glyphicon-triangle-right"></i> General</div>
+            </div>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true %>
-  </div>
+            <div class="panel panel-info">
+              <div class="panel-heading"><i class="glyphicon glyphicon-triangle-right"></i> Company users</div>
+            </div>
 
-  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-    <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
-  <% end %>
+            <div class="panel panel-info">
+              <div class="panel-heading"><i class="glyphicon glyphicon-triangle-right"></i> Subscription</div>
+            </div>
+          </div>
 
-  <div class="field">
-    <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
-    <%= f.password_field :password, autocomplete: "off" %>
-    <% if @minimum_password_length %>
-      <br />
-      <em><%= @minimum_password_length %> characters minimum</em>
-    <% end %>
-  </div>
+          <hr>
 
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "off" %>
-  </div>
+          <div class="panel-group">
+            <div class="panel panel-success">
+              <div class="panel-heading"><i class="glyphicon glyphicon-triangle-right"></i> Your profile</div>
+            </div>
 
-  <div class="field">
-    <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
-    <%= f.password_field :current_password, autocomplete: "off" %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Update" %>
-  </div>
-<% end %>
-
-<h3>Cancel my account</h3>
-
-<p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete %></p>
-
-<%= link_to "Back", :back %>
+            <div class="panel panel-info">
+              <div class="panel-heading"><i class="glyphicon glyphicon-triangle-right"></i> Notifications</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>

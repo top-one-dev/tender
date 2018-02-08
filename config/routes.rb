@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   resources :requests
   resources :suppliers
   resources :companies
+
   get 'dashboard/request', to: 'dashboard#trequest', as: 'dashboard_request'
 
   get 'dashboard/requisition'

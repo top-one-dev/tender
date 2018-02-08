@@ -10,7 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180206140616) do
+ActiveRecord::Schema.define(version: 20180208025359) do
+
+  create_table "companies", force: :cascade do |t|
+    t.string   "name"
+    t.string   "logo"
+    t.string   "country"
+    t.string   "city"
+    t.string   "address"
+    t.string   "zip"
+    t.string   "email"
+    t.integer  "phone"
+    t.string   "homepage"
+    t.string   "employees"
+    t.string   "turnover"
+    t.string   "established"
+    t.text     "introduction"
+    t.string   "language"
+    t.string   "user"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
 
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer  "priority",   default: 0, null: false
@@ -25,6 +45,52 @@ ActiveRecord::Schema.define(version: 20180206140616) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
+  end
+
+  create_table "items", force: :cascade do |t|
+    t.string   "name"
+    t.string   "unit"
+    t.float    "quantity"
+    t.text     "description"
+    t.integer  "request_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["request_id"], name: "index_items_on_request_id"
+  end
+
+  create_table "questions", force: :cascade do |t|
+    t.string   "title"
+    t.text     "description"
+    t.string   "type"
+    t.boolean  "enable_attatch"
+    t.boolean  "mandatory"
+    t.string   "options"
+    t.integer  "request_id"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.index ["request_id"], name: "index_questions_on_request_id"
+  end
+
+  create_table "requests", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "end_time"
+    t.text     "description"
+    t.string   "attach"
+    t.integer  "user_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["user_id"], name: "index_requests_on_user_id"
+  end
+
+  create_table "suppliers", force: :cascade do |t|
+    t.string   "name"
+    t.string   "address"
+    t.string   "email"
+    t.string   "categories"
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_suppliers_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
