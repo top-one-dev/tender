@@ -46,6 +46,13 @@ ActiveRecord::Schema.define(version: 20180206140616) do
     t.string   "unlock_token"
     t.datetime "locked_at"
     t.string   "name"
+    t.integer  "phone"
+    t.integer  "mobile"
+    t.string   "job_title"
+    t.string   "language"
+    t.string   "timezone"
+    t.string   "country"
+    t.string   "company"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true

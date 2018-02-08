@@ -32,6 +32,13 @@ class DeviseCreateUsers < ActiveRecord::Migration[5.0]
 
       # Custom
       t.string   :name
+      t.integer  :phone
+      t.integer  :mobile
+      t.string   :job_title
+      t.string   :language
+      t.string   :timezone
+      t.string   :country
+      t.string   :company        
 
 
       t.timestamps null: false

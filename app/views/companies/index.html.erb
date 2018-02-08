@@ -1,0 +1,55 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Companies</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Logo</th>
+      <th>Country</th>
+      <th>City</th>
+      <th>Address</th>
+      <th>Zip</th>
+      <th>Email</th>
+      <th>Phone</th>
+      <th>Homepage</th>
+      <th>Employees</th>
+      <th>Turnover</th>
+      <th>Established</th>
+      <th>Introduction</th>
+      <th>Language</th>
+      <th>User</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @companies.each do |company| %>
+      <tr>
+        <td><%= company.name %></td>
+        <td><%= company.logo %></td>
+        <td><%= company.country %></td>
+        <td><%= company.city %></td>
+        <td><%= company.address %></td>
+        <td><%= company.zip %></td>
+        <td><%= company.email %></td>
+        <td><%= company.phone %></td>
+        <td><%= company.homepage %></td>
+        <td><%= company.employees %></td>
+        <td><%= company.turnover %></td>
+        <td><%= company.established %></td>
+        <td><%= company.introduction %></td>
+        <td><%= company.language %></td>
+        <td><%= company.user %></td>
+        <td><%= link_to 'Show', company %></td>
+        <td><%= link_to 'Edit', edit_company_path(company) %></td>
+        <td><%= link_to 'Destroy', company, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Company', new_company_path %>

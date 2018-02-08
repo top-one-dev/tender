@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :companies
   get 'dashboard/request', to: 'dashboard#trequest', as: 'dashboard_request'
 
   get 'dashboard/requisition'
