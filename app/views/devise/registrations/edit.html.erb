@@ -82,7 +82,7 @@
                     <div class="col-md-7">
                       <div class="form-group">
                         <%= f.label :current_password %> <i class="text-info">(current password to confirm changes)</i><br />
-                        <%= f.password_field :current_password, class: 'form-control', autocomplete: "off" %>
+                        <%= f.password_field :current_password, class: 'form-control', autocomplete: "off", requried: true %>
                       </div>
                     </div>
                   </div>
@@ -123,34 +123,59 @@
         <div class="col-md-4">
           <div class="panel-group">
             <div class="panel panel-info">
-              <div class="panel-heading">Tenderbooks <i class="glyphicon glyphicon-triangle-bottom pull-right"></i></div>
+              <div class="panel-heading dropdown">
+                <a href="javascript:;" data-toggle="dropdown">
+                  <% if Company.where(:user => current_user.id ).empty? %>
+                    Add Company
+                  <% else %>
+                    <%= Company.where(:user => current_user.id ).first.name %>
+                  <% end %> <i class="glyphicon glyphicon-triangle-bottom pull-right"></i></a>
+                <ul class="dropdown-menu">
+                  <% Company.where(:user => current_user.id ).each do |company| %>
+                    <li><%= link_to company.name, edit_company_path( company ) %></li>
+                  <% end %>
+                  <li class="divider"></li>
+                  <li>
+                    <%= link_to 'Add Company', new_company_path, class: 'btn btn-info add-company' %>
+                  </li>
+                </ul>
+              </div>
               <div class="panel-body">
-                <img src="assets/img/buyer/noimageCompany.gif" class="img-responsive" style="margin: 0 auto;">
+                <%= image_tag 'buyer/noimageCompany.gif', class: 'img-responsive', style: 'margin: 0 auto;' %>
               </div>
             </div>
+            <% unless Company.where(:user => current_user.id).empty? %>
+              <div class="panel panel-info">
+                <div class="panel-heading"><i class="glyphicon glyphicon-triangle-right"></i> General</div>
+              </div>
 
-            <div class="panel panel-info">
-              <div class="panel-heading"><i class="glyphicon glyphicon-triangle-right"></i> General</div>
-            </div>
+              <div class="panel panel-info">
+                <div class="panel-heading"><i class="glyphicon glyphicon-triangle-right"></i> Company users</div>
+              </div>
 
-            <div class="panel panel-info">
-              <div class="panel-heading"><i class="glyphicon glyphicon-triangle-right"></i> Company users</div>
-            </div>
-
-            <div class="panel panel-info">
-              <div class="panel-heading"><i class="glyphicon glyphicon-triangle-right"></i> Subscription</div>
-            </div>
+              <div class="panel panel-info">
+                <div class="panel-heading"><i class="glyphicon glyphicon-triangle-right"></i> Subscription</div>
+              </div>
+            <% end %>            
           </div>
 
           <hr>
 
           <div class="panel-group">
             <div class="panel panel-success">
-              <div class="panel-heading"><i class="glyphicon glyphicon-triangle-right"></i> Your profile</div>
+              <div class="panel-heading">
+                <%= link_to '<i class="glyphicon glyphicon-triangle-left"></i> Your profile'.html_safe, edit_user_registration_path %>
+              </div>
             </div>
 
             <div class="panel panel-info">
-              <div class="panel-heading"><i class="glyphicon glyphicon-triangle-right"></i> Notifications</div>
+              <div class="panel-heading">
+                <% if current_user.notifications.empty? %>
+                  <%= link_to '<i class="glyphicon glyphicon-triangle-right"></i> Notifications'.html_safe, new_notification_path %>
+                <% else %>
+                  <%= link_to '<i class="glyphicon glyphicon-triangle-right"></i> Notifications'.html_safe, edit_notification_path(current_user.notifications.first) %>
+                <% end %>
+              </div>
             </div>
           </div>
         </div>

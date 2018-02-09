@@ -10,6 +10,7 @@ class CreateCompanies < ActiveRecord::Migration[5.0]
       t.string :email
       t.integer :phone
       t.string :homepage
+      t.string :business_type
       t.string :employees
       t.string :turnover
       t.string :established

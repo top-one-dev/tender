@@ -1,0 +1,89 @@
+<div class="panel panel-info">
+  <div class="panel-heading"><h4 class="panel-title">NOTIFICATIONS</h4></div>
+  <div class="panel-body">
+    <%= form_for(notification) do |f| %>
+    <% if notification.errors.any? %>
+      <%= error_message notification %>
+    <% end %>
+    <%= f.hidden_field :user_id, value: current_user.id %>
+    <b>Check which notifications you would like to get from TenderBooks.</b>
+    <hr>
+    <label>Messages</label>
+    <div class="checkbox">
+      <label>
+        <%= f.check_box :messages %>Messages with other users and companies in TenderBooks
+      </label>
+    </div>
+    <hr>
+    <label>Notifications regarding your company</label>
+    <div class="checkbox">
+      <label>
+        <%= f.check_box :join_company %>A user wants to join company
+      </label>
+    </div>
+    <div class="checkbox">
+      <label>
+        <%= f.check_box :reject_compay %>You are removed from a company
+      </label>
+    </div>
+    <hr>
+    <label>Request notifications</label>
+    <div class="checkbox">
+      <label>
+        <%= f.check_box :participate_request %>Supplier sends a request to participate on request
+      </label>
+    </div>
+    <div class="checkbox">
+      <label>
+        <%= f.check_box :new_bid %>Supplier has mad a new bid
+      </label>
+    </div>
+    <div class="checkbox">
+      <label>
+        <%= f.check_box :not_participate_request %>Supplier doesn't want to participate on request
+      </label>
+    </div>
+    <div class="checkbox">
+      <label>
+        <%= f.check_box :invit_request %>Buyer invites you to participate on request
+      </label>
+    </div>
+    <div class="checkbox">
+      <label>
+        <%= f.check_box :changed_request %>Buyer has changed the request
+      </label>
+    </div>
+    <div class="checkbox">
+      <label>
+        <%= f.check_box :reminder_end %>Rminder that request is about to end
+      </label>
+    </div>
+    <div class="checkbox">
+      <label>
+        <%= f.check_box :request_decision %>Notification about request decision
+      </label>
+    </div>
+    <div class="checkbox">
+      <label>
+        <%= f.check_box :label_tender_scoring %>label_tender scoring
+      </label>
+    </div>
+    <hr>
+    <label>Requisitions</label>
+    <div class="checkbox">
+      <label>
+        <%= f.check_box :submitted_requisition %>I wan to be notified when new requisition is submitted
+      </label>
+    </div>
+    <div class="checkbox">
+      <label>
+        <%= f.check_box :messages_requisition %>Messages for requisitions that I'm managing
+      </label>
+    </div>
+    <hr>
+    <div class="text-right">
+      <%= f.submit 'Save', class: 'btn btn-info' %>
+    </div>
+    <% end %>
+  </div>
+</div>

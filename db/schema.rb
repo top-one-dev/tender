@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180208025359) do
+ActiveRecord::Schema.define(version: 20180209104832) do
 
   create_table "companies", force: :cascade do |t|
     t.string   "name"
@@ -22,14 +22,15 @@ ActiveRecord::Schema.define(version: 20180208025359) do
     t.string   "email"
     t.integer  "phone"
     t.string   "homepage"
+    t.string   "business_type"
     t.string   "employees"
     t.string   "turnover"
     t.string   "established"
     t.text     "introduction"
     t.string   "language"
     t.string   "user"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   create_table "delayed_jobs", force: :cascade do |t|
@@ -56,6 +57,26 @@ ActiveRecord::Schema.define(version: 20180208025359) do
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.index ["request_id"], name: "index_items_on_request_id"
+  end
+
+  create_table "notifications", force: :cascade do |t|
+    t.boolean  "messages"
+    t.boolean  "join_company"
+    t.boolean  "reject_compay"
+    t.boolean  "participate_request"
+    t.boolean  "new_bid"
+    t.boolean  "not_participate_request"
+    t.boolean  "invit_request"
+    t.boolean  "changed_request"
+    t.boolean  "reminder_end"
+    t.boolean  "request_decision"
+    t.boolean  "label_tender_scoring"
+    t.boolean  "submitted_requisition"
+    t.boolean  "messages_requisition"
+    t.integer  "user_id"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.index ["user_id"], name: "index_notifications_on_user_id"
   end
 
   create_table "questions", force: :cascade do |t|

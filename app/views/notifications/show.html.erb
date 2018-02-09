@@ -1,0 +1,74 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Messages:</strong>
+  <%= @notification.messages %>
+</p>
+
+<p>
+  <strong>Join company:</strong>
+  <%= @notification.join_company %>
+</p>
+
+<p>
+  <strong>Reject compay:</strong>
+  <%= @notification.reject_compay %>
+</p>
+
+<p>
+  <strong>Participate request:</strong>
+  <%= @notification.participate_request %>
+</p>
+
+<p>
+  <strong>New bid:</strong>
+  <%= @notification.new_bid %>
+</p>
+
+<p>
+  <strong>Not participate request:</strong>
+  <%= @notification.not_participate_request %>
+</p>
+
+<p>
+  <strong>Invit request:</strong>
+  <%= @notification.invit_request %>
+</p>
+
+<p>
+  <strong>Changed request:</strong>
+  <%= @notification.changed_request %>
+</p>
+
+<p>
+  <strong>Reminder end:</strong>
+  <%= @notification.reminder_end %>
+</p>
+
+<p>
+  <strong>Request decision:</strong>
+  <%= @notification.request_decision %>
+</p>
+
+<p>
+  <strong>Label tender scoring:</strong>
+  <%= @notification.label_tender_scoring %>
+</p>
+
+<p>
+  <strong>Submitted requisition:</strong>
+  <%= @notification.submitted_requisition %>
+</p>
+
+<p>
+  <strong>Messages requisition:</strong>
+  <%= @notification.messages_requisition %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @notification.user %>
+</p>
+
+<%= link_to 'Edit', edit_notification_path(@notification) %> |
+<%= link_to 'Back', notifications_path %>

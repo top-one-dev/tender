@@ -1,0 +1,33 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  messages: false
+  join_company: false
+  reject_compay: false
+  participate_request: false
+  new_bid: false
+  not_participate_request: false
+  invit_request: false
+  changed_request: false
+  reminder_end: false
+  request_decision: false
+  label_tender_scoring: false
+  submitted_requisition: false
+  messages_requisition: false
+  user: one
+
+two:
+  messages: false
+  join_company: false
+  reject_compay: false
+  participate_request: false
+  new_bid: false
+  not_participate_request: false
+  invit_request: false
+  changed_request: false
+  reminder_end: false
+  request_decision: false
+  label_tender_scoring: false
+  submitted_requisition: false
+  messages_requisition: false
+  user: two

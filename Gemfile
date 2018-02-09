@@ -32,8 +32,9 @@ gem 'jbuilder', '~> 2.5'
 # gem 'fae-rails'
 # gem 'fog'
 gem 'devise'
-
 gem 'delayed_job_active_record'
+# amazon s3 storage...
+gem 'aws-sdk', '~> 2'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

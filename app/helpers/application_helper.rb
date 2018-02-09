@@ -1649,5 +1649,52 @@ module ApplicationHelper
       {name: 'Spanish', code: 'SP'} 
     ]
   end
+
+  def employees_list
+    [
+      { name: '1', value: 1 },
+      { name: '2-10', value: 2 },
+      { name: '11-50', value: 3 },
+      { name: '51-200', value: 4 },
+      { name: '201-500', value: 5 },
+      { name: '501-1000', value: 6 },
+      { name: '1001-5000', value: 7 },
+      { name: '5001-10000', value: 8 },
+      { name: '10000+', value: 9 }
+    ]
+  end
+
+  def turnover_list
+    [
+      { name: 'Below 1M USD', value: 1 },
+      { name: '1-2.5M USD', value: 2 },
+      { name: '2.5-5M USD', value: 3 },
+      { name: '5-10M USD', value: 4 },
+      { name: '10-50M USD', value: 5 },
+      { name: '50-100M USD', value: 6 },
+      { name: '100-500M USD', value: 7 },
+      { name: '500-1000M USD', value: 8 },
+      { name: 'Above 1000M USD', value: 9 }
+    ]
+  end
+
+  def error_message obj
+    return '' if obj.errors.empty?
+
+    messages = obj.errors.full_messages.map { |msg| content_tag(:li, msg) }.join
+    html = <<-HTML
+    <div class="alert alert-danger alert-dismissible show" role="alert">
+      <button type="button" class="close" data-dismiss="alert">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <h4>
+       #{pluralize(obj.errors.count, "error")} must be fixed
+      </h4>
+      #{messages}
+    </div>
+    HTML
+
+    html.html_safe
+  end
   
 end

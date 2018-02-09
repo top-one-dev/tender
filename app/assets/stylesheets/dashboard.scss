@@ -1,3 +1,81 @@
 // Place all the styles related to the Dashboard controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+/* ---------------------------------------------------
+    SIDEBAR STYLE
+----------------------------------------------------- */
+.wrapper {
+    display: flex;
+    align-items: stretch;
+    margin-top: -20px;
+}
+.sidebar-toggle{
+	padding: 9px;
+	margin-right: 25px;
+}
+.sidebar-toggle a:hover, .sidebar-toggle a:focus{
+	text-decoration: none;
+}
+#sidebar {
+    min-width: 340px;
+    max-width: 340px;
+    transition: all 0.3s;
+    background-color: #f8f8f8;
+    border: 1px solid #e7e7e7;
+    padding: 10px;
+}
+
+#sidebar.active {
+    margin-left: -330px;
+}
+#report-chart {
+	height: 500px;
+	margin: 10px auto;
+}
+
+
+#sidebar-menu{
+	display: block;
+    width: 300px;
+    height: 100%;
+    max-height: 100%;
+    position: fixed;
+    top: 72px;
+    /*box-shadow: 0 0 0 0 rgba(0,0,0,.14), 0 10px 15px 8px rgba(0,0,0,.2), 0 0 0 0 rgba(0,0,0,.12);*/
+    box-sizing: border-box;
+    border-right: 1px solid #e0e0e0;
+    transition: all .5s ease;
+    color: #424242;
+    overflow: hidden;
+    z-index: 40;
+    background: #f7f7f7;
+    padding: 10px;
+    left: -350px;
+}
+
+.btn.add-company{
+    margin: 10px;
+    color: #fff;
+}
+
+
+@media (max-width: 768px) {
+    #sidebar {
+        margin-left: -330px;
+        margin-right: 10px;
+    }
+    #sidebar.active {
+        margin-left: 0;
+    }
+    #sidebarCollapse span {
+        display: none;
+    }
+    div#contacts, div#suppliers{
+    	width: calc( 100vw - 20px );
+    }
+    div#report-chart {
+		height: 300px;		
+	}
+
+}

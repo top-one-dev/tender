@@ -1,3 +1,272 @@
 // Place all the styles related to the Static controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+/*----- common styles ------*/
+.text-blue{
+	color: #09a3e0;
+}
+.bg-blue{
+	background-color: #09a3e0;
+	color: #fff;
+}
+/*.bg-info{
+	background-color: #09a3e0;
+}
+.text-info{
+	color: #09a3e0;
+}
+.panel-info>.panel-heading{
+	background-color: #09a3e0;
+}*/
+.btn-info{
+	background-color: #09a3e0;
+}
+.bg-gray{
+	background-color: #f8f8f8;
+}
+.text-white{
+	color: #fff;
+}
+.dropdown-menu{
+	transition: all .5s ease;
+	/*left: initial;
+	right: 0;*/
+}
+.form-group.required .control-label:after {
+  content:"*";
+  color:red;
+}
+.alert{
+	li{
+		margin-left: 20px;
+	}
+}
+
+/*flash*/
+.alert-error {
+    background-color: #f2dede;
+    border-color: #eed3d7;
+    color: #b94a48;
+    text-align: left;
+ }
+
+.alert-alert {
+    background-color: #f2dede;
+    border-color: #eed3d7;
+    color: #b94a48;
+    text-align: left;
+ }
+
+.alert-success {
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+    color: #468847;
+    text-align: left;
+ }
+
+.alert-notice {
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+    color: #468847;
+    text-align: left;
+    li{
+    	list-style: none;
+    	margin-left: 0;
+    }
+    a.close{
+    	line-height: .5;
+    }
+ }
+
+/*----- navbar ------*/
+.navbar.navbar-default{
+	padding: 10px;
+}
+.navbar .nav > li > a,
+.navbar .nav > li > ul > li > a{
+	color: #09a3e0;
+	transition: all .7s ease;
+}
+.navbar .nav > li > a:hover,
+.navbar .nav > li > ul > li > a:hover{
+	color: gray;
+}
+.navbar-default .navbar-nav>.open>a, 
+.navbar-default .navbar-nav>.open>a:focus, 
+.navbar-default .navbar-nav>.open>a:hover{
+	background-color: transparent;
+}
+.navbar-brand{
+	padding: 0 20px;
+}
+.navbar-brand img{
+	width: 200px;
+	transition: all ease .7s;
+}
+.navbar-brand img:hover{
+	transform: scale(1.1);
+}
+
+/*----- Home page -----*/
+html, body{
+	overflow-x: hidden;	
+}
+p{
+	letter-spacing: 1px;
+}
+.home-banner h1{
+	margin-top: 50px;
+}
+.home-banner p{
+	margin: 20px 0;
+	overflow: hidden;
+}
+.carousel-inner>.item>a>img, 
+.carousel-inner>.item>img{
+	margin-right: auto;
+	margin-left: auto;
+}
+.home-companies{
+	padding: 40px 0 20px;
+	background: #fff;
+}
+.home-section{
+	padding: 100px 0;
+}
+.home-bar{
+	padding: 30px 0;
+}
+.home-bar button{
+	border: none;
+	font-size: 16px;
+	font-weight: 600;
+	padding: 10px 30px;
+	transition: all .7s ease;
+}
+.home-bar button:hover{
+	background-color: rgba(255, 255, 255, .2);
+	color: #fff; 
+}
+
+
+/*-----footer----*/
+footer{
+	padding: 30px 0;
+	background-color: #ececec;
+}
+footer *{
+	margin: 10px 0;
+}
+.footer-logo{
+	width: 90px;
+	transition: all 1s ease;
+	cursor: pointer;
+	&:hover{
+		transform: scale(1.3)rotate(270deg);
+	}
+}
+.footer-navigation > a{
+	padding: 0 10px;
+}
+.social-icons ul {
+    list-style: none;
+    display: inline-flex;
+    margin-left: -40px;
+}
+.social-icons ul li a {
+	background-color: rgba(0,0,0, .3);
+    border-radius: 4px;
+    line-height: 33px;
+    color: #fff;
+    height: 36px;
+    width: 36px;
+    display: block;
+    font-size: 16px;
+    opacity: 0.8;
+    margin: 5px;
+    transition: all .5s ease;
+}
+.social-icons ul li a:hover{
+	transform: scale(1.15);
+}
+.social-icons ul li a.envelope:hover {
+    background-color: #CECB26;
+}
+.social-icons ul li a.twitter:hover {
+    background-color: #2ac6f7;
+}
+.social-icons ul li a.dribbble:hover {
+    background-color: #ff5b92;
+}
+.social-icons ul li a.facebook:hover {
+    background-color: #3b5999;
+}
+.social-icons ul li a.linkedin:hover {
+    background-color: #036dc0;
+}
+.social-icons ul li a.tumblr:hover {
+    background-color: #ff6b00;
+}
+.copyright{
+	letter-spacing: .8px;
+}
+
+/*------responsive------*/
+@media only screen and ( min-width:600px) and ( max-width:767px ){
+	.testimonial-heading h1{
+		background:none;
+	}
+
+	.testimonial-heading h1 {
+	    padding: 0px 80px;
+	    font-size: 34px;
+	}
+
+	.new-slides li p {
+	    margin: 0;
+	    padding: 70px 10px 120px;
+	    background-position: top center, bottom center;
+	}
+}
+
+
+
+@media only screen and ( min-width:768px) and ( max-width:960px ){
+	.flexslider1 .flex-control-thumbs img {
+	    width: 65px !important;
+	    height: 65px !important;
+	}
+}
+
+@media only screen and ( min-width: 320px) and ( max-width: 599px ){
+	.flex-control-nav{
+		display:none;
+	}
+	
+	.testimonial-heading h1{
+		font-size:29px;
+		background:none;
+	}
+
+	.new-slides li p {
+	    margin: 0px 0px;
+	    padding: 70px 10px 120px;
+	    font-size: 16px;
+	    line-height: 28px;
+	    background-position: top center, bottom center;
+	}
+}
+
+@media only screen and (max-width: 768px){
+	.nav-tabs>li{
+		width: 80%;
+		margin-bottom: 10px;
+	}
+	.nav-tabs>li.pull-right{
+		float: left !important;
+	}
+	.nav-tabs>li.pull-right button{
+		margin-top: 5px;
+	}
+}

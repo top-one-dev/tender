@@ -1,92 +1,170 @@
 <%= form_for(company) do |f| %>
-  <% if company.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(company.errors.count, "error") %> prohibited this company from being saved:</h2>
-
-      <ul>
-      <% company.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+<% if company.errors.any? %>
+  <%= error_message company %>
+<% end %>
+<%= f.hidden_field :user, :value => current_user.id %>
+<div class="panel-group" id="accordion">
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
+        GENERAL DETAILS</a>
+      </h4>
     </div>
-  <% end %>
-
-  <div class="field">
-    <%= f.label :name %>
-    <%= f.text_field :name %>
+    <div id="collapse1" class="panel-collapse collapse in">
+      <div class="panel-body">
+        
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group required">
+                <%= f.label :name, class: 'control-label' %>
+                <%= f.text_field :name, class: 'form-control', required: true %>
+              </div>
+              <div class="form-group required">
+                <%= f.label :country, class: 'control-label' %>
+                <%= f.select(:country, country_list.collect {|s| [s[:name].to_s, s[:name].to_s]}, {:include_blank => "Select Country"}, {:class => "form-control", :requried => true} ) %>
+              </div>
+              <div class="form-group">
+                <%= f.label :city, class: 'control-label' %>
+                <%= f.text_field :city, class: 'form-control' %>
+              </div>            
+            </div>
+            <div class="col-md-6">
+              <a class="btn btn-default"><i class="glyphicon glyphicon-cloud-upload"></i> Logo</a>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <%= f.label :address, class: 'control-label' %>
+                <%= f.text_field :address, class: 'form-control' %>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <%= f.label :zip, class: 'control-label' %>
+                <%= f.text_field :zip, class: 'form-control' %>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
   </div>
-
-  <div class="field">
-    <%= f.label :logo %>
-    <%= f.text_field :logo %>
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
+        COMPANY CONTACTS</a>
+      </h4>
+    </div>
+    <div id="collapse2" class="panel-collapse collapse in">
+      <div class="panel-body">
+        
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group required">
+                <%= f.label :email, class: 'control-label' %>
+                <%= f.text_field :email, class: 'form-control', required: true %>
+              </div>
+              <div class="form-group">
+                <%= f.label :phone, class: 'control-label' %>
+                <%= f.text_field :phone, class: 'form-control' %>
+              </div>
+              <div class="form-group">
+                <%= f.label :homepage, class: 'control-label' %>
+                <%= f.text_field :homepage, class: 'form-control' %>
+              </div>            
+            </div>
+            <div class="col-md-6">              
+            </div>
+          </div>                    
+      </div>
+    </div>
   </div>
-
-  <div class="field">
-    <%= f.label :country %>
-    <%= f.text_field :country %>
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
+        ADDITIONAL INFORMATION</a>
+      </h4>
+    </div>
+    <div id="collapse3" class="panel-collapse collapse in">
+      <div class="panel-body">
+          <div class="row">
+            <div class="col-md-6">
+              <%= f.label 'Business type', class: 'control-label' %>
+            </div>
+          </div>
+          <div class="row">
+            <% business_type_list.each do |type| %>
+              <div class="col-md-6">
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" name="company[business_type][]" value="<%= type[:name] %>" 
+                      <% unless company.business_type.nil? %>
+                        <%= 'checked' if company.business_type.include? type[:name] %> 
+                      <% end %>
+                    >
+                    <%= type[:name] %>
+                  </label>
+                </div>
+              </div>
+            <% end %>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group">
+                <%= f.label :employees, class: 'control-label' %>
+                <%= f.select(:employees, employees_list.collect {|s| [s[:name].to_s, s[:name].to_s]}, {:include_blank => "Select Employees"}, {:class => "form-control"} ) %>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <%= f.label :turnover, class: 'control-label' %>
+                <%= f.select(:turnover, turnover_list.collect {|s| [s[:name].to_s, s[:name].to_s]}, {:include_blank => "Select Turnover"}, {:class => "form-control"} ) %>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <%= f.label :established, class: 'control-label' %>
+                <%= f.text_field :established, class: 'form-control' %>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <%= f.label 'Company Introduction', class: 'control-label' %>
+              <%= f.text_area :introduction, class: 'form-control' %>
+            </div>
+          </div>                 
+      </div>
+    </div>
   </div>
-
-  <div class="field">
-    <%= f.label :city %>
-    <%= f.text_field :city %>
-  </div>
-
-  <div class="field">
-    <%= f.label :address %>
-    <%= f.text_field :address %>
-  </div>
-
-  <div class="field">
-    <%= f.label :zip %>
-    <%= f.text_field :zip %>
-  </div>
-
-  <div class="field">
-    <%= f.label :email %>
-    <%= f.text_field :email %>
-  </div>
-
-  <div class="field">
-    <%= f.label :phone %>
-    <%= f.number_field :phone %>
-  </div>
-
-  <div class="field">
-    <%= f.label :homepage %>
-    <%= f.text_field :homepage %>
-  </div>
-
-  <div class="field">
-    <%= f.label :employees %>
-    <%= f.text_field :employees %>
-  </div>
-
-  <div class="field">
-    <%= f.label :turnover %>
-    <%= f.text_field :turnover %>
-  </div>
-
-  <div class="field">
-    <%= f.label :established %>
-    <%= f.text_field :established %>
-  </div>
-
-  <div class="field">
-    <%= f.label :introduction %>
-    <%= f.text_area :introduction %>
-  </div>
-
-  <div class="field">
-    <%= f.label :language %>
-    <%= f.text_field :language %>
-  </div>
-
-  <div class="field">
-    <%= f.label :user %>
-    <%= f.text_field :user %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapse4">
+        REQUESTS</a>
+      </h4>
+    </div>
+    <div id="collapse4" class="panel-collapse collapse in">
+      <div class="panel-body">
+        
+          <div class="row">
+            <div class="col-md-6">
+              <%= f.label 'Default Invitaiton language', class: 'control-label' %>
+              <%= f.select(:language, language_list.collect {|s| [s[:name].to_s, s[:name].to_s]}, {:include_blank => "Select Language"}, {:class => "form-control"} ) %>
+            </div>
+          </div>     
+      </div>
+    </div>
+  </div>            
+</div>
+<hr>
+<div class="text-right">
+  <%= f.submit 'Save', class: 'btn btn-info' %>
+</div>
+<hr>
+<br><br>
 <% end %>

@@ -1,0 +1,53 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Notifications</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Messages</th>
+      <th>Join company</th>
+      <th>Reject compay</th>
+      <th>Participate request</th>
+      <th>New bid</th>
+      <th>Not participate request</th>
+      <th>Invit request</th>
+      <th>Changed request</th>
+      <th>Reminder end</th>
+      <th>Request decision</th>
+      <th>Label tender scoring</th>
+      <th>Submitted requisition</th>
+      <th>Messages requisition</th>
+      <th>User</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @notifications.each do |notification| %>
+      <tr>
+        <td><%= notification.messages %></td>
+        <td><%= notification.join_company %></td>
+        <td><%= notification.reject_compay %></td>
+        <td><%= notification.participate_request %></td>
+        <td><%= notification.new_bid %></td>
+        <td><%= notification.not_participate_request %></td>
+        <td><%= notification.invit_request %></td>
+        <td><%= notification.changed_request %></td>
+        <td><%= notification.reminder_end %></td>
+        <td><%= notification.request_decision %></td>
+        <td><%= notification.label_tender_scoring %></td>
+        <td><%= notification.submitted_requisition %></td>
+        <td><%= notification.messages_requisition %></td>
+        <td><%= notification.user %></td>
+        <td><%= link_to 'Show', notification %></td>
+        <td><%= link_to 'Edit', edit_notification_path(notification) %></td>
+        <td><%= link_to 'Destroy', notification, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Notification', new_notification_path %>

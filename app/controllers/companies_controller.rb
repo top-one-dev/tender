@@ -1,5 +1,6 @@
 class CompaniesController < ApplicationController
   before_action :set_company, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
 
   # GET /companies
   # GET /companies.json
@@ -24,11 +25,12 @@ class CompaniesController < ApplicationController
   # POST /companies
   # POST /companies.json
   def create
+    
     @company = Company.new(company_params)
 
     respond_to do |format|
       if @company.save
-        format.html { redirect_to @company, notice: 'Company was successfully created.' }
+        format.html { redirect_to edit_user_registration_path, notice: 'Company was successfully created.' }
         format.json { render :show, status: :created, location: @company }
       else
         format.html { render :new }
@@ -42,7 +44,7 @@ class CompaniesController < ApplicationController
   def update
     respond_to do |format|
       if @company.update(company_params)
-        format.html { redirect_to @company, notice: 'Company was successfully updated.' }
+        format.html { redirect_to edit_user_registration_path, notice: 'Company was successfully updated.' }
         format.json { render :show, status: :ok, location: @company }
       else
         format.html { render :edit }
@@ -69,6 +71,6 @@ class CompaniesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def company_params
-      params.require(:company).permit(:name, :logo, :country, :city, :address, :zip, :email, :phone, :homepage, :employees, :turnover, :established, :introduction, :language, :user)
+      params.require(:company).permit(:name, :logo, :country, :city, :address, :zip, :email, :phone, :homepage, { business_type: [] }, :employees, :turnover, :established, :introduction, :language, :user)
     end
 end
