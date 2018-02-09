@@ -59,6 +59,21 @@
     color: #fff;
 }
 
+// dropzone
+.dropzone{
+        border: 1px dotted #09a3e0 !important;
+        .dz-message{
+            margin: 5em 0 !important;
+            span{
+                color: gray;
+                font-size: 20px;
+            }
+        }
+    }
+.company-logo{
+    margin: 10px auto;
+}
+
 
 @media (max-width: 768px) {
     #sidebar {

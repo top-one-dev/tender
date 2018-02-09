@@ -21,7 +21,13 @@
 							</ul>
 						</div>
 						<div class="panel-body">
-							<%= image_tag 'buyer/noimageCompany.gif', class: 'img-responsive', style: 'margin: 0 auto;' %>
+							<% if Company.where(:user => current_user.id ).empty? %>
+			                  <%= image_tag 'buyer/noimageCompany.gif', class: 'img-responsive', style: 'margin: 0 auto;' %>
+			                <% elsif Company.where(:user => current_user.id ).first.logo.nil? %>
+			                  <%= image_tag 'buyer/noimageCompany.gif', class: 'img-responsive', style: 'margin: 0 auto;' %>
+			                <% else %>
+			                  <%= image_tag Company.where(:user => current_user.id ).first.logo, class: 'img-responsive', style: 'margin: 0 auto;' %>
+			                <% end %>
 						</div>
 					</div>					
 					<div class="panel panel-success">

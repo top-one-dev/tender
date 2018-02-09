@@ -3,6 +3,7 @@
   <%= error_message company %>
 <% end %>
 <%= f.hidden_field :user, :value => current_user.id %>
+<%= f.hidden_field :logo, :value => company.logo %>
 <div class="panel-group" id="accordion">
   <div class="panel panel-info">
     <div class="panel-heading">
@@ -30,7 +31,12 @@
               </div>            
             </div>
             <div class="col-md-6">
-              <a class="btn btn-default"><i class="glyphicon glyphicon-cloud-upload"></i> Logo</a>
+              <a class="btn btn-default" data-toggle="modal" data-target="#companyLogoModal" ><i class="glyphicon glyphicon-cloud-upload"></i> Logo</a>
+              <% if company.logo.nil? %>
+                <%= image_tag 'buyer/noimageCompany.gif', class: 'img-responsive company-logo' %>
+              <% else %>
+                <%= image_tag company.logo, class: 'img-responsive company-logo' %>
+              <% end %>
             </div>
           </div>
           <div class="row">
@@ -168,3 +174,26 @@
 <hr>
 <br><br>
 <% end %>
+
+<!-- CompanyLogoUploadModal -->
+<div id="companyLogoModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Upload Logo</h4>
+      </div>
+      <div class="modal-body">
+        <div id="companylogo" data-url="<%= @s3_direct_post.url %>" data-fields="<%= @s3_direct_post.fields.to_json %>" class="well dropzone bg-info">
+          <div class="dz-message">
+            <span>Drag and drop file here to upload</span>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div> -->
+    </div>
+
+  </div>
+</div>

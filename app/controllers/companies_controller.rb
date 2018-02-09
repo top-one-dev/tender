@@ -1,5 +1,6 @@
 class CompaniesController < ApplicationController
   before_action :set_company, only: [:show, :edit, :update, :destroy]
+  before_action :set_s3_direct_post, only: [:new, :edit, :create, :update]
   before_action :authenticate_user!
 
   # GET /companies
@@ -72,5 +73,9 @@ class CompaniesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def company_params
       params.require(:company).permit(:name, :logo, :country, :city, :address, :zip, :email, :phone, :homepage, { business_type: [] }, :employees, :turnover, :established, :introduction, :language, :user)
+    end
+
+    def set_s3_direct_post
+      @s3_direct_post = S3_BUCKET.presigned_post(key: "logos/#{@company.id}/${filename}", success_action_status: '201', acl: 'public-read')
     end
 end
