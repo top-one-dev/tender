@@ -1,10 +1,15 @@
 class RequestsController < ApplicationController
   before_action :set_request, only: [:show, :edit, :update, :destroy]
+  before_action :set_company
 
   # GET /requests
   # GET /requests.json
   def index
-    @requests = Request.all
+    unless current_company.nil?
+      @requests = current_company.requests.where(:user_id => current_user.id)
+    else
+      @requests = nil
+    end 
   end
 
   # GET /requests/1
@@ -13,8 +18,9 @@ class RequestsController < ApplicationController
   end
 
   # GET /requests/new
-  def new
+  def new type
     @request = Request.new
+    @type    = type
   end
 
   # GET /requests/1/edit
@@ -69,6 +75,15 @@ class RequestsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def request_params
-      params.require(:request).permit(:name, :end_time, :description, :attach, :user_id)
+      params.require(:request).permit(:name, :end_time, :description, :attach, :user_id, :company_id, :folder_id, :type)
     end
+
+    def set_company
+      if Company.where(:user => current_user.id).exists?
+        session[:current_company_id] = Company.where(:user => current_user.id).first.id if session[:current_company_id].nil?
+      else
+        session[:current_company_id] = 0
+      end 
+    end
+
 end

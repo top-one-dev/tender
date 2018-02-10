@@ -22,7 +22,11 @@ class DashboardController < ApplicationController
 
   private
   def set_company
-    session[:current_company_id] = Company.where(:user => current_user.id).first.id if session[:current_company_id].nil?
+    if Company.where(:user => current_user.id).exists?
+      session[:current_company_id] = Company.where(:user => current_user.id).first.id if session[:current_company_id].nil?
+    else
+      session[:current_company_id] = 0
+    end 
   end
 
 end

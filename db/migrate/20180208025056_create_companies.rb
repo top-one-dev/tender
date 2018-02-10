@@ -16,7 +16,7 @@ class CreateCompanies < ActiveRecord::Migration[5.0]
       t.string :established
       t.text :introduction
       t.string :language
-      t.string :user
+      t.integer :user
 
       t.timestamps
     end

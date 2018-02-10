@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180209104832) do
+ActiveRecord::Schema.define(version: 20180210095733) do
 
   create_table "companies", force: :cascade do |t|
     t.string   "name"
@@ -28,7 +28,7 @@ ActiveRecord::Schema.define(version: 20180209104832) do
     t.string   "established"
     t.text     "introduction"
     t.string   "language"
-    t.string   "user"
+    t.integer  "user"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
   end
@@ -46,6 +46,13 @@ ActiveRecord::Schema.define(version: 20180209104832) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
+  end
+
+  create_table "folders", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "position"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "items", force: :cascade do |t|
@@ -97,9 +104,14 @@ ActiveRecord::Schema.define(version: 20180209104832) do
     t.datetime "end_time"
     t.text     "description"
     t.string   "attach"
+    t.string   "type"
     t.integer  "user_id"
+    t.integer  "company_id"
+    t.integer  "folder_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.index ["company_id"], name: "index_requests_on_company_id"
+    t.index ["folder_id"], name: "index_requests_on_folder_id"
     t.index ["user_id"], name: "index_requests_on_user_id"
   end
 

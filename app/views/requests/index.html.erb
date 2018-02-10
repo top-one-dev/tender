@@ -1,6 +1,230 @@
-<p id="notice"><%= notice %></p>
+<% provide(:title, "Requests") %>
+<section style="min-height: 50vh;">
+  <div class="container">
+    <% if @requests.empty? %>
+      <br><br>
+      <h1 class="text-info text-center">Welcome to Tenderbooks!</h1>
+      <hr>
+      <div class="row">
+        <div class="col-md-3 col-md-offset-3">
+          <%= image_tag 'buyer/general.png', class: 'img-responsive', style: 'margin: 0 auto;' %>  
+        </div>
+        <div class="col-md-4 text-center">
+          <p>Want to see what a prepared <b>Request for Proposal</b> looks like in Tenderbooks? </p>
+          <br>
+          <a href="#" class="btn btn-info btn-lg">Click here to view a test RFP</a><br><br>
+          <%= link_to 'or start composing a real request right away', new_request_path %>
+        </div>        
+      </div>
+      <br><br>
+    <% else %>
+      <ul class="nav nav-tabs">
+        <li><a id="showFolders" href="javascript:;">Show folders</a></li>
+        <li class="active"><a data-toggle="pill" href="#requestsActiveRequests">Active requests</a></li>
+        <li class="pull-right">
+          <div class="btn-group">
+            <button type="button" class="btn btn-success">CREATE A NEW REQUEST</button>
+            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#">New Request for Quotations</a></li>
+              <li><a href="#">New Request for Information</a></li>
+              <li><a href="#">New Reverse Auction</a></li>
+            </ul>
+          </div>
+        </li>
+      </ul>
 
-<h1>Requests</h1>
+      <div id="sidebar-menu">
+        <h4 class="text-muted">
+          Filter requests
+          <span class="pull-right"><a id="hideFolders" class="btn btn-blue btn-xs" href="javascript:;">
+            <i class="glyphicon glyphicon-triangle-left"></i>
+          </a></span>
+        </h4>
+        <hr>
+        <h5 class="text-muted">
+          Folders
+          <span class="pull-right">
+            <button class="btn btn-default btn-xs">
+              <i class="glyphicon glyphicon-plus"></i>
+              Create folder
+            </button>
+            <button class="btn btn-default btn-xs">Edit folders</button>
+          </span>
+        </h5>
+        <hr>
+        <div class="input-group">
+          <input type="text" class="form-control" name="email" value="roger ndungu">
+          <span class="input-group-addon">8</span>          
+        </div>
+        <hr>
+        <h5>Status</h5>
+        <hr>
+        <div class="input-group">
+          <input type="text" class="form-control" name="email" value="Active requests">
+          <span class="input-group-addon">2</span>          
+        </div>
+        <hr>
+        <div class="input-group">
+          <input type="text" class="form-control" name="email" value="Under registeration">
+          <span class="input-group-addon">6</span>          
+        </div>
+        <hr>
+        <h5>Date</h5>
+        <hr>
+        <input type="text" class="form-control" value="Click here to choose a period" name="">
+      </div>
+
+      <div class="tab-content">
+        <div id="requestsActiveRequests" class="tab-pane fade in active">
+          <br>
+          <div class="panel-group" id="accordion">
+            <div class="panel panel-info">
+              <div class="panel-heading">
+                <h4 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
+                    Active requests
+                    <small class="pull-right">
+                      <i class="glyphicon glyphicon-triangle-bottom"></i>
+                    </small>
+                  </a>
+                </h4>
+              </div>
+              <div id="collapse1" class="panel-collapse collapse in">
+                <div class="panel-body table-responsive">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>
+                          <small class="text-muted">Name</small>
+                        </th>
+                        <th>
+                          <small class="text-muted">Buyer and folder</small>
+                        </th>
+                        <th></th>
+                        <th>
+                          <small class="text-muted">
+                            <i class="glyphicon glyphicon-send"></i> &nbsp;
+                            <i class="glyphicon glyphicon-envelope"></i> &nbsp;
+                            <i class="glyphicon glyphicon-edit"></i> &nbsp;
+                            <i class="glyphicon glyphicon-usd"></i> &nbsp;
+                          </small>
+                        </th>
+                        <th>
+                          <small class="text-muted">Time left</small>
+                        </th>
+                        <th>
+                          <small class="text-muted">Savings</small>
+                        </th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>#1 Chal Sacco Pre-qualification</td>
+                        <td>
+                          <i class="glyphicon glyphicon-folder-close"></i>&nbsp;&nbsp;rgder ndungu
+                        </td>
+                        <td>
+                          <big><i class="glyphicon glyphicon-envelope"></i></big>
+                          <small><span class="badge" style="vertical-align: top;">3</span></small>
+                        </td>
+                        <td>
+                          <span class="label label-success">3</span>
+                          <span class="label label-info">2</span>
+                          <span class="label label-warning">1</span>
+                          <span class="label label-danger">0</span>
+                        </td>
+                        <td>
+                          <i class="glyphicon glyphicon-time"></i>&nbsp;
+                          27d 8h 42m
+                        </td>
+                        <td></td>
+                        <td>
+                          <button class="btn btn-default btn-sm">View</button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="panel panel-info">
+              <div class="panel-heading">
+                <h4 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
+                    Under review
+                    <small class="pull-right">
+                      <i class="glyphicon glyphicon-triangle-bottom"></i>
+                    </small>
+                  </a>
+                </h4>
+              </div>
+              <div id="collapse2" class="panel-collapse collapse">
+                <div class="panel-body table-responsive">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>
+                          <small class="text-muted">Name</small>
+                        </th>
+                        <th>
+                          <small class="text-muted">Buyer and folder</small>
+                        </th>
+                        <th>
+                          <small class="text-muted">
+                            <i class="glyphicon glyphicon-send"></i> &nbsp;
+                            <i class="glyphicon glyphicon-envelope"></i> &nbsp;
+                            <i class="glyphicon glyphicon-edit"></i> &nbsp;
+                            <i class="glyphicon glyphicon-usd"></i> &nbsp;
+                          </small>
+                        </th>
+                        <th>
+                          <small class="text-muted">Time left</small>
+                        </th>
+                        <th></th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>#7 Bamburl Cement RFQ</td>
+                        <td>
+                          <i class="glyphicon glyphicon-folder-close"></i>&nbsp;&nbsp;rgder ndungu
+                        </td>
+                        <td>
+                          <span class="label label-info">2</span>
+                          <span class="label label-info">2</span>
+                          <span class="label label-warning">1</span>
+                          <span class="label label-warning">1</span>
+                        </td>
+                        <td>
+                          <i class="glyphicon glyphicon-time"></i>&nbsp;
+                          7d 0h 42m
+                        </td>
+                        <td></td>
+                        <td>
+                          <button class="btn btn-default btn-sm">View</button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>          
+        </div>
+      </div>
+    <% end %>
+  </div>
+</section>
+
+
+
+
+<!-- <h1>Requests</h1>
 
 <table>
   <thead>
@@ -33,3 +257,4 @@
 <br>
 
 <%= link_to 'New Request', new_request_path %>
+ -->

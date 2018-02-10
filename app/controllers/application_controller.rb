@@ -1,6 +1,15 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :configure_permitted_parameters, if: :devise_controller?
+
+  def current_company
+    if Company.exists? session[:current_company_id]
+      return Company.find session[:current_company_id]
+    else
+      session[:current_company_id] = nil
+      return nil
+    end
+  end
   
   protected
 

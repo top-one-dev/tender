@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :folders
   resources :notifications
   resources :questions
   resources :items

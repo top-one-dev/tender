@@ -2,7 +2,7 @@ class StaticController < ApplicationController
   
   def home
   	if user_signed_in?
-  		redirect_to dashboard_request_url
+  		redirect_to requests_path
   	end
   end
 
