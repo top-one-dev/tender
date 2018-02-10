@@ -35,14 +35,17 @@
           <li class="dropdown" >
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" >
               <span class="glyphicon glyphicon-user"></span> 
-              <% if Company.where(:user => current_user.id ).empty? %>
+              <% if current_company.nil? %>
                 <%= current_user.name %> <span class="caret">
               <% else %>
-                <%= Company.where(:user => current_user.id ).first.name %>
+                <%= current_company.name %>
               <% end %>
               </span>
             </a>
             <ul class="dropdown-menu" role="menu" aria-labelledby="menu2">
+              <% Company.where(:user => current_user.id ).each do |company| %>
+                <li><%= link_to company.name, edit_company_path( company ) %></li>
+              <% end %>
               <li role="presentation">
                 <%= link_to 'Settings', edit_user_registration_path %>
               </li>

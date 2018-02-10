@@ -32,7 +32,7 @@
             </div>
             <div class="col-md-6">
               <a class="btn btn-default" data-toggle="modal" data-target="#companyLogoModal" ><i class="glyphicon glyphicon-cloud-upload"></i> Logo</a>
-              <% if company.logo.nil? %>
+              <% if company.logo.blank? %>
                 <%= image_tag 'buyer/noimageCompany.gif', class: 'img-responsive company-logo' %>
               <% else %>
                 <%= image_tag company.logo, class: 'img-responsive company-logo' %>
@@ -184,11 +184,18 @@
         <h4 class="modal-title">Upload Logo</h4>
       </div>
       <div class="modal-body">
-        <div id="companylogo" data-url="<%= @s3_direct_post.url %>" data-fields="<%= @s3_direct_post.fields.to_json %>" class="well dropzone bg-info">
-          <div class="dz-message">
-            <span>Drag and drop file here to upload</span>
+        <% unless current_page?(new_company_path) %>
+          <div id="companylogo" data-url="<%= @s3_direct_post.url %>" data-fields="<%= @s3_direct_post.fields.to_json %>" class="well dropzone bg-info">
+            <div class="dz-message">
+              <span>Drag and drop file here to upload</span>
+            </div>
           </div>
-        </div>
+        <% else %>
+          <div class="alert alert-danger">
+            <strong>Sorry!</strong>
+            You can upload company logo after creating company.
+          </div>
+        <% end %>
       </div>
       <!-- <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

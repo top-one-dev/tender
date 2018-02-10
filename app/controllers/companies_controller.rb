@@ -1,6 +1,6 @@
 class CompaniesController < ApplicationController
   before_action :set_company, only: [:show, :edit, :update, :destroy]
-  before_action :set_s3_direct_post, only: [:new, :edit, :create, :update]
+  before_action :set_s3_direct_post, only: [:edit, :update]
   before_action :authenticate_user!
 
   # GET /companies
@@ -68,6 +68,7 @@ class CompaniesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_company
       @company = Company.find(params[:id])
+      session[:current_company_id] = @company.id
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

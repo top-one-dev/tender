@@ -1,6 +1,7 @@
 class DashboardController < ApplicationController
   before_action :authenticate_user!
-  
+  before_action :set_company
+
   def trequest
   end
 
@@ -17,6 +18,11 @@ class DashboardController < ApplicationController
   end
 
   def report
-  end  
+  end
+
+  private
+  def set_company
+    session[:current_company_id] = Company.where(:user => current_user.id).first.id if session[:current_company_id].nil?
+  end
 
 end
