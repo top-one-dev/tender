@@ -4,8 +4,8 @@
 $(document).on 'turbolinks:load', ->
 	if $('#request_end_time').length
 		$('#request_end_time').val ''
-		
-	$('#request-end-time').datetimepicker()
+
+	$('#request-end-time').datetimepicker format: 'YYYY-MM-DD HH:mm'
 
 	$('#request-end-time').on "dp.change", (e)->
 		val = $('#request_end_time').val()
