@@ -2,7 +2,15 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 $(document).on 'turbolinks:load', ->
+	if $('#request_end_time').length
+		$('#request_end_time').val ''
+		
 	$('#request-end-time').datetimepicker()
+
+	$('#request-end-time').on "dp.change", (e)->
+		val = $('#request_end_time').val()
+		$('#request_end_time').attr( 'value', val )
+	
 	$('input[type="checkbox"].toggle').bootstrapToggle()
 
 	if $('#request_permission').length
