@@ -1,29 +1,257 @@
-<p id="notice"><%= notice %></p>
+<% provide(:title, @request.name) %>
+<section>
+  <div class="container">
+    <h3><%= "##{@request.id} #{@request.name}" %></h3>
+    <hr>
+    <ul class="nav nav-tabs">
+      <li class="active"><a data-toggle="tab" href="#request-details">Request details</a></li>
+      <li><a data-toggle="tab" href="#suppliers">Suppliers</a></li>
+      <li><a data-toggle="tab" href="#bids">Bids</a></li>
+    </ul>
 
-<p>
-  <strong>Name:</strong>
-  <%= @request.name %>
-</p>
+    <div class="tab-content">
+      <div id="request-details" class="tab-pane fade in active">
+        <div class="well">
+          <div class="row">
+            <div class="col-xs-3">
+              <b class="text-muted">Buyer</b>
+            </div>
+            <div class="col-xs-9">
+              <%= @request.user.name %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-3">
+              <b class="text-muted">Published</b>
+            </div>
+            <div class="col-xs-9">
+              <%= @request.created_at %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-3">
+              <b class="text-muted">Due date</b>
+            </div>
+            <div class="col-xs-9">
+              <%= @request.end_time %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-3">
+              <b class="text-muted">Description</b>
+            </div>
+            <div class="col-xs-9">
+              <p><%= @request.description.html_safe %></p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-3">
+              <b class="text-muted">Expected budget</b>
+            </div>
+            <div class="col-xs-9">
+              <b><%= @request.expected_budget %> <%= @request.preferred_currency %></b>
+            </div>
+          </div>
+        </div>
 
-<p>
-  <strong>End time:</strong>
-  <%= @request.end_time %>
-</p>
+        <div class="panel-group" id="accordion">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
+                List of items</a>
+              </h4>
+            </div>
+            <div id="collapse1" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Name</th>
+                      <th>Quantity</th>
+                      <th>Unit</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% @request.items.each_with_index do |item,index| %>
+                    <tr>
+                      <td><%= index %></td>
+                      <td><%= item.name %></td>
+                      <td><%= item.quantity %></td>
+                      <td><%= item.unit %></td>
+                    </tr>
+                    <% end %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
+                Questionaire</a>
+              </h4>
+            </div>
+            <div id="collapse2" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <ul style="list-style: numeric;">
+                  <% @request.questions.each_with_index do |question,index| %>
+                  <li><%= "<b>#{question.title}</b><br><p class='text-muted'>#{question.description}</p>".html_safe %></li>
+                  <% end %>
+                </ul>                
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
+                Added Document</a>
+              </h4>
+            </div>
+            <div id="collapse3" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <% unless @request.attach.empty? %>
+                <%= link_to "<i class='glyphicon glyphicon-file'></i> #{url_decode(@request.attach).split('/').last}".html_safe, @request.attach  %>
+                <% else %>
+                No added document
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
 
-<p>
-  <strong>Description:</strong>
-  <%= @request.description %>
-</p>
+      </div>
+      <div id="suppliers" class="tab-pane fade">
+        <h3>Request is published as: <%= @request.permission %> request</h3>
+        <hr>
+        <label class="text-info">Bids Made</label>
+        <table class="table">
+          <tbody>
+            <tr>
+              <td><b>CP Group</b> : Dave ( coolplum1213@gmail.com )</td>
+              <td>2</td>
+              <td>Feb 06, 2018 15:25</td>
+              <td>
+                <div class="dropdown">
+                  <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Actions
+                  <span class="caret"></span></button>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">View bid</a></li>
+                    <li><a href="#">Enter bid myself</a></li>
+                    <li><a href="#">Remove</a></li>
+                  </ul>
+                </div>                
+              </td>
+              <td>
+                <button class="btn btn-default"><i class="glyphicon glyphicon-envelope text-muted"></i></button>
+              </td>
+              </tr>
+              <tr>
+              <td><b>CP Group</b> : Dave ( coolplum1213@gmail.com )</td>
+              <td>2</td>
+              <td>Feb 06, 2018 15:25</td>
+              <td>
+                <div class="dropdown">
+                  <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Actions
+                  <span class="caret"></span></button>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">View bid</a></li>
+                    <li><a href="#">Enter bid myself</a></li>
+                    <li><a href="#">Remove</a></li>
+                  </ul>
+                </div>                
+              </td>
+              <td>
+                <button class="btn btn-default"><i class="glyphicon glyphicon-envelope text-muted"></i></button>
+              </td>
+              </tr>
+            </tbody>
+          </table>
+          <label class="text-info">Wants To Bid</label>
+          <table class="table">
+          <tbody>
+            <tr>
+              <td><b>CP Group</b> : Dave ( coolplum1213@gmail.com )</td>
+              <td>2</td>
+              <td>Feb 06, 2018 15:25</td>
+              <td>
+                <div class="dropdown">
+                  <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Actions
+                  <span class="caret"></span></button>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">View bid</a></li>
+                    <li><a href="#">Enter bid myself</a></li>
+                    <li><a href="#">Remove</a></li>
+                  </ul>
+                </div>                
+              </td>
+              <td>
+                <button class="btn btn-default"><i class="glyphicon glyphicon-envelope text-muted"></i></button>
+              </td>
+              </tr>
+              <tr>
+              <td><b>CP Group</b> : Dave ( coolplum1213@gmail.com )</td>
+              <td>2</td>
+              <td>Feb 06, 2018 15:25</td>
+              <td>
+                <div class="dropdown">
+                  <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Actions
+                  <span class="caret"></span></button>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">View bid</a></li>
+                    <li><a href="#">Enter bid myself</a></li>
+                    <li><a href="#">Remove</a></li>
+                  </ul>
+                </div>                
+              </td>
+              <td>
+                <button class="btn btn-default"><i class="glyphicon glyphicon-envelope text-muted"></i></button>
+              </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="bids" class="tab-pane fade">
+          <br>
+          <label class="text-info">Bids</label>
+          <table class="table">
+            <thead>
+              <tr><th>Company</th><th>Bids</th><th>Total</th><th>Difference</th><th>Bid time</th><th></th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Suverysoft</td>
+                <td>1</td>
+                <td>1200.00 KES</td>
+                <td>+200.00 KES</td>
+                <td>Jan 19 20:27</td>
+                <td>
+                  <button class="btn btn-default">View bid</button>
+                  <button class="btn btn-default"><i class="glyphicon glyphicon-envelope text-muted"></i></button>
+                </td>
+              </tr>
+              <tr>
+                <td>Suverysoft</td>
+                <td>1</td>
+                <td>1200.00 KES</td>
+                <td>+200.00 KES</td>
+                <td>Jan 19 20:27</td>
+                <td>
+                  <button class="btn btn-default">View bid</button>
+                  <button class="btn btn-default"><i class="glyphicon glyphicon-envelope text-muted"></i></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
 
-<p>
-  <strong>Attach:</strong>
-  <%= @request.attach %>
-</p>
-
-<p>
-  <strong>User:</strong>
-  <%= @request.user %>
-</p>
-
+    </div>
+  </section>
+<!-- 
 <%= link_to 'Edit', edit_request_path(@request) %> |
 <%= link_to 'Back', requests_path %>
+ -->

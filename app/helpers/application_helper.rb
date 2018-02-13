@@ -1853,6 +1853,12 @@ module ApplicationHelper
     ]    
   end
 
+  def url_decode(s)
+     s.gsub(/((?:%[0-9a-fA-F]{2})+)/n) do
+       [$1.delete('%')].pack('H*')
+     end
+  end
+
   def error_message obj
     return '' if obj.errors.empty?
 
