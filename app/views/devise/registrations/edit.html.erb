@@ -57,8 +57,14 @@
                     </div>
                     <div class="col-md-6">
                       <div class="form-group">
+                        <label class="control-label">Country </label>
+                        <%= f.select(:country, country_list.collect {|s| [s[:name].to_s, s[:name].to_s]}, {:include_blank => "Select Country"}, {:class => "form-control", requried: true, placeholder: 'Select Country' } ) %>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
                         <label class="control-label">Timezone </label>
-                        <%= f.select(:country, timezone_list.collect {|s| [s[:text].to_s, s[:text].to_s]}, {:include_blank => "Select Timezone"}, {:class => "form-control", requried: true, placeholder: 'Select Timezone' } ) %>
+                        <%= f.select(:timezone, timezone_list.collect {|s| [s[:text].to_s, s[:text].to_s]}, {:include_blank => "Select Timezone"}, {:class => "form-control", requried: true, placeholder: 'Select Timezone' } ) %>
                       </div>
                     </div>
                   </div>

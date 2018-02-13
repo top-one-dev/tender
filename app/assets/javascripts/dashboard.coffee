@@ -16,8 +16,8 @@ $(document).on 'turbolinks:load', ->
   if $('.input-date').length
     $('.input-date').datepicker {}
 
-  # if $('[data-toggle="tooltip"]').length
-  #   $('[data-toggle="tooltip"]').tooltip()
+  if $('[data-toggle="tooltip"]').length
+    $('[data-toggle="tooltip"]').tooltip()
 
   if $('.multi-select').length
     $('.multi-select').multiselect()

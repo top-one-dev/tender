@@ -5,3 +5,5 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+folder = Folder.create([{ name: 'Active Request', position: 1 }, { name: 'Ended Request', position: 2 }])

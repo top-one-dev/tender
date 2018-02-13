@@ -70,8 +70,35 @@
             }
         }
     }
+
 .company-logo{
     margin: 10px auto;
+}
+
+.request-perm:first-letter{
+    text-transform: uppercase;
+}
+
+#add-participant{
+    cursor: pointer;
+}
+.table i.glyphicon-trash{
+    cursor: pointer;
+    &:hover{
+        color: #a94442;
+    }
+}
+#question-options-div{
+    display: none;
+    i.glyphicon-remove{
+        cursor: pointer;
+        &:hover{
+            color: #a94442;
+        }
+    }
+    .input-group{
+        margin: 4px 0;
+    }
 }
 
 

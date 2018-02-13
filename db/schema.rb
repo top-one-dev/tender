@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180210095733) do
+ActiveRecord::Schema.define(version: 20180212135936) do
 
   create_table "companies", force: :cascade do |t|
     t.string   "name"
@@ -89,7 +89,7 @@ ActiveRecord::Schema.define(version: 20180210095733) do
   create_table "questions", force: :cascade do |t|
     t.string   "title"
     t.text     "description"
-    t.string   "type"
+    t.string   "question_type"
     t.boolean  "enable_attatch"
     t.boolean  "mandatory"
     t.string   "options"
@@ -104,15 +104,28 @@ ActiveRecord::Schema.define(version: 20180210095733) do
     t.datetime "end_time"
     t.text     "description"
     t.string   "attach"
-    t.string   "type"
+    t.string   "permission"
+    t.boolean  "total_price_must"
+    t.boolean  "allow_alternative_bids"
+    t.boolean  "sealed_bids"
+    t.string   "preferred_currency"
+    t.float    "expected_budget"
+    t.string   "request_type"
     t.integer  "user_id"
     t.integer  "company_id"
     t.integer  "folder_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
     t.index ["company_id"], name: "index_requests_on_company_id"
     t.index ["folder_id"], name: "index_requests_on_folder_id"
     t.index ["user_id"], name: "index_requests_on_user_id"
+  end
+
+  create_table "requests_suppliers", id: false, force: :cascade do |t|
+    t.integer "request_id",  null: false
+    t.integer "supplier_id", null: false
+    t.index ["request_id", "supplier_id"], name: "index_requests_suppliers_on_request_id_and_supplier_id"
+    t.index ["supplier_id", "request_id"], name: "index_requests_suppliers_on_supplier_id_and_request_id"
   end
 
   create_table "suppliers", force: :cascade do |t|

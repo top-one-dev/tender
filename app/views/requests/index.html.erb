@@ -13,7 +13,7 @@
           <p>Want to see what a prepared <b>Request for Proposal</b> looks like in Tenderbooks? </p>
           <br>
           <a href="#" class="btn btn-info btn-lg">Click here to view a test RFP</a><br><br>
-          <%= link_to 'or start composing a real request right away', new_request_path %>
+          <%= link_to 'or start composing a real request right away', new_request_path('RFQ') %>
         </div>        
       </div>
       <br><br>
@@ -28,8 +28,12 @@
               <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
-              <li><a href="#">New Request for Quotations</a></li>
-              <li><a href="#">New Request for Information</a></li>
+              <li>
+                <%= link_to 'New Request for Quotations', new_request_path('RFQ') %>
+              </li>
+              <li>
+                <%= link_to 'New Request for Information', new_request_path('RFI') %>                  
+              </li>
               <li><a href="#">New Reverse Auction</a></li>
             </ul>
           </div>
@@ -56,25 +60,25 @@
         </h5>
         <hr>
         <div class="input-group">
-          <input type="text" class="form-control" name="email" value="roger ndungu">
-          <span class="input-group-addon">8</span>          
+          <input type="text" class="form-control" name="email" value="<%= current_user.name %>" disabled>
+          <span class="input-group-addon"><%= @requests.count %></span>          
         </div>
         <hr>
         <h5>Status</h5>
         <hr>
         <div class="input-group">
-          <input type="text" class="form-control" name="email" value="Active requests">
-          <span class="input-group-addon">2</span>          
+          <input type="text" class="form-control" name="email" value="Active requests" disabled >
+          <span class="input-group-addon"><%= @active_requests.count %></span>          
         </div>
         <hr>
         <div class="input-group">
-          <input type="text" class="form-control" name="email" value="Under registeration">
-          <span class="input-group-addon">6</span>          
+          <input type="text" class="form-control" name="email" value="Ended requestes" disabled>
+          <span class="input-group-addon"><%= @ended_requests.count %></span>          
         </div>
         <hr>
         <h5>Date</h5>
         <hr>
-        <input type="text" class="form-control" value="Click here to choose a period" name="">
+        <input type="text" class="form-control date" value="Click here to choose a period" name="">
       </div>
 
       <div class="tab-content">
@@ -122,10 +126,11 @@
                       </tr>
                     </thead>
                     <tbody>
+                      <% @active_requests.each do |request| %>
                       <tr>
-                        <td>#1 Chal Sacco Pre-qualification</td>
+                        <td><%= "##{request.id} #{request.name}" %></td>
                         <td>
-                          <i class="glyphicon glyphicon-folder-close"></i>&nbsp;&nbsp;rgder ndungu
+                          <i class="glyphicon glyphicon-folder-close"></i>&nbsp;&nbsp;<%= request.user.name %>
                         </td>
                         <td>
                           <big><i class="glyphicon glyphicon-envelope"></i></big>
@@ -139,13 +144,14 @@
                         </td>
                         <td>
                           <i class="glyphicon glyphicon-time"></i>&nbsp;
-                          27d 8h 42m
+                          <%= distance_of_time_in_words(Time.now, request.end_time) %>
                         </td>
                         <td></td>
                         <td>
                           <button class="btn btn-default btn-sm">View</button>
                         </td>
                       </tr>
+                      <% end %>
                     </tbody>
                   </table>
                 </div>
@@ -155,7 +161,7 @@
               <div class="panel-heading">
                 <h4 class="panel-title">
                   <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
-                    Under review
+                    Ended requests
                     <small class="pull-right">
                       <i class="glyphicon glyphicon-triangle-bottom"></i>
                     </small>
@@ -189,26 +195,32 @@
                       </tr>
                     </thead>
                     <tbody>
+                      <% @ended_requests.each do |request| %>
                       <tr>
-                        <td>#7 Bamburl Cement RFQ</td>
+                        <td><%= "##{request.id} #{request.name}" %></td>
                         <td>
-                          <i class="glyphicon glyphicon-folder-close"></i>&nbsp;&nbsp;rgder ndungu
+                          <i class="glyphicon glyphicon-folder-close"></i>&nbsp;&nbsp;<%= request.user.name %>
                         </td>
                         <td>
-                          <span class="label label-info">2</span>
+                          <big><i class="glyphicon glyphicon-envelope"></i></big>
+                          <small><span class="badge" style="vertical-align: top;">3</span></small>
+                        </td>
+                        <td>
+                          <span class="label label-success">3</span>
                           <span class="label label-info">2</span>
                           <span class="label label-warning">1</span>
-                          <span class="label label-warning">1</span>
+                          <span class="label label-danger">0</span>
                         </td>
                         <td>
                           <i class="glyphicon glyphicon-time"></i>&nbsp;
-                          7d 0h 42m
+                          <%= distance_of_time_in_words(Time.now, request.end_time) %>
                         </td>
                         <td></td>
                         <td>
                           <button class="btn btn-default btn-sm">View</button>
                         </td>
                       </tr>
+                      <% end %>
                     </tbody>
                   </table>
                 </div>

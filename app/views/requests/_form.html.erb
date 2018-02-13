@@ -1,42 +1,325 @@
+<h2 class="text-muted">Create a request</h2>
+<hr>
 <%= form_for(request) do |f| %>
-  <% if request.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(request.errors.count, "error") %> prohibited this request from being saved:</h2>
+<% if request.errors.any? %>
+<%= error_message request %>
+<% end %>
+<%= f.hidden_field :user_id, value: current_user.id %>
+<%= f.hidden_field :company_id, value: current_company.id %>
+<%= f.hidden_field :folder_id, value: 1 %>
+<%= f.hidden_field :request_type, value: @type %>
 
-      <ul>
-      <% request.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+<div class="panel-group" id="accordion">
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
+        ENTER GENERAL INFORMATION</a>
+      </h4>
     </div>
-  <% end %>
+    <div id="collapse1" class="panel-collapse collapse in">
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-7">
+            <div class="form-group required">
+              <%= f.label :name, class: 'control-label' %>
+              <%= f.text_field :name, class: 'form-control', required: true %>
+              <small class="text-muted">
+                Example: Purchases of office supplies; Construction of sawmill; Railroad engineering works;
+              </small>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <div class="form-group required">
+              <%= f.label :end_time, class: 'control-label' %>
+              <div class='input-group date' id='request-end-time'>
+                <%= f.text_field :end_time, class: 'form-control', required: true %>
+                <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+              </div>              
+              <small class="text-muted">
+                Deadline for suppliers to submit their bids.<br>
+                Timezone: <%= current_user.timezone %>
+              </small>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group required">
+              <%= f.label :description, class: 'control-label' %>
+              <%= f.text_area :description, class: 'form-control', required: true %>              
+            </div>
+          </div>
+        </div>
 
-  <div class="field">
-    <%= f.label :name %>
-    <%= f.text_field :name %>
+        <hr>
+        <div class="row">
+          <div class="col-md-5">
+            <br>
+            <a class="btn btn-default btn-block" data-toggle="modal" data-target="#itemModal">
+              <b class="text-muted">CLICK HERE TO COMPOSE <br>A LIST OF ITEMS</b>
+            </a>
+          </div>
+          <div class="col-md-2 text-center">
+            <br><br><b>OR</b>
+          </div>
+          <div class="col-md-5 text-center">
+            <div class="btn-group">
+              <a type="button" class="btn btn-success">
+                <b><i class="glyphicon glyphicon glyphicon-download-alt"></i></b>
+              </a>
+              <a type="button" class="btn btn-default">
+                <b class="text-muted">Download template and use Excel</b>
+              </a>
+            </div>
+            <hr>
+            <div class="well text-center">
+              <span class="text-muted">Drop your list items here</span>
+            </div>
+          </div>
+        </div>
+        <%= hidden_field_tag :request_items %>
+        <table class="table" id="request-items-table"></table>
+        <hr>
+        <%= f.hidden_field :attach %>
+        <div class="well dropzone" id="document" data-url="<%= @s3_direct_post.url %>" data-fields="<%= @s3_direct_post.fields.to_json %>">
+          <div class="dz-message">
+            <span>Drag documents here</span>
+          </div>          
+        </div>
+        <hr>
+        <label>Participants</label>
+        <div class="row">
+          <div class="col-md-5">
+            <div class="input-group form-group">
+              <input type="text" class="form-control" name="email" id="participant-email" placeholder="Email of the participant" >
+              <span class="input-group-addon" id="add-participant"><b>ADD</b></span>          
+            </div>
+          </div>
+          <div class="col-md-2 text-center">
+            <b style="line-height: 2.2;">OR</b>
+          </div>
+          <div class="col-md-5">
+            <div class="input-group form-group">
+              <span class="input-group-addon">
+                <b class="text-muted"><i class="glyphicon glyphicon-user"></i></b>
+              </span>
+              <%= select_tag 'suppliers', options_from_collection_for_select( Supplier.all, "id", "name" ), include_blank: "Add from suppliers", class: 'form-control' %>
+            </div>
+          </div>
+        </div>
+        <br>
+        <table id="participant-table" class="table"><tbody></tbody></table>
+        <hr> 
+
+      </div>
+    </div>
   </div>
 
-  <div class="field">
-    <%= f.label :end_time %>
-    <%= f.datetime_select :end_time %>
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
+        QUESTIONARIES AND ADDITIONAL OPTION</a>
+      </h4>
+    </div>
+    <div id="collapse2" class="panel-collapse collapse in">
+      <div class="panel-body">
+        <hr>
+        <div class="row">
+          <div class="col-md-5">
+            <br>
+            <a class="btn btn-default btn-block" data-toggle="modal" data-target="#questionModal">
+              <b class="text-muted">CLICK HERE TO COMPOSE <br>A QUESTIONARIES</b>
+            </a>
+          </div>
+          <div class="col-md-2 text-center">
+            <br><br><b>OR</b>
+          </div>
+          <div class="col-md-5 text-center">
+            <div class="btn-group">
+              <a type="button" class="btn btn-success">
+                <b><i class="glyphicon glyphicon glyphicon-download-alt"></i></b>
+              </a>
+              <a type="button" class="btn btn-default">
+                <b class="text-muted">Download template and use Excel</b>
+              </a>
+            </div>
+            <hr>
+            <div class="well text-center">
+              <span class="text-muted">Drop your questionaries here</span>
+            </div>
+          </div>
+        </div>
+        <%= hidden_field_tag :request_questions %>
+        <table class="table" id="request-questions-table"></table>
+        <hr>
+        <div class="row">
+          <div class="col-sm-4">
+            <a class="btn btn-default btn-block request-perm" id="public-request">public request</a>
+          </div>
+          <div class="col-sm-4">
+            <a class="btn btn-default btn-block request-perm" id="restricted-request">pestricted public request</a>
+          </div>
+          <div class="col-sm-4">
+            <a class="btn btn-success btn-block request-perm" id="private-request">private request <i class="glyphicon glyphicon-ok"></i></a>
+          </div>
+          <%= f.hidden_field :permission %>
+        </div>
+        <hr>
+        <%= f.check_box :total_price_must, 'data-toggle': 'toggle', 'data-size': 'small', 'data-on': 'Yes', 'data-off': 'No', 'data-onstyle': 'info' %>
+        &nbsp;&nbsp;&nbsp;&nbsp;<label class="text-muted"> Suppliers must enter a total price when making a bid</label>
+        <hr>
+        <%= f.check_box :allow_alternative_bids, 'data-toggle': 'toggle', 'data-size': 'small', 'data-on': 'Yes', 'data-off': 'No', 'data-onstyle': 'info' %>
+        &nbsp;&nbsp;&nbsp;&nbsp;<label class="text-muted"> Allow alternative bids</label>
+        <hr>
+        <%= f.check_box :sealed_bids, 'data-toggle': 'toggle', 'data-size': 'small', 'data-on': 'Yes', 'data-off': 'No', 'data-onstyle': 'info' %>
+        &nbsp;&nbsp;&nbsp;&nbsp;<label class="text-muted"> Sealed bids</label>
+        <hr>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label class="control-label">Expected budget</label>
+              <%= f.text_field :expected_budget, class: 'form-control' %>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group required">
+              <label class="control-label">Preferred currency</label>
+              <%= f.select(:preferred_currency, currency_list.first.collect {|key, value| [value, value]}, {:include_blank => "Select Currency"}, {:class => "form-control", placeholder: 'Select Currency' } ) %>
+            </div>    
+          </div>
+        </div>
+        <hr>
+      </div>
+    </div>
   </div>
 
-  <div class="field">
-    <%= f.label :description %>
-    <%= f.text_area :description %>
-  </div>
+</div>
 
-  <div class="field">
-    <%= f.label :attach %>
-    <%= f.text_field :attach %>
-  </div>
+<hr>
 
-  <div class="field">
-    <%= f.label :user_id %>
-    <%= f.text_field :user_id %>
-  </div>
+<div class="text-right">
+  <%= link_to '<i class="glyphicon glyphicon-eye-open"></i> PREVIEW'.html_safe, '#', class: 'btn btn-default' %>
+  <%= link_to '<i class="glyphicon glyphicon-floppy-disk"></i> SAVE'.html_safe, '#', class: 'btn btn-default' %>
+  <%= f.submit 'SUBMIT', class: 'btn btn-info' %>
+</div>
 
-  <div class="actions">
-    <%= f.submit %>
+<hr>
+
+<!-- itemModal -->
+<div id="itemModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Create list of items</h4>
+      </div>
+      <div class="modal-body">
+        <label>Create new item</label>
+        <div class="row">
+          <div class="col-sm-6">
+            <input type="text" placeholder="Enter name of item" class="form-control" id="item-name">
+          </div>
+          <div class="col-sm-3">
+            <input type="text" placeholder="Unit" class="form-control" id="item-unit">
+          </div>
+          <div class="col-sm-3">
+            <input type="text" placeholder="Quantity" class="form-control" id="item-quantity">
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-sm-12">
+            <textarea placeholder="Enter description" class="form-control" id="item-description"></textarea>
+          </div>
+        </div>
+        <br>
+        <div class="text-right">
+          <a href="#" class="btn btn-info" id="item-add">ADD</a>
+        </div>
+        <hr>
+        <table class="table" id="items-table">
+          <thead>
+            <tr><th>Name</th><th>Unit</th><th>Quantity</th><th>Desciption</th><th></th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-info" data-dismiss="modal" id="items-add">Ok</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal" id="items-cancel">Cancel</button>
+      </div>
+    </div>
   </div>
+</div>
+
+<!-- questionModal -->
+<div id="questionModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Create questionnarie</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Question title</label>
+          <input type="text" class="form-control" id="question-title">
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <textarea class="form-control" id="question-description"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Question type</label>
+          <select class="form-control" id="question-type">
+            <option value="text">Text</option>
+            <option value="boolean">Yes/No</option>
+            <option value="list">Choose from a list</option>
+            <option value="check">Checkboxes</option>
+          </select>
+        </div>
+        <div class="row" id="question-options-div">
+          <div class="col-md-6">
+            <label>Options</label>
+            <div class="input-group">
+              <input type="text" class="form-control question-option" placeholder="Enter option..." name="">
+              <span class="input-group-addon"><i class="glyphicon glyphicon-remove"></i></span>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-6">
+            <label>Supplier can attach document  </label>
+            <input type="checkbox" data-toggle='toggle' data-size='small' data-on='Yes' data-off='No' data-onstyle='info' id="question-attach">       
+          </div>
+          <div class="col-md-6">
+            <label>Mandatory question  </label>
+            <input type="checkbox" data-toggle='toggle' data-size='small' data-on='Yes' data-off='No' data-onstyle='info' id="question-mandatory">
+          </div>
+        </div>
+        <hr>
+        <div class="text-right">
+          <a href="#" class="btn btn-info" id="question-save" >Save</a>
+        </div>
+        <hr>
+        <table class="table" id="questions-table">
+          <thead>
+            <tr>
+              <th>Title</th><th>Description</th><th>Type</th><th>Options</th><th>Enable attatch</th><th>mandatory</th><th></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-info" data-dismiss="modal" id="questions-save">Save</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal" id="questions-cancel">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <% end %>

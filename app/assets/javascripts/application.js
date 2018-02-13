@@ -11,9 +11,13 @@
 // about supported directives.
 //
 //= require jquery
+//= require bootstrap
+//= require moment
+//= require bootstrap-datetimepicker
+//= require bootstrap-toggle
 //= require jquery_ujs
+//= require dropzone
 //= require turbolinks
 //= require_tree .
-//= require dropzone
 
 Dropzone.autoDiscover = false;

@@ -84,20 +84,20 @@
     <% if notification %>
       <div class="panel panel-success">
         <div class="panel-heading">
-          <% if current_user.notifications.empty? %>
+          <% if current_user.notification.nil? %>
           <%= link_to '<i class="glyphicon glyphicon-triangle-left"></i> Notifications'.html_safe, new_notification_path %>
           <% else %>
-          <%= link_to '<i class="glyphicon glyphicon-triangle-left"></i> Notifications'.html_safe, edit_notification_path(current_user.notifications.first) %>
+          <%= link_to '<i class="glyphicon glyphicon-triangle-left"></i> Notifications'.html_safe, edit_notification_path(current_user.notification) %>
           <% end %>
         </div>
       </div>
     <% else %>
       <div class="panel panel-info">
         <div class="panel-heading">
-          <% if current_user.notifications.empty? %>
+          <% if current_user.notification.nil? %>
           <%= link_to '<i class="glyphicon glyphicon-triangle-right"></i> Notifications'.html_safe, new_notification_path %>
           <% else %>
-          <%= link_to '<i class="glyphicon glyphicon-triangle-right"></i> Notifications'.html_safe, edit_notification_path(current_user.notifications.first) %>
+          <%= link_to '<i class="glyphicon glyphicon-triangle-right"></i> Notifications'.html_safe, edit_notification_path(current_user.notification) %>
           <% end %>      
         </div>
       </div>

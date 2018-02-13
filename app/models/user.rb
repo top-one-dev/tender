@@ -5,7 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable,
          :confirmable, :lockable
 
-  has_many :notifications
+  has_one :notification, dependent: :destroy
   has_many :requests
 
   def send_devise_notification(notification, *args)

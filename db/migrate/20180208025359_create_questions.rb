@@ -3,7 +3,7 @@ class CreateQuestions < ActiveRecord::Migration[5.0]
     create_table :questions do |t|
       t.string :title
       t.text :description
-      t.string :type
+      t.string :question_type
       t.boolean :enable_attatch
       t.boolean :mandatory
       t.string :options

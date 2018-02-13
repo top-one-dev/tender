@@ -1,5 +1,17 @@
-<h1>New Request</h1>
-
-<%= render 'form', request: @request, type: @type %>
-
-<%= link_to 'Back', requests_path %>
+<% provide(:title, "Create Request") %>
+<section>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-9">
+				<%= render 'form', request: @request, type: @type %>
+			</div>
+			<div class="col-md-3">
+				<hr>
+				<%= link_to '<b class="text-info">BACK</b>'.html_safe, requests_path, class: 'btn btn-block btn-default' %>
+				<hr>
+				<%= link_to '<b class="text-info">COPY</b>'.html_safe, '#', class: 'btn btn-block btn-default' %>
+				<hr>
+			</div>
+		</div>
+	</div>
+</section>
