@@ -53,6 +53,7 @@
         </div>
 
         <hr>
+        <% if @type == 'RFQ' %>
         <div class="row">
           <div class="col-md-5">
             <br>
@@ -78,8 +79,18 @@
             </div>
           </div>
         </div>
+        <% else %>
+        <div>
+          <br>
+          <a class="btn btn-default btn-block" data-toggle="modal" data-target="#itemModal">
+            <b class="text-muted">CLICK HERE TO COMPOSE <br>A LIST OF ITEMS</b>
+          </a>
+          <br>
+        </div>
+        <% end %>
         <%= hidden_field_tag :request_items %>
         <table class="table" id="request-items-table"></table>
+
         <hr>
         <%= f.hidden_field :attach %>
         <div class="well dropzone" id="document" data-url="<%= @s3_direct_post.url %>" data-fields="<%= @s3_direct_post.fields.to_json %>">
@@ -116,11 +127,13 @@
     </div>
   </div>
 
+  <% if @type == 'RFQ' %>
+  
   <div class="panel panel-info">
     <div class="panel-heading">
       <h4 class="panel-title">
         <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
-        QUESTIONARIES AND ADDITIONAL OPTION</a>
+        QUESTIONARIES AND ADDITIONAL OPTIONS</a>
       </h4>
     </div>
     <div id="collapse2" class="panel-collapse collapse in">
@@ -194,6 +207,36 @@
       </div>
     </div>
   </div>
+  
+  <% else %>
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
+        ADDITIONAL OPTIONS</a>
+      </h4>
+    </div>
+    <div id="collapse2" class="panel-collapse collapse in">
+      <div class="panel-body">
+        <hr>
+        <div class="row">
+          <div class="col-sm-4">
+            <a class="btn btn-default btn-block request-perm" id="public-request">public request</a>
+          </div>
+          <div class="col-sm-4">
+            <a class="btn btn-default btn-block request-perm" id="restricted-request">pestricted public request</a>
+          </div>
+          <div class="col-sm-4">
+            <a class="btn btn-success btn-block request-perm" id="private-request">private request <i class="glyphicon glyphicon-ok"></i></a>
+          </div>
+          <%= f.hidden_field :permission %>
+        </div>
+        <hr>
+      </div>
+    </div>
+  </div>
+  <%= hidden_field_tag :request_questions %>
+  <% end %>
 
 </div>
 
