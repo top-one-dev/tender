@@ -180,6 +180,8 @@
                           <small class="text-muted">Buyer and folder</small>
                         </th>
                         <th>
+                        </th>
+                        <th>
                           <small class="text-muted">
                             <i class="glyphicon glyphicon-send"></i> &nbsp;
                             <i class="glyphicon glyphicon-envelope"></i> &nbsp;
@@ -188,7 +190,7 @@
                           </small>
                         </th>
                         <th>
-                          <small class="text-muted">Time left</small>
+                          <small class="text-muted">Date ended</small>
                         </th>
                         <th></th>
                         <th></th>
@@ -213,7 +215,7 @@
                         </td>
                         <td>
                           <i class="glyphicon glyphicon-time"></i>&nbsp;
-                          <%= distance_of_time_in_words(Time.now, request.end_time) %>
+                          <%= request.end_time.strftime("%b %d, %Y %H:%M") %>
                         </td>
                         <td></td>
                         <td>

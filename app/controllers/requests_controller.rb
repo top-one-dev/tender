@@ -63,6 +63,8 @@ class RequestsController < ApplicationController
             @request.questions.create!(question)
           end
         end
+
+        
         
         format.html { redirect_to requests_path, notice: 'Request was successfully created.' }
         format.json { render :show, status: :created, location: requests_path }
