@@ -63,7 +63,6 @@ class RequestsController < ApplicationController
             @request.questions.create!(question)
           end
         end
-
         
         
         format.html { redirect_to requests_path, notice: 'Request was successfully created.' }
@@ -146,7 +145,7 @@ class RequestsController < ApplicationController
     end
 
     def set_s3_direct_post
-      @s3_direct_post = S3_BUCKET.presigned_post(key: "requests/tmp/${filename}", success_action_status: '201', acl: 'public-read')
+      @s3_direct_post = S3_BUCKET.presigned_post(key: "requests/#{current_user.id}/#{Time.now.strftime("%Y%m%d%H%M")}/${filename}", success_action_status: '201', acl: 'public-read')
     end
 
 end
