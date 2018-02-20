@@ -10,6 +10,21 @@ class ApplicationController < ActionController::Base
       return nil
     end
   end
+
+  def remote_ip
+    if request.remote_ip == '127.0.0.1'
+      '104.156.218.100'
+    else
+      request.remote_ip
+    end
+  end
+
+  def current_geo
+    url = "http://usercountry.com/v1.0/json/#{remote_ip}"
+    uri = URI(url)
+    response = Net::HTTP.get(uri)
+    return JSON.parse(response)  
+  end
   
   protected
 

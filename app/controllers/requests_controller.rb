@@ -18,7 +18,8 @@ class RequestsController < ApplicationController
         else
           @active_requests << request
         end
-      end       
+      end           
+
     else
       @requests = {}
     end 

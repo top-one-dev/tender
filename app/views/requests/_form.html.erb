@@ -199,7 +199,7 @@
           <div class="col-sm-6">
             <div class="form-group required">
               <label class="control-label">Preferred currency</label>
-              <%= f.select(:preferred_currency, currency_list.first.collect {|key, value| [value, value]}, {:include_blank => "Select Currency"}, {:class => "form-control", placeholder: 'Select Currency' } ) %>
+              <%= f.select(:preferred_currency, currency_list.first.collect {|key, value| [value, key]}, {:include_blank => "Select Currency", :selected => current_geo['currency']['code'] }, {:class => "form-control", placeholder: 'Select Currency' } ) %>
             </div>    
           </div>
         </div>
