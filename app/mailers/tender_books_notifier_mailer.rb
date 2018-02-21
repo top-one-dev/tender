@@ -1,5 +1,7 @@
 class TenderBooksNotifierMailer < ApplicationMailer
 
+	default :from => 'tenderbooks@support.com'
+
 	def invite_supplier(supplier, request)
 		@supplier 	= supplier
 		@request 	= request

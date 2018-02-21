@@ -55,7 +55,7 @@ class RequestsController < ApplicationController
       redirect_back fallback_location: new_request_url
 
     else
-      
+
       @request = Request.new(request_params)
 
       respond_to do |format|
@@ -72,7 +72,17 @@ class RequestsController < ApplicationController
               @request.questions.create!(question)
             end
           end
-          
+
+          unless participant_params.empty?
+
+            participant_params.each do |participant|
+              supplier = Supplier.find_or_create_by(email: participant)
+              @request.suppliers << supplier
+              TenderBooksNotifierMailer.invite_supplier(supplier, @request).deliver
+              TenderBooksNotifierMailer.invite_notifier(current_user, supplier, @request).deliver
+            end
+            
+          end          
           
           format.html { redirect_to requests_path, notice: 'Request was successfully created.' }
           format.json { render :show, status: :created, location: requests_path }
