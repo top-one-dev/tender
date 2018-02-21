@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  content: MyText
+  attach: MyString
+  user: one
+  supplier: one
+  request: one
+
+two:
+  content: MyText
+  attach: MyString
+  user: two
+  supplier: two
+  request: two
