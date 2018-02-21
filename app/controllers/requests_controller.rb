@@ -48,31 +48,42 @@ class RequestsController < ApplicationController
   # POST /requests
   # POST /requests.json
   def create
-    @request = Request.new(request_params)
 
-    respond_to do |format|
-      if @request.save
-        
-        unless item_params.empty?
-          JSON.parse(item_params.to_s).each do |item|
-            @request.items.create!(item)
-          end
-        end
+    if participant_params.nil?
 
-        unless question_params.empty?
-          JSON.parse(question_params.to_s).each do |question|
-            @request.questions.create!(question)
+      flash[:error] = 'You need to add at least one participiant.'
+      redirect_back fallback_location: new_request_url
+
+    else
+      
+      @request = Request.new(request_params)
+
+      respond_to do |format|
+        if @request.save
+          
+          unless item_params.empty?
+            JSON.parse(item_params.to_s).each do |item|
+              @request.items.create!(item)
+            end
           end
+
+          unless question_params.empty?
+            JSON.parse(question_params.to_s).each do |question|
+              @request.questions.create!(question)
+            end
+          end
+          
+          
+          format.html { redirect_to requests_path, notice: 'Request was successfully created.' }
+          format.json { render :show, status: :created, location: requests_path }
+        else
+          format.html { render :new }
+          format.json { render json: @request.errors, status: :unprocessable_entity }
         end
-        
-        
-        format.html { redirect_to requests_path, notice: 'Request was successfully created.' }
-        format.json { render :show, status: :created, location: requests_path }
-      else
-        format.html { render :new }
-        format.json { render json: @request.errors, status: :unprocessable_entity }
       end
-    end
+
+    end    
+
   end
 
   # PATCH/PUT /requests/1

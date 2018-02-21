@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h2>Hi, <%= @supplier.email %>!</h2>
+    <h4>You have been invited to participate on <b><%= @request.name %></b>.</h4>
+    <p><%= @request.description %></p>
+    <hr>
+    <p>
+    	The bids need to be submitted by <%= @request.end_time %> via the link in this email.
+
+		The documentation of the request can be accessed by the link below.<br>
+		<a href="https://www.deltabid.com/db/tender/open/id_30671/token_ac8pgfgtb8l58r3vojvatm3aukqp2sqx/user_17438/en_GB/itoken_l7lowvp8frhfuoutn0ytde8d0n8oopvi" target="_blank">https://www.deltabid.com/db/tender/open/id_30671/token_ac8pgfgtb8l58r3vojvatm3aukqp2sqx/user_17438/en_GB/itoken_l7lowvp8frhfuoutn0ytde8d0n8oopvi</a>
+	</p>
+  </body>
+</html>
