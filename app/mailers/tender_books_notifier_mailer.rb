@@ -1,0 +1,2 @@
+class TenderBooksNotifierMailer < ApplicationMailer
+end

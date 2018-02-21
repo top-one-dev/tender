@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180212135936) do
+ActiveRecord::Schema.define(version: 20180221005201) do
 
   create_table "companies", force: :cascade do |t|
     t.string   "name"
@@ -55,6 +55,17 @@ ActiveRecord::Schema.define(version: 20180212135936) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "ianswers", force: :cascade do |t|
+    t.float    "unit_price"
+    t.float    "quantity"
+    t.integer  "item_id"
+    t.integer  "supplier_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["item_id"], name: "index_ianswers_on_item_id"
+    t.index ["supplier_id"], name: "index_ianswers_on_supplier_id"
+  end
+
   create_table "items", force: :cascade do |t|
     t.string   "name"
     t.string   "unit"
@@ -64,6 +75,19 @@ ActiveRecord::Schema.define(version: 20180212135936) do
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.index ["request_id"], name: "index_items_on_request_id"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.text     "content"
+    t.string   "attach"
+    t.integer  "user_id"
+    t.integer  "supplier_id"
+    t.integer  "request_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["request_id"], name: "index_messages_on_request_id"
+    t.index ["supplier_id"], name: "index_messages_on_supplier_id"
+    t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
   create_table "notifications", force: :cascade do |t|
@@ -84,6 +108,17 @@ ActiveRecord::Schema.define(version: 20180212135936) do
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
     t.index ["user_id"], name: "index_notifications_on_user_id"
+  end
+
+  create_table "qanswers", force: :cascade do |t|
+    t.text     "answer"
+    t.string   "attach"
+    t.integer  "question_id"
+    t.integer  "supplier_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["question_id"], name: "index_qanswers_on_question_id"
+    t.index ["supplier_id"], name: "index_qanswers_on_supplier_id"
   end
 
   create_table "questions", force: :cascade do |t|
