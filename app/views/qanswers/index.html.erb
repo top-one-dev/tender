@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Qanswers</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Answer</th>
+      <th>Attach</th>
+      <th>Question</th>
+      <th>Supplier</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @qanswers.each do |qanswer| %>
+      <tr>
+        <td><%= qanswer.answer %></td>
+        <td><%= qanswer.attach %></td>
+        <td><%= qanswer.question %></td>
+        <td><%= qanswer.supplier %></td>
+        <td><%= link_to 'Show', qanswer %></td>
+        <td><%= link_to 'Edit', edit_qanswer_path(qanswer) %></td>
+        <td><%= link_to 'Destroy', qanswer, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Qanswer', new_qanswer_path %>

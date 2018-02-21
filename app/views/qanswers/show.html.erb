@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Answer:</strong>
+  <%= @qanswer.answer %>
+</p>
+
+<p>
+  <strong>Attach:</strong>
+  <%= @qanswer.attach %>
+</p>
+
+<p>
+  <strong>Question:</strong>
+  <%= @qanswer.question %>
+</p>
+
+<p>
+  <strong>Supplier:</strong>
+  <%= @qanswer.supplier %>
+</p>
+
+<%= link_to 'Edit', edit_qanswer_path(@qanswer) %> |
+<%= link_to 'Back', qanswers_path %>

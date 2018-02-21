@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :qanswers
   resources :ianswers
   resources :messages
   resources :folders
