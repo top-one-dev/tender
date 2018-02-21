@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Unit price:</strong>
+  <%= @ianswer.unit_price %>
+</p>
+
+<p>
+  <strong>Quantity:</strong>
+  <%= @ianswer.quantity %>
+</p>
+
+<p>
+  <strong>Item:</strong>
+  <%= @ianswer.item %>
+</p>
+
+<p>
+  <strong>Supplier:</strong>
+  <%= @ianswer.supplier %>
+</p>
+
+<%= link_to 'Edit', edit_ianswer_path(@ianswer) %> |
+<%= link_to 'Back', ianswers_path %>
