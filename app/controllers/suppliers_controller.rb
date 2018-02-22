@@ -61,6 +61,26 @@ class SuppliersController < ApplicationController
     end
   end
 
+  def view_request
+    if Request.find(params[:id]).nil?
+      flash[:error] = 'There is no relevant request. Please check link you received.'
+      redirect_to root_path
+    end
+
+    begin
+      @request = Request.find params[:id]
+      @supplier = Supplier.find crypt.decrypt_and_verify(params[:token])
+    rescue => detail
+      flash[:error] = 'You typed invalid token. Please check link you received.'
+      redirect_to root_path     
+    end   
+    
+  end
+
+  def make_bid
+    
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_supplier

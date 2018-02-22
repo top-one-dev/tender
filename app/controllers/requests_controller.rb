@@ -6,7 +6,8 @@ class RequestsController < ApplicationController
 
   # GET /requests
   # GET /requests.json
-  def index
+  def index   
+    
     unless current_company.nil?
       @ended_requests = []
       @active_requests = []
@@ -28,6 +29,7 @@ class RequestsController < ApplicationController
   # GET /requests/1
   # GET /requests/1.json
   def show
+    @suppliers = @request.suppliers
   end
 
   # GET /requests/new
@@ -78,10 +80,18 @@ class RequestsController < ApplicationController
             participant_params.each do |participant|
               supplier = Supplier.find_or_create_by(email: participant)
               @request.suppliers << supplier
+              if User.where(email: supplier.email).exists?
+                supplier.update( user_id: current_user.id )
+              end
               TenderBooksNotifierMailer.invite_supplier(supplier, @request).deliver
               TenderBooksNotifierMailer.invite_notifier(current_user, supplier, @request).deliver
+              @request.messages.create!(
+                                        user_id: current_user.id, 
+                                        supplier_id: supplier.id,
+                                        content: 'Please apply...'
+                                      )
             end
-            
+
           end          
           
           format.html { redirect_to requests_path, notice: 'Request was successfully created.' }

@@ -5,4 +5,6 @@ class Request < ApplicationRecord
   has_and_belongs_to_many :suppliers
   has_many :items
   has_many :questions
+  has_many :messages
+  
 end

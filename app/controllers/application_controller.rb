@@ -25,6 +25,12 @@ class ApplicationController < ActionController::Base
     response = Net::HTTP.get(uri)
     return JSON.parse(response)  
   end
+
+  def crypt
+    len   = ActiveSupport::MessageEncryptor.key_len
+    key   = ActiveSupport::KeyGenerator.new('tenderbooks').generate_key('coolplum', len)
+    ActiveSupport::MessageEncryptor.new(key)
+  end
   
   protected
 
@@ -32,13 +38,5 @@ class ApplicationController < ActionController::Base
   	devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :phone, :country ])
   	devise_parameter_sanitizer.permit(:account_update, keys: [:name, :phone, :mobile, :job_title, :language, :timezone, :country, :company])
   end
-
-  # def authenticate_user!
-  #   if user_signed_in?
-  #     super
-  #   else
-  #     redirect_to new_user_session_path, :notice => 'You need to sign in to continue.'
-  #   end
-  # end
 
 end

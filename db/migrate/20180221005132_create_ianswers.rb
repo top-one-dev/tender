@@ -4,7 +4,7 @@ class CreateIanswers < ActiveRecord::Migration[5.0]
       t.float :unit_price
       t.float :quantity
       t.references :item, foreign_key: true
-      t.references :supplier, foreign_key: true
+      t.references :bid, foreign_key: true
 
       t.timestamps
     end

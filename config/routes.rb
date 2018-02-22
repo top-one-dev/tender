@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :bids
   resources :qanswers
   resources :ianswers
   resources :messages
@@ -9,6 +10,7 @@ Rails.application.routes.draw do
   resources :items
   resources :requests
   resources :suppliers
+  get 'request/:id/view/:token', to: 'suppliers#view_request', as: 'view_request'
   resources :companies
 
   get 'dashboard/request', to: 'dashboard#trequest', as: 'dashboard_request'

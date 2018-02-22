@@ -1,3 +1,25 @@
 // Place all the styles related to the Suppliers controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+.bid-nav{
+	padding: 10px 30px;
+	a{
+		margin: 5px;
+		font-weight: 500;
+		border-radius: 4px;
+		padding: 10px 30px;
+	}
+}
+#message-board-title{
+	margin: 40px 0 20px 0;
+}
+pre {
+	white-space: pre-wrap;       /* css-3 */
+	white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+	white-space: -pre-wrap;      /* Opera 4-6 */
+	white-space: -o-pre-wrap;    /* Opera 7 */
+	word-wrap: break-word;       /* Internet Explorer 5.5+ */
+	background: none;
+	border: none;
+	margin-bottom: 30px;
+}

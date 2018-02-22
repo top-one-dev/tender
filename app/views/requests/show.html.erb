@@ -4,7 +4,7 @@
     <h3>
       <%= "##{@request.id} #{@request.name}" %>
       <span class="pull-right">
-        <small class="text-danger"><i class="glyphicon glyphicon-time"></i> <%= distance_of_time_in_words(Time.now, @request.end_time) %> </small>
+        <small class="text-danger"><i class="glyphicon glyphicon-time"></i> <%= distance_of_time_in_words(Time.now, @request.end_time) %> </small>&nbsp;
         <%= link_to '<b class="text-info">Back</b>'.html_safe, requests_path, class: 'btn btn-default' %>          
       </span>
     </h3>
@@ -31,7 +31,7 @@
               <b class="text-muted">Published</b>
             </div>
             <div class="col-xs-9">
-              <%= @request.created_at.strftime("%b %d, %Y %H:%M") %>
+              <%= @request.created_at.strftime("%b %d, %Y %H:%M ( %Z%z )") %>
             </div>
           </div>
           <div class="row">
@@ -39,7 +39,7 @@
               <b class="text-muted">Due date</b>
             </div>
             <div class="col-xs-9">
-              <%= @request.end_time.strftime("%b %d, %Y %H:%M") %>
+              <%= @request.end_time.strftime("%b %d, %Y %H:%M ( %Z%z )") %>
             </div>
           </div>
           <div class="row">
@@ -47,7 +47,7 @@
               <b class="text-muted">Description</b>
             </div>
             <div class="col-xs-9">
-              <p><%= @request.description.html_safe %></p>
+              <pre><%= @request.description.html_safe %></pre>
             </div>
           </div>
           <div class="row">
@@ -179,9 +179,10 @@
           <label class="text-info">Wants To Bid</label>
           <table class="table">
           <tbody>
+            <% @suppliers.each do |supplier| %>
             <tr>
-              <td><b>CP Group</b> : Dave ( coolplum1213@gmail.com )</td>
-              <td>2</td>
+              <td><b><%= Company.where( user: supplier.user).first.name %></b> : <%= supplier.user.name %> ( <%= supplier.email %> )</td>
+              <td>1</td>
               <td>Feb 06, 2018 15:25</td>
               <td>
                 <div class="dropdown">
@@ -198,25 +199,7 @@
                 <button class="btn btn-default"><i class="glyphicon glyphicon-envelope text-muted"></i></button>
               </td>
               </tr>
-              <tr>
-              <td><b>CP Group</b> : Dave ( coolplum1213@gmail.com )</td>
-              <td>2</td>
-              <td>Feb 06, 2018 15:25</td>
-              <td>
-                <div class="dropdown">
-                  <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Actions
-                  <span class="caret"></span></button>
-                  <ul class="dropdown-menu">
-                    <li><a href="#">View bid</a></li>
-                    <li><a href="#">Enter bid myself</a></li>
-                    <li><a href="#">Remove</a></li>
-                  </ul>
-                </div>                
-              </td>
-              <td>
-                <button class="btn btn-default"><i class="glyphicon glyphicon-envelope text-muted"></i></button>
-              </td>
-              </tr>
+              <% end %>
             </tbody>
           </table>
         </div>

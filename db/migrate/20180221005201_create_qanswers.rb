@@ -4,7 +4,7 @@ class CreateQanswers < ActiveRecord::Migration[5.0]
       t.text :answer
       t.string :attach
       t.references :question, foreign_key: true
-      t.references :supplier, foreign_key: true
+      t.references :bid, foreign_key: true
 
       t.timestamps
     end
