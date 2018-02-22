@@ -62,9 +62,10 @@ class SuppliersController < ApplicationController
   end
 
   def view_request
-    if Request.find(params[:id]).nil?
+    unless Request.where(id: params[:id]).exists?
       flash[:error] = 'There is no relevant request. Please check link you received.'
       redirect_to root_path
+      return
     end
 
     begin
@@ -72,7 +73,7 @@ class SuppliersController < ApplicationController
       @supplier = Supplier.find crypt.decrypt_and_verify(params[:token])
     rescue => detail
       flash[:error] = 'You typed invalid token. Please check link you received.'
-      redirect_to root_path     
+      redirect_to root_path   
     end   
     
   end

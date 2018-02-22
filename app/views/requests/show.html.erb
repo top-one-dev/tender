@@ -181,8 +181,21 @@
           <tbody>
             <% @suppliers.each do |supplier| %>
             <tr>
-              <td><b><%= Company.where( user: supplier.user).first.name %></b> : <%= supplier.user.name %> ( <%= supplier.email %> )</td>
-              <td>1</td>
+              <td>
+                <b>
+                <% if Company.where( user: supplier.user).exists? %>
+                  <%= Company.where( user: supplier.user).first.name %>
+                <% else %>
+                  Unknown Company
+                <% end %>
+                </b> : 
+                <% if supplier.user.nil?%>
+                  Anonymous Supplier ( <%= supplier.email %> )
+                <% else %>
+                  <%= supplier.user.name %> ( <%= supplier.email %> )
+                <% end %>
+              </td>
+              <td><%= supplier.bids.count %></td>
               <td>Feb 06, 2018 15:25</td>
               <td>
                 <div class="dropdown">

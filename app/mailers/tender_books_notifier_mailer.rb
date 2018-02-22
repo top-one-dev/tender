@@ -16,4 +16,12 @@ class TenderBooksNotifierMailer < ApplicationMailer
 		mail( :to => @buyer.email,	:subject => 'You sent invite!' )
 	end
 
+	private
+	
+	def crypt
+		len   = ActiveSupport::MessageEncryptor.key_len
+		key   = ActiveSupport::KeyGenerator.new('tenderbooks').generate_key('coolplum', len)
+		ActiveSupport::MessageEncryptor.new(key)
+	end
+
 end

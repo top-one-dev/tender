@@ -12,6 +12,17 @@
 
 ActiveRecord::Schema.define(version: 20180221005201) do
 
+  create_table "bids", force: :cascade do |t|
+    t.integer  "request_id"
+    t.integer  "supplier_id"
+    t.text     "content"
+    t.string   "status"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["request_id"], name: "index_bids_on_request_id"
+    t.index ["supplier_id"], name: "index_bids_on_supplier_id"
+  end
+
   create_table "companies", force: :cascade do |t|
     t.string   "name"
     t.string   "logo"
@@ -59,11 +70,11 @@ ActiveRecord::Schema.define(version: 20180221005201) do
     t.float    "unit_price"
     t.float    "quantity"
     t.integer  "item_id"
-    t.integer  "supplier_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.integer  "bid_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["bid_id"], name: "index_ianswers_on_bid_id"
     t.index ["item_id"], name: "index_ianswers_on_item_id"
-    t.index ["supplier_id"], name: "index_ianswers_on_supplier_id"
   end
 
   create_table "items", force: :cascade do |t|
@@ -114,11 +125,11 @@ ActiveRecord::Schema.define(version: 20180221005201) do
     t.text     "answer"
     t.string   "attach"
     t.integer  "question_id"
-    t.integer  "supplier_id"
+    t.integer  "bid_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.index ["bid_id"], name: "index_qanswers_on_bid_id"
     t.index ["question_id"], name: "index_qanswers_on_question_id"
-    t.index ["supplier_id"], name: "index_qanswers_on_supplier_id"
   end
 
   create_table "questions", force: :cascade do |t|
