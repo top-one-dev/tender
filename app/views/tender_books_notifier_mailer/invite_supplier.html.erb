@@ -4,15 +4,15 @@
     <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
   </head>
   <body>
-    <h2>Hi, <%= @supplier.email %>!</h2>
-    <h4>You have been invited to participate on <b><%= @request.name %></b>.</h4>
-    <p><%= @request.description %></p>
+    <h2>Hi, <%= @supplier.email %></h2>
+    <h3>You have been invited to participate on <b><%= @request.name %></b>.</h3>
+    <pre><%= @request.description %></pre>
     <hr>
-    <p>
+    <pre>
     	The bids need to be submitted by <%= @request.end_time %> via the link in this email.
 
-		The documentation of the request can be accessed by the link below.<br>
-    <%= link_to 'View Request and make bid', view_request_url(@request.id, @supplier_token ), target: '_blank' %>
-	</p>
+  		The documentation of the request can be accessed by the link below.<br>
+      <%= link_to 'View Request and make bid', view_request_url(@request.id, @supplier_token ), target: '_blank' %>
+	   </pre>
   </body>
 </html>
