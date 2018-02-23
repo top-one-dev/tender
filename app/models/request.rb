@@ -6,5 +6,6 @@ class Request < ApplicationRecord
   has_many :items
   has_many :questions
   has_many :messages
+  has_many :bids
   
 end
