@@ -15,6 +15,9 @@ class BidsController < ApplicationController
   # GET /bids/new
   def new
     @bid = Bid.new
+    @request        = Request.find params[:id]
+    @supplier       = Supplier.find crypt.decrypt_and_verify(params[:token])
+    @status         = 'sent'
   end
 
   # GET /bids/1/edit
@@ -28,8 +31,13 @@ class BidsController < ApplicationController
 
     respond_to do |format|
       if @bid.save
-        format.html { redirect_to @bid, notice: 'Bid was successfully created.' }
-        format.json { render :show, status: :created, location: @bid }
+        if @bid.status == 'reject'
+          format.html { redirect_to root_path, notice: 'Thanks for your informing. Please feel free to make a bid again anytime.' }
+        else
+          format.html { redirect_to @bid, notice: 'Bid was successfully created.' }
+          format.json { render :show, status: :created, location: @bid }  
+        end
+        
       else
         format.html { render :new }
         format.json { render json: @bid.errors, status: :unprocessable_entity }
