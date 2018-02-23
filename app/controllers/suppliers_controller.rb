@@ -69,16 +69,20 @@ class SuppliersController < ApplicationController
     end
 
     begin
-      @request = Request.find params[:id]
-      @supplier = Supplier.find crypt.decrypt_and_verify(params[:token])
+      @request        = Request.find params[:id]
+      @supplier       = Supplier.find crypt.decrypt_and_verify(params[:token])
+      @supplier_token = params[:token]
+      @reject_params  = { 
+                          :bid => {
+                            :request_id   => @request.id,
+                            :supplier_id  => @supplier.id,
+                            :status       => 'reject'
+                          }
+                        }
     rescue => detail
       flash[:error] = 'You typed invalid token. Please check link you received.'
       redirect_to root_path   
     end   
-    
-  end
-
-  def make_bid
     
   end
 
