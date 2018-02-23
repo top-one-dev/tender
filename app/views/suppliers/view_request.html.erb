@@ -2,8 +2,18 @@
 <section>
 	<div class="container">
 		<div class="bg-info bid-nav">
-			<%= link_to 'Make a bid', '#', class: 'btn btn-lg btn-info' %>
-			<%= link_to "Don't want to participate", '#', class: 'btn btn-lg btn-default' %>
+			<% if @request.end_time < Time.now or @request.bids.where( :status => 'assign' ).exists? %>
+				<a href="#" class="btn btn-lg btn-info" disabled data-toggle="tooltip" data-placement="bottom" title="This request is unavailable to make a bid now." >Make a bid</a>
+			<% else %>
+				<%= link_to 'Make a bid', new_bid_path( id: @request.id, token: @supplier_token ), class: 'btn btn-lg btn-info' %>
+			<% end %>
+
+			<% if @supplier.bids.where( :request_id => @request.id ).where( :status => 'reject' ).exists? %>
+				<a href="#" class="btn btn-lg btn-default" disabled disabled data-toggle="tooltip" data-placement="bottom" title="You already informed buyer your mind. No need to reject again." >Don't want to participate</a>
+			<% else %>
+				<%= link_to "Don't want to participate", bids_path(@reject_params), method: 'post', class: 'btn btn-lg btn-default', 'data-confirm': 'Are you sure to reject invite on this request?' %>
+			<% end %>
+			
 			<%= link_to 'Ask a question', 'javascript:;', class: 'btn btn-lg btn-default ask-question' %>
 		</div>
 		<br>
@@ -130,12 +140,22 @@
 					<small class="text-muted">
 						( This message is only visible to the buyer. Use message board only to ask additional questions, not to make a bid. Buyer can get a lot of messages and your bid might get lost. )
 					</small><br><br>
+					<div class="alert" id="message-result">
+				    </div>
 					<div class="form-group">
-						<textarea class="form-control" rows="8"></textarea>	
+						<textarea class="form-control" rows="8" id="message-content"></textarea>	
 					</div>
 					<div class="form-group">
 						<div class="text-right">
-							<a href="javascript:;" class="btn btn-info text-uppercase">send</a>
+							<a 
+								href="javascript:;" 
+								class="btn btn-info text-uppercase" 
+								id="send-message"
+								data-buyer='<%= @request.user.id %>'
+								data-supplier='<%= @supplier.id %>' 
+								data-request='<%= @request.id %>'
+								data-url='<%= messages_path %>'
+								>send</a>
 						</div>
 					</div>			
 				</div>
