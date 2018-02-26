@@ -73,7 +73,7 @@ class BidsController < ApplicationController
           end
 
           if @bid.supplier.user.nil?
-            flash[:notice] = "Successfully submitted. You need to signup to continue."
+            flash[:notice] = "Successfully submitted. You need to signup with this email to continue."
             redirect_to new_user_registration_path
           else
             if user_signed_in?

@@ -183,8 +183,12 @@
             <tr>
               <td>
                 <b>
-                <% if supplier.user.companies.exists? %>
-                  <%= Company.where( user: supplier.user).first.name %>
+                <% unless supplier.user.nil?%>
+                  <% unless supplier.user.companies.nil? %>
+                    <%= supplier.user.companies.first.name %>
+                  <% else %>
+                    Unknown Company
+                  <% end %>
                 <% else %>
                   Unknown Company
                 <% end %>
@@ -195,7 +199,7 @@
                   <%= supplier.user.name %> ( <%= supplier.email %> )
                 <% end %>
               </td>
-              <td><%= supplier.bids.count %></td>
+              <td><%= supplier.bids.where(request_id: @request.id).where(status: 'sent').count %></td>
               <td>Feb 06, 2018 15:25</td>
               <td>
                 <div class="dropdown">

@@ -61,6 +61,16 @@
 								</h4>
 								<% end %>
 							</div>
+							<% if @supplier.bids.where(request_id: @request.id ).exists? %>
+							<div class="col-sm-3 col-sm-offset-1">
+								<h5 class="text-success" style="cursor: pointer;">
+									<span  data-toggle="tooltip" title="You already made some bids on this request." data-placement='bottom' >Your last bid date <i class="glyphicon glyphicon-info-sign"></i></span>
+								</h5>
+								<h4 class="text-success">
+									<i class="glyphicon glyphicon-calendar"></i>&nbsp;<%= @supplier.bids.where(request_id: @request.id ).last.created_at.strftime("%b %d, %Y %H:%M") %>
+								</h4>
+							</div>
+							<% end %>
 						</div>
 					</div>
 				</div>
@@ -119,8 +129,14 @@
 											<td><%= index + 1 %></td>
 											<td><b><%= question.title %></b><br><span class="text-muted"><%= question.description %></span></td>
 											<td>
-												<b><%= question.question_type %></b>
-												<% if question.question_type == 'list' or question.question_type == 'checkbox' %>
+												<% if question.question_type == 'boolean' %>
+													<b>YES / NO</b>
+												<% else %>
+													<b class="text-uppercase"><%= question.question_type %></b>
+													<% if question.question_type == 'list' or question.question_type == 'checkbox' %>
+														<br>
+														<small class="text-muted">( <%= question.options %> )</small>
+													<% end %>
 												<% end %>
 											</td>
 										</tr>

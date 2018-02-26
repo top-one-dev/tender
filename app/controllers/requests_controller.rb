@@ -6,7 +6,13 @@ class RequestsController < ApplicationController
 
   # GET /requests
   # GET /requests.json
-  def index   
+  def index
+
+    if current_user.supplier.nil?
+      if Supplier.where(email: current_user.email).exists?
+        current_user.supplier << Supplier.where(email: current_user.email).first
+      end
+    end
     
     unless current_company.nil?
       @ended_requests = []

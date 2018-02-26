@@ -1,24 +1,125 @@
-<p id="notice"><%= notice %></p>
+<% provide(:title, "View bid") %>
+<section>
+	<div class="container">
+		<h3>
+			Request: <span class="text-muted">#<%= @bid.request.id %></span> <%= @bid.request.name %> 
+			<small>( <b><%= @bid.request.company.name %></b> : <%= @bid.request.user.name %> )</small>
+		</h3>
+		<hr>
+		<h4 class="text-info">Bid Details:</h4>
+		<div class="row">
+			<div class="col-sm-6">
+				<table class="table table-condensed">
+					<tbody>
+						<tr>
+							<td><h5 class="text-muted">Company:</h5></td>
+							<td>
+								<h5>
+									<% unless @bid.supplier.user.nil? %>
+									<% unless @bid.supplier.user.companies.nil? %>
+									<%= @bid.supplier.user.companies.first.name %>
+									<% else %>
+									Unknown Company
+									<% end %>
+									<% else %>
+									Unknown Company
+									<% end %>
+								</h5>
+							</td>
+						</tr>
+						<tr>
+							<td><h5 class="text-muted">Contact:</h5></td>
+							<td>
+								<h5>
+									<% if @bid.supplier.user.nil?%>
+									Anonymous Supplier <small>( <%= @bid.supplier.email %> )</small>
+									<% else %>
+									<%= @bid.supplier.user.name %> <small>( <%= @bid.supplier.email %> )</small>
+									<% end %>
+								</h5>
+							</td>
+						</tr>
+						<tr>
+							<td><h5 class="text-muted">Bid made:</h5></td>
+							<td><h5><%= @bid.created_at.strftime("%b %d, %Y %H:%M ( %Z%z )") %></h5></td>
+						</tr>
+						<tr>
+							<td><h5 class="text-muted">Grand total:</h5></td>
+							<td><h5><%= @bid.bid_budget %> <%= @bid.bid_currency %></h5></td>
+						</tr>
+						<tr>
+							<td><h5 class="text-muted">Comments:</h5></td>
+							<td><pre><%= @bid.content %></pre></td>
+						</tr>
+					</tbody>
+				</table>				
+			</div>
+		</div>
 
-<p>
-  <strong>Request:</strong>
-  <%= @bid.request %>
-</p>
+		<ul class="nav nav-tabs">			      
+			<li class="active" >
+				<a data-toggle="tab" href="#questionarie"><h5>Questionarie</h5></a>
+			</li>
+			<% if @bid.request.request_type == 'RFQ' %>
+			<li><a data-toggle="tab" href="#list-items"><h5>List of items</h5></a></li>
+			<% end %>
+		</ul>
+		<div class="tab-content">
+			<div id="questionarie" class="tab-pane fade in active">
+				<br><br>
+				<ul style="list-style: numeric;">
+				<% @bid.qanswers.each_with_index do |qanswer, index| %>
+					<li>
+						<span class="text-muted">
+							<%= qanswer.question.title %><br>
+							( <%= qanswer.question.description %> )
+						</span><br>
+						<b><%= qanswer.answer %></b>
+					</li>
+					<hr>
+				<% end %>
+				</ul>
+			</div>
+			<% if @bid.request.request_type == 'RFQ' %>
+			<div class="tab-pane fade " id="list-items">
+				<table class="table table-striped">
+					<thead>
+						<tr class="text-muted">
+							<th>#</th>
+							<th>Name</th>
+							<th>Description</th>
+							<th>Unit</th>
+							<th>Quantity</th>
+							<th>Unit price</th>
+							<th>Item total</th>
+						</tr>
+					</thead>
+					<tbody>
+						<% @bid.ianswers.each_with_index do |ianswer, index| %>
+						<tr>
+							<td><%= index + 1 %></td>
+							<td><%= ianswer.item.name %></td>
+							<td><%= ianswer.item.description %></td>
+							<td><%= ianswer.item.unit %></td>
+							<td><%= ianswer.item.quantity %></td>
+							<td><%= ianswer.unit_price %></td>
+							<td><%= ianswer.item.quantity*ianswer.unit_price %></td>
+						</tr>
+						<% end %>
+					</tbody>
+				</table>
+			</div>
+			<% end %>
+		</div>
+		<hr>
+		<div class="text-right">
+			<% if @bid.supplier.user == current_user %>
+				<%= link_to 'Edit', edit_bid_path(@bid), class: 'btn btn-info' %>
+			<% end %> <%= link_to 'Back', bids_path, class: 'btn btn-default' %>			
+		</div>
+		<hr>
 
-<p>
-  <strong>Supplier:</strong>
-  <%= @bid.supplier %>
-</p>
+	</div>
+</section>
 
-<p>
-  <strong>Content:</strong>
-  <%= @bid.content %>
-</p>
 
-<p>
-  <strong>Status:</strong>
-  <%= @bid.status %>
-</p>
-
-<%= link_to 'Edit', edit_bid_path(@bid) %> |
-<%= link_to 'Back', bids_path %>
