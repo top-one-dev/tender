@@ -1,6 +1,6 @@
 class BidsController < ApplicationController
   before_action :set_bid, only: [:show, :edit, :update, :destroy]
-
+  before_action :set_s3_direct_post, only: [:new, :create]
   # GET /bids
   # GET /bids.json
   def index
@@ -14,10 +14,14 @@ class BidsController < ApplicationController
 
   # GET /bids/new
   def new
-    @bid = Bid.new
-    @request        = Request.find params[:id]
-    @supplier       = Supplier.find crypt.decrypt_and_verify(params[:token])
-    @status         = 'sent'
+    @bid          = Bid.new
+    @request      = Request.find params[:id]
+    @questions    = @request.questions
+    if @request.items.exists?
+      @items      = @request.items
+    end
+    @supplier     = Supplier.find crypt.decrypt_and_verify(params[:token])
+    @status       = 'sent'
   end
 
   # GET /bids/1/edit
@@ -78,5 +82,9 @@ class BidsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def bid_params
       params.require(:bid).permit(:request_id, :supplier_id, :content, :status)
+    end
+
+    def set_s3_direct_post
+      @s3_direct_post = S3_BUCKET.presigned_post(key: "bids/#{Time.now.strftime("%Y%m%d%H%M%S%L")}/${filename}", success_action_status: '201', acl: 'public-read')
     end
 end

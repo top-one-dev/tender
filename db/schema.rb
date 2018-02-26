@@ -17,6 +17,9 @@ ActiveRecord::Schema.define(version: 20180221005201) do
     t.integer  "supplier_id"
     t.text     "content"
     t.string   "status"
+    t.string :bid_currency
+    t.float :bid_budget
+    t.string :document
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.index ["request_id"], name: "index_bids_on_request_id"

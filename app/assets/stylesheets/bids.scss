@@ -1,3 +1,16 @@
 // Place all the styles related to the Bids controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+#question-anwers{
+	padding: 30px 20px;
+	input, select{
+		margin: 15px 0;
+	}
+	textarea{
+		margin-top: 5px;
+	}
+}
+
+#item-anwers, #document-comment{
+	padding: 30px 20px;
+}
