@@ -32,6 +32,7 @@ class CompaniesController < ApplicationController
     respond_to do |format|
       if @company.save
         session[:current_company_id] = @company.id
+        @company.users << current_user
         format.html { redirect_to edit_user_registration_path, notice: 'Company was successfully created.' }
         format.json { render :show, status: :created, location: @company }
       else

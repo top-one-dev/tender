@@ -9,6 +9,7 @@ class User < ApplicationRecord
   has_many :requests
   has_many :messages
   has_one :supplier
+  has_and_belongs_to_many :companies
 
   def send_devise_notification(notification, *args)
 	devise_mailer.send(notification, self, *args).deliver_later

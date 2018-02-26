@@ -18,6 +18,11 @@
           <li>
             <%= link_to '<i class="glyphicon glyphicon-list"></i> Requisitions'.html_safe, dashboard_requisition_path %>
           </li>
+          <% unless current_user.supplier.nil? %>
+            <li>
+              <%= link_to '<i class="glyphicon glyphicon-edit"></i> Bids'.html_safe, bids_path %>
+            </li>
+          <% end %>
           <li>
             <%= link_to '<i class="glyphicon glyphicon-user"></i> Suppliers'.html_safe, dashboard_supplier_path %>
           </li>

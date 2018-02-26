@@ -10,20 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180221005201) do
+ActiveRecord::Schema.define(version: 20180226094937) do
 
   create_table "bids", force: :cascade do |t|
     t.integer  "request_id"
     t.integer  "supplier_id"
     t.text     "content"
     t.string   "status"
-    t.string :bid_currency
-    t.float :bid_budget
-    t.string :document
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-    t.index ["request_id"], name: "index_bids_on_request_id"
-    t.index ["supplier_id"], name: "index_bids_on_supplier_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.text     "document"
+    t.decimal  "bid_budget"
+    t.text     "bid_currency"
   end
 
   create_table "companies", force: :cascade do |t|
@@ -45,6 +43,13 @@ ActiveRecord::Schema.define(version: 20180221005201) do
     t.integer  "user"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
+  end
+
+  create_table "companies_users", id: false, force: :cascade do |t|
+    t.integer "company_id", null: false
+    t.integer "user_id",    null: false
+    t.index ["company_id", "user_id"], name: "index_companies_users_on_company_id_and_user_id"
+    t.index ["user_id", "company_id"], name: "index_companies_users_on_user_id_and_company_id"
   end
 
   create_table "delayed_jobs", force: :cascade do |t|

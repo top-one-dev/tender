@@ -12,7 +12,7 @@
           <% end %>
         <% end %> <i class="glyphicon glyphicon-triangle-bottom pull-right"></i></a>
         <ul class="dropdown-menu">
-          <% Company.where(:user => current_user.id ).each do |company| %>
+          <% current_user.companies.each do |company| %>
           <li><%= link_to company.name, edit_company_path( company ) %></li>
           <% end %>
           <li class="divider"></li>

@@ -1,10 +1,22 @@
 class BidsController < ApplicationController
+  before_action :authenticate_user!, only: [:show, :edit, :update, :destroy]
   before_action :set_bid, only: [:show, :edit, :update, :destroy]
-  before_action :set_s3_direct_post, only: [:new, :create]
+  before_action :set_s3_direct_post, only: [:new, :create, :edit, :update]
+  
   # GET /bids
   # GET /bids.json
   def index
-    @bids = Bid.all
+    @bids = Bid.all.where(:status => 'sent')
+    @active_bids = []
+    @ended_bids  = []
+    @bids.each do |bid|
+      if bid.request.end_time > Time.now 
+        @active_bids << bid
+      else
+        @ended_bids  << bid
+      end 
+    end     
+    # @bids = current_user.supplier.bids
   end
 
   # GET /bids/1
@@ -31,15 +43,48 @@ class BidsController < ApplicationController
   # POST /bids
   # POST /bids.json
   def create
-    @bid = Bid.new(bid_params)
+    @bid = Bid.new(bid_params)    
 
     respond_to do |format|
       if @bid.save
         if @bid.status == 'reject'
+          
           format.html { redirect_to root_path, notice: 'Thanks for your informing. Please feel free to make a bid again anytime.' }
+        
         else
-          format.html { redirect_to @bid, notice: 'Bid was successfully created.' }
-          format.json { render :show, status: :created, location: @bid }  
+
+          @items = @bid.request.items
+
+          @items.each_with_index do |item, index|
+            @bid.ianswers.create!(item_id: item.id, unit_price: ianswer_params[index])
+          end
+
+          @questions = @bid.request.questions
+
+          index1 = 0
+
+          @questions.each_with_index do |question, index|
+            if question.enable_attatch
+              @bid.qanswers.create!(question_id: question.id, answer: qanswer_params[:answer][index], attach: qanswer_params[:attach][index1] )
+              index1 += 1
+            else
+              @bid.qanswers.create!(question_id: question.id, answer: qanswer_params[:answer][index] )
+            end       
+          end
+
+          if @bid.supplier.user.nil?
+            flash[:notice] = "Successfully submitted. You need to signup to continue."
+            redirect_to new_user_registration_path
+          else
+            if user_signed_in?
+              format.html { redirect_to @bid, notice: 'Bid was successfully created.' }
+              format.json { render :show, status: :created, location: @bid }  
+            else
+              flash[:notice] = "Successfully submitted. You need to signin to continue because you have already account on TenderBooks."
+              redirect_to new_user_session_path
+            end
+          end         
+
         end
         
       else
@@ -81,7 +126,15 @@ class BidsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def bid_params
-      params.require(:bid).permit(:request_id, :supplier_id, :content, :status)
+      params.require(:bid).permit(:request_id, :supplier_id, :content, :status, :bid_budget, :bid_currency)
+    end
+
+    def ianswer_params
+      params[:ianswers]
+    end
+
+    def qanswer_params
+      params[:qanswers]
     end
 
     def set_s3_direct_post

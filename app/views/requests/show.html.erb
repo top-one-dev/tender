@@ -183,7 +183,7 @@
             <tr>
               <td>
                 <b>
-                <% if Company.where( user: supplier.user).exists? %>
+                <% if supplier.user.companies.exists? %>
                   <%= Company.where( user: supplier.user).first.name %>
                 <% else %>
                   Unknown Company
@@ -221,31 +221,48 @@
           <label class="text-info">Bids</label>
           <table class="table">
             <thead>
-              <tr><th>Company</th><th>Bids</th><th>Total</th><th>Difference</th><th>Bid time</th><th></th></tr>
+              <tr><th>Company</th><th>Total</th><th>Difference</th><th>Bid time</th><th></th></tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Suverysoft</td>
-                <td>1</td>
-                <td>1200.00 KES</td>
-                <td>+200.00 KES</td>
-                <td>Jan 19 20:27</td>
+              <% @request.bids.where( status: 'sent' ).each do |bid| %>
+              <tr>                
+                <td>
+                  <b>
+                  <% unless bid.supplier.user.nil? %>
+                    <% unless bid.supplier.user.companies.nil? %>
+                      <%= bid.supplier.user.company.name %>
+                    <% else %>
+                      Unknown Company
+                    <% end %>
+                  <% else %>
+                    Unknown Company
+                  <% end %>
+                  </b>
+                   : 
+                  <% unless bid.supplier.user.nil? %>
+                    <%= bid.supplier.user.name %>
+                  <% else %>
+                     Anonymous Supplier
+                  <% end %>
+
+                  ( <%= bid.supplier.email %> )
+                </td>
+                <td><%= bid.bid_budget %> <%= bid.bid_currency %></td>
+                <td>
+                  <%  
+                    bid_budget = Money.new(bid.bid_budget*100, bid.bid_currency)
+                    expected_budget = Money.new(@request.expected_budget*100, @request.preferred_currency)
+                    difference = expected_budget - bid_budget.exchange_to(@request.preferred_currency)
+                       %>
+                  <%= sprintf("%+.2f", difference) %> <%= @request.preferred_currency %> 
+                </td>
+                <td><%= bid.created_at.strftime("%b %d, %Y %H:%M ( %Z%z )") %></td>
                 <td>
                   <button class="btn btn-default">View bid</button>
                   <button class="btn btn-default"><i class="glyphicon glyphicon-envelope text-muted"></i></button>
                 </td>
               </tr>
-              <tr>
-                <td>Suverysoft</td>
-                <td>1</td>
-                <td>1200.00 KES</td>
-                <td>+200.00 KES</td>
-                <td>Jan 19 20:27</td>
-                <td>
-                  <button class="btn btn-default">View bid</button>
-                  <button class="btn btn-default"><i class="glyphicon glyphicon-envelope text-muted"></i></button>
-                </td>
-              </tr>
+              <% end %>
             </tbody>
           </table>
         </div>

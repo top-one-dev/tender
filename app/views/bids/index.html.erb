@@ -1,4 +1,78 @@
-<p id="notice"><%= notice %></p>
+<% provide(:title, "Bids") %>
+<section>
+  <div class="container">
+    <h3 class="text-success">Active Requests</h3>
+    <table class="table">
+      <thead>
+        <tr class="text-muted">
+          <th>Name</th>
+          <th>Time left</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% unless @active_bids.empty? %>
+         <% @active_bids.each do |bid| %>
+            <tr>
+              <td>
+                <h5><%= bid.request.name %></h5>
+                <small class="text-muted"><b><%= bid.request.company.name %></b> - <%= bid.request.user.name %></small>
+              </td>
+              <td class="text-danger">
+                <i class="glyphicon glyphicon-time"></i>&nbsp;<%= distance_of_time_in_words(Time.now, bid.request.end_time) %>
+              </td>
+              <td>
+                <%= link_to '<b>Make a bid</b>'.html_safe, new_bid_path, class: 'btn btn-sm btn-info' %>
+                <%= link_to '<b>View</b>'.html_safe, bid, class: 'btn btn-sm btn-default' %>
+              </td>
+            </tr>
+          <% end %>
+        <% else %>
+          <tr>
+            <td colspan="3">No bids...</td>
+          </tr>
+        <% end %>
+       
+      </tbody>
+    </table>
+
+    <hr>
+    
+    <h3 class="text-info">Ended Requests</h3>
+
+    <table class="table">
+      <thead>
+        <tr class="text-muted">
+          <th>Name</th>
+          <th>Ended time</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% unless @ended_bids.empty? %>
+          <% @ended_bids.each do |bid| %>
+            <tr>
+              <td><%= bid.request.name %></td>
+              <td class="text-muted">
+                <i class="glyphicon glyphicon-time"></i>&nbsp;<%= bid.request.end_time %>
+              </td>
+              <td>
+                <%= link_to '<b>Make a bid</b>'.html_safe, new_bid_path, class: 'btn btn-sm btn-info' %>
+                <%= link_to '<b>View</b>'.html_safe, bid, class: 'btn btn-sm btn-default' %>
+              </td>
+            </tr>
+          <% end %>
+        <% else %>
+          <tr><td colspan="3">No bids...</td></tr>
+        <% end %>
+          
+      </tbody>
+    </table>
+
+  </div>
+</section>
+
+<!-- <p id="notice"><%= notice %></p>
 
 <h1>Bids</h1>
 
@@ -31,3 +105,4 @@
 <br>
 
 <%= link_to 'New Bid', new_bid_path %>
+ -->
