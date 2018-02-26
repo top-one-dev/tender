@@ -10,7 +10,7 @@ class RequestsController < ApplicationController
 
     if current_user.supplier.nil?
       if Supplier.where(email: current_user.email).exists?
-        current_user.supplier << Supplier.where(email: current_user.email).first
+        current_user.supplier = Supplier.where(email: current_user.email).first
       end
     end
     
@@ -92,6 +92,8 @@ class RequestsController < ApplicationController
               TenderBooksNotifierMailer.invite_supplier(supplier, @request).deliver
               TenderBooksNotifierMailer.invite_notifier(current_user, supplier, @request).deliver
               @request.messages.create!(
+                                        from: 'buyer',
+                                        read: false,
                                         user_id: current_user.id, 
                                         supplier_id: supplier.id,
                                         content: 'Please apply...'

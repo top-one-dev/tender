@@ -16,11 +16,11 @@
 							<td>
 								<h5>
 									<% unless @bid.supplier.user.nil? %>
-									<% unless @bid.supplier.user.companies.nil? %>
-									<%= @bid.supplier.user.companies.first.name %>
-									<% else %>
-									Unknown Company
-									<% end %>
+										<% if @bid.supplier.user.companies.exists? %>
+											<%= @bid.supplier.user.companies.first.name %>
+										<% else %>
+										Unknown Company
+										<% end %>
 									<% else %>
 									Unknown Company
 									<% end %>
@@ -114,8 +114,13 @@
 		<hr>
 		<div class="text-right">
 			<% if @bid.supplier.user == current_user %>
-				<%= link_to 'Edit', edit_bid_path(@bid), class: 'btn btn-info' %>
-			<% end %> <%= link_to 'Back', bids_path, class: 'btn btn-default' %>			
+				<%= link_to 'Edit', '#', class: 'btn btn-info' %>
+			<% end %>
+			<% unless current_user.supplier.nil? %>
+				<%= link_to 'Back', bids_path, class: 'btn btn-default' %>
+			<% else %>
+				<%= link_to 'Back', request_path(@bid.request), class: 'btn btn-default' %>
+			<% end %>
 		</div>
 		<hr>
 

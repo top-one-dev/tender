@@ -85,7 +85,7 @@
           <th>Name</th>
           <th>Quantity</th>
           <th>Unit</th>
-          <th class="bg-success">Unit Price <%= @request.preferred_currency %> <span class="text-danger">*</span></th>
+          <th class="bg-success">Unit Price <span id="currency"><%= current_geo['currency']['code'] %></span> <span class="text-danger">*</span></th>
           <th class="text-center" >Item total</th>
         </tr>
       </thead>

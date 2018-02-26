@@ -133,7 +133,7 @@
 													<b>YES / NO</b>
 												<% else %>
 													<b class="text-uppercase"><%= question.question_type %></b>
-													<% if question.question_type == 'list' or question.question_type == 'checkbox' %>
+													<% if question.question_type == 'list' or question.question_type == 'check' %>
 														<br>
 														<small class="text-muted">( <%= question.options %> )</small>
 													<% end %>

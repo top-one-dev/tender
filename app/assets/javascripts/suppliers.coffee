@@ -25,7 +25,7 @@ $(document).on 'turbolinks:load', ->
 			type: 'POST'
 			url: url
 			dataType: 'json'
-			data: { 'message': { 'content' : content, 'user_id': buyer, 'supplier_id': supplier, 'request_id': request } }
+			data: { 'message': { 'content' : content, 'from': 'supplier', 'read': false,  'user_id': buyer, 'supplier_id': supplier, 'request_id': request } }
 			success: (res) ->
 				$('#send-message').html('send').attr "disabled", false
 				$('#message-content').attr "disabled", false

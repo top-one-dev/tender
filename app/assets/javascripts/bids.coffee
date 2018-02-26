@@ -31,3 +31,28 @@ $(document).on 'turbolinks:load', ->
             	res_data    = $.parseXML result
             	document_url   = $(res_data).find("Location").text()
             	$('#bid_document').val document_url
+
+    $('#bid_bid_currency').on 'change', (event)->
+    	$('#currency').html $('#bid_bid_currency option:selected').attr('value')
+
+   	if $('.qanswer-checkbox').length
+   		qanswers = []
+   		$('.qanswer-checkbox').each (index)->
+   			if $(this).is(':checked')
+   				qanswers.push $(this).attr('data-value')
+    	if qanswers.length > 0
+    		$('#qanswers-checkbox').val qanswers.join()   	
+   	
+
+    $('.qanswer-checkbox').on 'click', (event)->
+    	qanswers = []
+    	$('.qanswer-checkbox').each (index)->
+    		if $(this).is(':checked')
+   				qanswers.push $(this).attr('data-value')
+   		console.log qanswers
+    	if qanswers.length > 0
+    		$('#qanswers-checkbox').val qanswers.join()
+
+
+
+

@@ -6,7 +6,7 @@ class BidsController < ApplicationController
   # GET /bids
   # GET /bids.json
   def index
-    @bids = Bid.all.where(:status => 'sent')
+    @bids = current_user.supplier.bids.where(:status => 'sent')
     @active_bids = []
     @ended_bids  = []
     @bids.each do |bid|
@@ -15,7 +15,10 @@ class BidsController < ApplicationController
       else
         @ended_bids  << bid
       end 
-    end     
+    end
+    unless current_user.supplier.nil?
+      @supplier_token = crypt.encrypt_and_sign current_user.supplier.id
+    end 
     # @bids = current_user.supplier.bids
   end
 
@@ -38,6 +41,7 @@ class BidsController < ApplicationController
 
   # GET /bids/1/edit
   def edit
+    
   end
 
   # POST /bids
@@ -72,16 +76,17 @@ class BidsController < ApplicationController
             end       
           end
 
+          TenderBooksNotifierMailer.bid_supplier(@bid.request.user, @bid.supplier, @bid.request).deliver
+          TenderBooksNotifierMailer.bid_buyer(@bid.request.user, @bid.supplier, @bid.request).deliver
+
           if @bid.supplier.user.nil?
-            flash[:notice] = "Successfully submitted. You need to signup with this email to continue."
-            redirect_to new_user_registration_path
+            format.html { redirect_to new_user_registration_path, notice: "Successfully submitted. You need to signup with this email to continue." }
           else
             if user_signed_in?
               format.html { redirect_to @bid, notice: 'Bid was successfully created.' }
               format.json { render :show, status: :created, location: @bid }  
-            else
-              flash[:notice] = "Successfully submitted. You need to signin to continue because you have already account on TenderBooks."
-              redirect_to new_user_session_path
+            else              
+              format.html { redirect_to new_user_session_path, notice: "Successfully submitted. You need to signin to continue because you have already account on TenderBooks." }
             end
           end         
 

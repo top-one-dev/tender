@@ -12,7 +12,10 @@
 		<% end %>
 	</select>
 <% elsif question.question_type == 'check' %>
+	<input type="hidden" name="qanswers[answer][]" id="qanswers-checkbox">
 	<% question.options.split(',').each do |option| %>
-		<label class="checkbox-inline"><input type="checkbox" name="qanswers[answer][][]"><%= option %></label>
+		<div class="checkbox">
+			<label><input type="checkbox" name="" class="qanswer-checkbox" data-value="<%= option %>"><%= option %></label>	
+		</div>		
 	<% end %>	
 <% end %>

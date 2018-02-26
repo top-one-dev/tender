@@ -16,12 +16,14 @@ ActiveRecord::Schema.define(version: 20180226094937) do
     t.integer  "request_id"
     t.integer  "supplier_id"
     t.text     "content"
+    t.string   "bid_currency"
+    t.float    "bid_budget"
+    t.string   "document"
     t.string   "status"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
-    t.text     "document"
-    t.decimal  "bid_budget"
-    t.text     "bid_currency"
+    t.index ["request_id"], name: "index_bids_on_request_id"
+    t.index ["supplier_id"], name: "index_bids_on_supplier_id"
   end
 
   create_table "companies", force: :cascade do |t|
@@ -99,6 +101,8 @@ ActiveRecord::Schema.define(version: 20180226094937) do
   create_table "messages", force: :cascade do |t|
     t.text     "content"
     t.string   "attach"
+    t.string   "from"
+    t.boolean  "read"
     t.integer  "user_id"
     t.integer  "supplier_id"
     t.integer  "request_id"

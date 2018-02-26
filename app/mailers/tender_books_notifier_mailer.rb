@@ -16,6 +16,20 @@ class TenderBooksNotifierMailer < ApplicationMailer
 		mail( :to => @buyer.email,	:subject => 'You sent invite!' )
 	end
 
+	def bid_supplier(buyer, supplier, request)
+		@buyer 		= buyer
+		@supplier 	= supplier
+		@request 	= request
+		mail( :to => @supplier.email,	:subject => 'Thanks for your bidding.' )
+	end
+
+	def bid_buyer( buyer, supplier, request)
+		@buyer 		= buyer
+		@supplier 	= supplier
+		@request 	= request
+		mail( :to => @buyer.email,	:subject => "#{@supplier.email} made a bid for you" )
+	end
+
 	private
 	
 	def crypt

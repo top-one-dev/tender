@@ -3,7 +3,7 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 #question-anwers{
 	padding: 30px 20px;
-	input, select{
+	input[type='text'], select{
 		margin: 15px 0;
 	}
 	textarea{

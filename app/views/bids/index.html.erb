@@ -22,7 +22,7 @@
                 <i class="glyphicon glyphicon-time"></i>&nbsp;<%= distance_of_time_in_words(Time.now, bid.request.end_time) %>
               </td>
               <td>
-                <%= link_to '<b>Make a bid</b>'.html_safe, new_bid_path, class: 'btn btn-sm btn-info' %>
+                <%= link_to '<b>Make a bid</b>'.html_safe, new_bid_path( id: bid.request.id, token: @supplier_token ), class: 'btn btn-sm btn-info' %>
                 <%= link_to '<b>View</b>'.html_safe, bid, class: 'btn btn-sm btn-default' %>
               </td>
             </tr>

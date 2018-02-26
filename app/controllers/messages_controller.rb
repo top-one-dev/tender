@@ -4,7 +4,21 @@ class MessagesController < ApplicationController
   # GET /messages
   # GET /messages.json
   def index
-    @messages = Message.all
+    if params[:id].nil?
+      if current_user.requests.exists?
+        @request_id = current_user.requests.first.id
+      else
+        @request_id = current_user.supplier.requests.first.id
+      end
+    else
+      @request_id = params[:id]
+    end
+    @messages   = current_user.messages.where(request_id: @request_id)
+    @requests   = current_user.requests
+    if @messages.empty?
+      @messages = current_user.supplier.messages.where(request_id: @request_id)
+      @requests = current_user.supplier.requests
+    end
   end
 
   # GET /messages/1
@@ -69,6 +83,6 @@ class MessagesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def message_params
-      params.require(:message).permit(:content, :attach, :user_id, :supplier_id, :request_id)
+      params.require(:message).permit(:content, :attach, :from, :read, :user_id, :supplier_id, :request_id)
     end
 end
