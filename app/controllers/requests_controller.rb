@@ -73,7 +73,7 @@ class RequestsController < ApplicationController
 
       respond_to do |format|
         if @request.save
-          
+
           unless item_params.empty?
             JSON.parse(item_params.to_s).each do |item|
               @request.items.create!(item)
@@ -97,12 +97,12 @@ class RequestsController < ApplicationController
               TenderBooksNotifierMailer.invite_supplier(supplier, @request).deliver
               TenderBooksNotifierMailer.invite_notifier(current_user, supplier, @request).deliver
               @request.messages.create!(
-                                        from: 'buyer',
-                                        read: false,
-                                        user_id: current_user.id, 
-                                        supplier_id: supplier.id,
-                                        content: 'Please apply...'
-                                      )
+                from: 'buyer',
+                read: false,
+                user_id: current_user.id, 
+                supplier_id: supplier.id,
+                content: 'Please apply...'
+                )
             end
 
           end          
@@ -124,6 +124,50 @@ class RequestsController < ApplicationController
   def update
     respond_to do |format|
       if @request.update(request_params)
+
+        unless item_params.empty?
+            @request.items.each do |item|
+              item.destroy!
+            end
+            JSON.parse(item_params.to_s).each do |item|
+              @request.items.create!(item)
+            end
+          end
+
+          unless question_params.empty?
+            @request.questions.each do |question|
+              question.destroy!
+            end
+            JSON.parse(question_params.to_s).each do |question|
+              @request.questions.create!(question)
+            end
+          end
+
+          unless participant_params.empty?
+
+            participant_params.each do |participant|
+
+              supplier = Supplier.find_or_create_by(email: participant)
+              
+              unless @request.suppliers.include? supplier
+                @request.suppliers << supplier
+                if User.where(email: supplier.email).exists?
+                  supplier.update( user_id: current_user.id )
+                end
+                TenderBooksNotifierMailer.invite_supplier(supplier, @request).deliver
+                TenderBooksNotifierMailer.invite_notifier(current_user, supplier, @request).deliver
+                @request.messages.create!(
+                  from: 'buyer',
+                  read: false,
+                  user_id: current_user.id, 
+                  supplier_id: supplier.id,
+                  content: 'Please apply...'
+                  )
+              end
+
+            end
+
+          end 
         format.html { redirect_to @request, notice: 'Request was successfully updated.' }
         format.json { render :show, status: :ok, location: @request }
       else
@@ -152,21 +196,21 @@ class RequestsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def request_params
       params.require(:request).permit(
-                                      :name, 
-                                      :end_time, 
-                                      :description, 
-                                      :attach,
-                                      :permission,
-                                      :total_price_must,
-                                      :allow_alternative_bids,
-                                      :sealed_bids,
-                                      :preferred_currency,
-                                      :expected_budget,
-                                      :user_id, 
-                                      :company_id, 
-                                      :folder_id, 
-                                      :request_type
-                                      )
+        :name, 
+        :end_time, 
+        :description, 
+        :attach,
+        :permission,
+        :total_price_must,
+        :allow_alternative_bids,
+        :sealed_bids,
+        :preferred_currency,
+        :expected_budget,
+        :user_id, 
+        :company_id, 
+        :folder_id, 
+        :request_type
+        )
     end
 
     def item_params
@@ -193,4 +237,4 @@ class RequestsController < ApplicationController
       @s3_direct_post = S3_BUCKET.presigned_post(key: "requests/#{current_user.id}/#{Time.now.strftime("%Y%m%d%H%M")}/${filename}", success_action_status: '201', acl: 'public-read')
     end
 
-end
+  end
