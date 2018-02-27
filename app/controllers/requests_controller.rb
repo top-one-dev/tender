@@ -143,31 +143,34 @@ class RequestsController < ApplicationController
             end
           end
 
-          unless participant_params.empty?
+          unless participant_params.nil?
 
-            participant_params.each do |participant|
+            unless participant_params.empty?
 
-              supplier = Supplier.find_or_create_by(email: participant)
-              
-              unless @request.suppliers.include? supplier
-                @request.suppliers << supplier
-                if User.where(email: supplier.email).exists?
-                  supplier.update( user_id: current_user.id )
+              participant_params.each do |participant|
+
+                supplier = Supplier.find_or_create_by(email: participant)
+                
+                unless @request.suppliers.include? supplier
+                  @request.suppliers << supplier
+                  if User.where(email: supplier.email).exists?
+                    supplier.update( user_id: current_user.id )
+                  end
+                  TenderBooksNotifierMailer.invite_supplier(supplier, @request).deliver
+                  TenderBooksNotifierMailer.invite_notifier(current_user, supplier, @request).deliver
+                  @request.messages.create!(
+                    from: 'buyer',
+                    read: false,
+                    user_id: current_user.id, 
+                    supplier_id: supplier.id,
+                    content: 'Please apply...'
+                    )
                 end
-                TenderBooksNotifierMailer.invite_supplier(supplier, @request).deliver
-                TenderBooksNotifierMailer.invite_notifier(current_user, supplier, @request).deliver
-                @request.messages.create!(
-                  from: 'buyer',
-                  read: false,
-                  user_id: current_user.id, 
-                  supplier_id: supplier.id,
-                  content: 'Please apply...'
-                  )
+
               end
-
-            end
-
-          end 
+            end 
+          end
+          
         format.html { redirect_to @request, notice: 'Request was successfully updated.' }
         format.json { render :show, status: :ok, location: @request }
       else
