@@ -1,4 +1,4 @@
-<h2 class="text-muted">Create a request</h2>
+<h2 class="text-muted"><%= title %></h2>
 <hr>
 <%= form_for(request) do |f| %>
 <% if request.errors.any? %>
@@ -33,7 +33,7 @@
             <div class="form-group required">
               <%= f.label :end_time, class: 'control-label' %>
               <div class='input-group date' id='request-end-time'>
-                <%= f.text_field :end_time, class: 'form-control', required: true, value: '' %>
+                <%= f.text_field :end_time, class: 'form-control', required: true, placeholder: 'Enter end time...' %>
                 <span class="input-group-addon">
                   <span class="glyphicon glyphicon-calendar"></span>
                 </span>
@@ -89,7 +89,28 @@
         </div>
         <% end %>
         <%= hidden_field_tag :request_items %>
-        <table class="table" id="request-items-table"></table>
+        <table class="table" id="request-items-table">
+          <% unless @items.nil? %>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Unit</th>
+                <th>Quantity</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @items.each do |item| %>
+              <tr>
+                <td><%= item.name %></td>
+                <td><%= item.unit %></td>
+                <td><%= item.quantity %></td>
+                <td><%= item.description %></td>
+              </tr>
+              <% end %>
+            </tbody>
+          <% end %>
+        </table>
 
         <hr>
         <%= f.hidden_field :attach %>
@@ -165,14 +186,39 @@
           </div>
         </div>
         <%= hidden_field_tag :request_questions %>
-        <table class="table" id="request-questions-table"></table>
+        <table class="table" id="request-questions-table">
+          <% unless @questions.nil? %>
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Type</th>
+                <th>Options</th>
+                <th>Enable attach</th>
+                <th>Mandatory</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @questions.each do |question| %>
+              <tr>
+                <td><%= question.title %></td>
+                <td><%= question.description %></td>
+                <td><%= question.question_type %></td>
+                <td><%= question.options %></td>
+                <td><%= question.enable_attatch %></td>
+                <td><%= question.mandatory %></td>
+              </tr>
+              <% end %>
+            </tbody>
+          <% end %>
+        </table>
         <hr>
         <div class="row">
           <div class="col-sm-4">
             <a class="btn btn-default btn-block request-perm" id="public-request">public request</a>
           </div>
           <div class="col-sm-4">
-            <a class="btn btn-default btn-block request-perm" id="restricted-request">pestricted public request</a>
+            <a class="btn btn-default btn-block request-perm" id="restricted-request">restricted public request</a>
           </div>
           <div class="col-sm-4">
             <a class="btn btn-success btn-block request-perm" id="private-request">private request <i class="glyphicon glyphicon-ok"></i></a>
@@ -286,7 +332,19 @@
           <thead>
             <tr><th>Name</th><th>Unit</th><th>Quantity</th><th>Desciption</th><th></th></tr>
           </thead>
-          <tbody></tbody>
+          <tbody>
+            <% unless @items.nil? %>
+              <% @items.each do |item| %>
+              <tr>
+                <td><%= item.name %></td>
+                <td><%= item.unit %></td>
+                <td><%= item.quantity %></td>
+                <td><%= item.description %></td>
+                <td><i class='glyphicon glyphicon-trash'></i></td>
+              </tr>
+              <% end %>
+            <% end %>
+          </tbody>
         </table>
       </div>
       <div class="modal-footer">
@@ -351,10 +409,24 @@
         <table class="table" id="questions-table">
           <thead>
             <tr>
-              <th>Title</th><th>Description</th><th>Type</th><th>Options</th><th>Enable attatch</th><th>mandatory</th><th></th>
+              <th>Title</th><th>Description</th><th>Type</th><th>Options</th><th>Enable attach</th><th>Mandatory</th><th></th>
             </tr>
           </thead>
-          <tbody></tbody>
+          <tbody>
+            <% unless @questions.nil? %>
+              <% @questions.each do |question| %>
+              <tr>
+                <td><%= question.title %></td>
+                <td><%= question.description %></td>
+                <td><%= question.question_type %></td>
+                <td><%= question.options %></td>
+                <td><%= question.enable_attatch %></td>
+                <td><%= question.mandatory %></td>
+                <td><i class='glyphicon glyphicon-trash'></i></td>
+              </tr>
+              <% end %>
+            <% end %>
+          </tbody>
         </table>
       </div>
       <div class="modal-footer">

@@ -1,6 +1,17 @@
-<h1>Editing Request</h1>
-
-<%= render 'form', request: @request %>
-
-<%= link_to 'Show', @request %> |
-<%= link_to 'Back', requests_path %>
+<% provide(:title, "Edit Request") %>
+<section>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-9">
+				<%= render 'form', request: @request, type: @type, title: "Edit Request" %>
+			</div>
+			<div class="col-md-3">
+				<hr>
+				<%= link_to '<b class="text-info">BACK</b>'.html_safe, requests_path, class: 'btn btn-block btn-default' %>
+				<hr>
+				<%= link_to '<b class="text-info">SHOW</b>'.html_safe, @request, class: 'btn btn-block btn-default' %>
+				<hr>
+			</div>
+		</div>
+	</div>
+</section>

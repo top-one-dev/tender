@@ -2,7 +2,7 @@ class RequestsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_request, only: [:show, :edit, :update, :destroy]
   before_action :set_company
-  before_action :set_s3_direct_post, only: [:new, :create]
+  before_action :set_s3_direct_post, only: [:new, :create, :edit, :update]
 
   # GET /requests
   # GET /requests.json
@@ -51,6 +51,11 @@ class RequestsController < ApplicationController
 
   # GET /requests/1/edit
   def edit
+    @type = @request.request_type
+    if @type == 'RFQ'
+      @items = @request.items
+    end
+    @questions = @request.questions
   end
 
   # POST /requests

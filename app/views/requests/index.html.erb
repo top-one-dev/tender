@@ -148,7 +148,8 @@
                         </td>
                         <td></td>
                         <td>
-                          <%= link_to 'View', request, class: "btn btn-default btn-sm" %>
+                          <%= link_to '<i class="glyphicon glyphicon-eye-open text-muted"></i> View'.html_safe, request, class: "btn btn-default btn-sm" %>
+                          <%= link_to '<i class="glyphicon glyphicon-edit text-muted"></i> Edit'.html_safe, edit_request_path(request), class: 'btn btn-default btn-sm' %>
                         </td>
                       </tr>
                       <% end %>

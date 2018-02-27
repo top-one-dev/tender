@@ -11,16 +11,21 @@ $(document).on 'turbolinks:load', ->
 		val = $('#request_end_time').val()
 		$('#request_end_time').attr( 'value', val )
 	
-	$('input[type="checkbox"].toggle').bootstrapToggle()
-
-	if $('#request_permission').length
-		$('#request_permission').val 'private'
+	$('input[type="checkbox"].toggle').bootstrapToggle()		
 
 	$('.request-perm').on 'click', ->
 		$('.request-perm').removeClass('btn-success').addClass('btn-default')
 		$('.request-perm').children('i').remove()
 		$('#request_permission').val $(this).html().split(' ')[0]
 		$(this).removeClass('btn-default').addClass('btn-success').append(' <i class="glyphicon glyphicon-ok"></i>')
+
+	if $('#request_permission').length
+		if $('#request_permission').val() == ''
+			$('#request_permission').val 'private'
+			$('#private-request').click()
+		else
+			$("##{$('#request_permission').val()}-request").click()
+			console.log $('#request_permission').val()
 
 
 	$('#add-participant').on 'click', ->
