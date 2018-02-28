@@ -125,21 +125,24 @@ class RequestsController < ApplicationController
     respond_to do |format|
       if @request.update(request_params)
 
-        unless item_params.empty?
-            @request.items.each do |item|
-              item.destroy!
-            end
-            JSON.parse(item_params.to_s).each do |item|
-              @request.items.create!(item)
+          unless item_params.empty?
+            JSON.parse(item_params.to_s).each_with_index do |item, index|
+              unless @request.items[index].nil?
+                @request.items[index].update!(item)
+              else
+                @request.items.create!(item)
+              end              
             end
           end
 
           unless question_params.empty?
-            @request.questions.each do |question|
-              question.destroy!
-            end
-            JSON.parse(question_params.to_s).each do |question|
+           JSON.parse(question_params.to_s).each_with_index do |question, index|
               @request.questions.create!(question)
+              unless @request.questions[index].nil?
+                @request.questions.update!(question)
+              else
+                @request.questions.create!(question)
+              end
             end
           end
 
@@ -170,7 +173,7 @@ class RequestsController < ApplicationController
               end
             end 
           end
-          
+
         format.html { redirect_to @request, notice: 'Request was successfully updated.' }
         format.json { render :show, status: :ok, location: @request }
       else
