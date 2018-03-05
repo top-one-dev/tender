@@ -4,7 +4,11 @@ class RequisitionsController < ApplicationController
   # GET /requisitions
   # GET /requisitions.json
   def index
-    @requisitions = Requisition.all
+    @requisitions           = Requisition.all
+    @new_requisitions       = Requisition.where(status: 'new')
+    @open_requisitions      = Requisition.where(status: 'open')
+    @returned_requisitions  = Requisition.where(status: 'returned')
+    @tendering_requisitions = Requisition.where(status: 'tendering')
   end
 
   # GET /requisitions/1

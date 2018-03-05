@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180305102313) do
+ActiveRecord::Schema.define(version: 20180305111036) do
 
   create_table "bids", force: :cascade do |t|
     t.integer  "request_id"
@@ -178,8 +178,10 @@ ActiveRecord::Schema.define(version: 20180305102313) do
     t.integer  "folder_id"
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
+    t.integer  "requisition_id"
     t.index ["company_id"], name: "index_requests_on_company_id"
     t.index ["folder_id"], name: "index_requests_on_folder_id"
+    t.index ["requisition_id"], name: "index_requests_on_requisition_id"
     t.index ["user_id"], name: "index_requests_on_user_id"
   end
 

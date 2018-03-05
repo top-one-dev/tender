@@ -1,4 +1,442 @@
-<p id="notice"><%= notice %></p>
+<% provide(:title, "Requisitions") %>
+<section style="min-height: 60vh;">
+  <div class="container">
+    <ul class="nav nav-tabs">
+      <li><a href="javascript:;" id="showFolders" >Show filters</a></li>
+      <li class="active"><a data-toggle="pill" href="#reqruisitionsActiveRequisitions">Active requisitions</a></li>
+      <li><a data-toggle="pill" href="#requisitionsArchivedRequisitions">Archived requisitions</a></li>
+      <li class="pull-right">
+        <button class="btn btn-sm btn-success">
+          <i class="glyphicon glyphicon-plus"></i>
+          Access requisition web form
+        </button>
+        <button class="btn btn-sm btn-success">
+          <i class="glyphicon glyphicon-remove-sign"></i>
+          Clear Filters
+        </button>
+        
+      </li>
+    </ul>
+
+    <div id="sidebar-menu">
+      <h4 class="text-muted">
+        Filter requisitions
+        <span class="pull-right"><a id="hideFolders" class="btn btn-blue btn-xs" href="javascript:;">
+          <i class="glyphicon glyphicon-triangle-left"></i>
+        </a></span>
+      </h4>
+      <hr>
+      <h5>By buyer</h5>
+      <hr>
+      <select class="form-control">
+        <option>Buyer1</option>
+        <option>Buyer3</option>
+        <option>Buyer2</option>
+      </select>
+      <hr>
+      <h5>By status</h5>
+      <hr>
+    </div>
+
+    <div class="tab-content">
+      <div id="requrisitionsShowFilter" class="tab-pane fade in active">
+        
+      </div>
+      <div id="reqruisitionsActiveRequisitions" class="tab-pane fade in active">
+        <br>
+        <div class="panel-group" id="accordion">
+          <div class="panel panel-info">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
+                  New
+                  <small class="pull-right">
+                    <i class="glyphicon glyphicon-triangle-bottom"></i>
+                  </small>
+                </a>
+              </h4>
+            </div>
+            <div id="collapse1" class="panel-collapse collapse in">
+              <div class="panel-body table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>
+                        <small class="text-muted">Name</small>
+                      </th>
+                      <th>
+                        <small class="text-muted">Messages</small>
+                      </th>
+                      <th>
+                        <small class="text-muted">Requisitioner</small>
+                      </th>
+                      <th>
+                        <small class="text-muted">Delivery date</small>
+                      </th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% if @new_requisitions.empty? %>
+                    <tr>
+                      <td colspan="4">
+                        <p class="text-muted">
+                          There are no new requisitions.
+                        </p>
+                      </td>
+                    </tr>
+                    <% else %>
+                      <% @new_requisitions.each do |requisition| %>
+                        <tr>
+                          <td><%= requisition.name %></td>
+                          <td><i class="glyphicon glyphicon-envelope"></i> <%= requisition.messages.count %></td>
+                          <td><%= requisition.contact_name %></td>
+                          <td><%= requisition.delivery_date %></td>
+                          <td><%= link_to 'View', '#', class: 'btn btn-default btn-sm' %></td>
+                        </tr>
+                      <% end %>
+                    <% end %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-info">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
+                  Open
+                  <small class="pull-right">
+                    <i class="glyphicon glyphicon-triangle-bottom"></i>
+                  </small>
+                </a>
+              </h4>
+            </div>
+            <div id="collapse2" class="panel-collapse collapse">
+              <div class="panel-body table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>
+                        <small class="text-muted">Name</small>
+                      </th>
+                      <th>
+                        <small class="text-muted">Messages</small>
+                      </th>
+                      <th>
+                        <small class="text-muted">Requisitioner</small>
+                      </th>
+                      <th>
+                        <small class="text-muted">Buyer</small>
+                      </th>
+                      <th>
+                        <small class="text-muted">Delivery date</small>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% if @open_requisitions.empty? %>
+                    <tr>
+                      <td colspan="5">
+                        <p class="text-muted">
+                          There are no new requisitions.
+                        </p>
+                      </td>
+                    </tr>
+                    <% else %>
+                      <% @open_requisitions.each do |requisition| %>
+                        <tr>
+                          <td><%= requisition.name %></td>
+                          <td><i class="glyphicon glyphicon-envelope"></i> <%= requisition.messages.count %></td>
+                          <td><%= requisition.contact_name %></td>
+                          <td><%= requisition.user.name %></td>
+                          <td><%= requisition.delivery_date %></td>
+                          <td><%= link_to 'View', '#', class: 'btn btn-default btn-sm' %></td>
+                        </tr>
+                      <% end %>
+                    <% end %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel panel-info">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
+                  Returned
+                  <small class="pull-right">
+                    <i class="glyphicon glyphicon-triangle-bottom"></i>
+                  </small>
+                </a>
+              </h4>
+            </div>
+            <div id="collapse3" class="panel-collapse collapse">
+              <div class="panel-body table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>
+                        <small class="text-muted">Name</small>
+                      </th>
+                      <th>
+                        <small class="text-muted">Messages</small>
+                      </th>
+                      <th>
+                        <small class="text-muted">Requisitioner</small>
+                      </th>
+                      <th>
+                        <small class="text-muted">Buyer</small>
+                      </th>
+                      <th>
+                        <small class="text-muted">Delivery date</small>
+                      </th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% if @open_requisitions.empty? %>
+                    <tr>
+                      <td colspan="5">
+                        <p class="text-muted">
+                          There are no new requisitions.
+                        </p>
+                      </td>
+                    </tr>
+                    <% else %>
+                      <% @returned_requisitions.each do |requisition| %>
+                        <tr>
+                          <td><%= requisition.name %></td>
+                          <td><i class="glyphicon glyphicon-envelope"></i> <%= requisition.messages.count %></td>
+                          <td><%= requisition.contact_name %></td>
+                          <td><%= requisition.user.name %></td>
+                          <td><%= requisition.delivery_date %></td>
+                          <td><%= link_to 'View', '#', class: 'btn btn-default btn-sm' %></td>
+                        </tr>
+                      <% end %>
+                    <% end %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel panel-info">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse4">
+                  Tendering
+                  <small class="pull-right">
+                    <i class="glyphicon glyphicon-triangle-bottom"></i>
+                  </small>
+                </a>
+              </h4>
+            </div>
+            <div id="collapse4" class="panel-collapse collapse">
+              <div class="panel-body table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>
+                        <small class="text-muted">Name</small>
+                      </th>
+                      <th>
+                        <small class="text-muted">Messages</small>
+                      </th>
+                      <th>
+                        <small class="text-muted">Requisitioner</small>
+                      </th>
+                      <th>
+                        <small class="text-muted">Buyer</small>
+                      </th>
+                      <th>
+                        <small class="text-muted">RFx</small>
+                      </th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% if @open_requisitions.empty? %>
+                    <tr>
+                      <td colspan="5">
+                        <p class="text-muted">
+                          There are no new requisitions.
+                        </p>
+                      </td>
+                    </tr>
+                    <% else %>
+                      <% @returned_requisitions.each do |requisition| %>
+                        <tr>
+                          <td><%= requisition.name %></td>
+                          <td><i class="glyphicon glyphicon-envelope"></i> <%= requisition.messages.count %></td>
+                          <td><%= requisition.contact_name %></td>
+                          <td><%= requisition.user.name %></td>
+                          <td><%= requisition.delivery_date %></td>
+                          <td><%= link_to 'View Request', '#', class: 'btn btn-default btn-sm' %></td>
+                        </tr>
+                      <% end %>
+                    <% end %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div>            
+      </div>
+      <div id="requisitionsArchivedRequisitions" class="tab-pane fade">
+        <br>
+        <div class="panel-group" id="accordion">
+          <div class="panel panel-info">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse21">
+                  New
+                  <small class="pull-right">
+                    <i class="glyphicon glyphicon-triangle-bottom"></i>
+                  </small>
+                </a>
+              </h4>
+            </div>
+            <div id="collapse21" class="panel-collapse collapse in">
+              <div class="panel-body table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>
+                        <small class="text-muted">Name</small>
+                      </th>
+                      <th>
+                        <small class="text-muted">Messages</small>
+                      </th>
+                      <th>
+                        <small class="text-muted">Requisitioner</small>
+                      </th>
+                      <th>
+                        <small class="text-muted">Delivery date</small>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td colspan="4">
+                        <p class="text-muted">
+                          There are no new requisitions.
+                        </p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-info">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse22">
+                  Open
+                  <small class="pull-right">
+                    <i class="glyphicon glyphicon-triangle-bottom"></i>
+                  </small>
+                </a>
+              </h4>
+            </div>
+            <div id="collapse22" class="panel-collapse collapse">
+              <div class="panel-body table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>
+                        <small class="text-muted">Name</small>
+                      </th>
+                      <th>
+                        <small class="text-muted">Messages</small>
+                      </th>
+                      <th>
+                        <small class="text-muted">Requisitioner</small>
+                      </th>
+                      <th>
+                        <small class="text-muted">Delivery date</small>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td colspan="4">
+                        <p class="text-muted">
+                          There are no new requisitions.
+                        </p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel panel-info">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse23">
+                  Returned
+                  <small class="pull-right">
+                    <i class="glyphicon glyphicon-triangle-bottom"></i>
+                  </small>
+                </a>
+              </h4>
+            </div>
+            <div id="collapse23" class="panel-collapse collapse">
+              <div class="panel-body table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>
+                        <small class="text-muted">Name</small>
+                      </th>
+                      <th>
+                        <small class="text-muted">Messages</small>
+                      </th>
+                      <th>
+                        <small class="text-muted">Requisitioner</small>
+                      </th>
+                      <th>
+                        <small class="text-muted">Delivery date</small>
+                      </th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>#1 laptop</td>
+                      <td></td>
+                      <td>
+                        elvis njau
+                      </td>
+                      <td>
+                        roger ndungu
+                      </td>
+                      <td>
+                        Jan 26, 2018
+                      </td>
+                      <td>
+                        <button class="btn btn-default btn-sm">View</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div>            
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- <p id="notice"><%= notice %></p>
 
 <h1>Requisitions</h1>
 
@@ -59,3 +497,4 @@
 <br>
 
 <%= link_to 'New Requisition', new_requisition_path %>
+ -->
