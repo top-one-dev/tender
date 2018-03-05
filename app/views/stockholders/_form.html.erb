@@ -1,0 +1,42 @@
+<%= form_for(stockholder) do |f| %>
+  <% if stockholder.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(stockholder.errors.count, "error") %> prohibited this stockholder from being saved:</h2>
+
+      <ul>
+      <% stockholder.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= f.label :email %>
+    <%= f.text_field :email %>
+  </div>
+
+  <div class="field">
+    <%= f.label :job %>
+    <%= f.text_field :job %>
+  </div>
+
+  <div class="field">
+    <%= f.label :phone %>
+    <%= f.number_field :phone %>
+  </div>
+
+  <div class="field">
+    <%= f.label :requisition_id %>
+    <%= f.text_field :requisition_id %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

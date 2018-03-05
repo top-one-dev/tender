@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @stockholder.name %>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @stockholder.email %>
+</p>
+
+<p>
+  <strong>Job:</strong>
+  <%= @stockholder.job %>
+</p>
+
+<p>
+  <strong>Phone:</strong>
+  <%= @stockholder.phone %>
+</p>
+
+<p>
+  <strong>Requisition:</strong>
+  <%= @stockholder.requisition %>
+</p>
+
+<%= link_to 'Edit', edit_stockholder_path(@stockholder) %> |
+<%= link_to 'Back', stockholders_path %>
