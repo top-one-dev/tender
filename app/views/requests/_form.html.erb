@@ -114,7 +114,7 @@
 
         <hr>
         <%= f.hidden_field :attach %>
-        <div class="well dropzone" id="document" data-url="<%= @s3_direct_post.url %>" data-fields="<%= @s3_direct_post.fields.to_json %>">
+        <div class="well dropzone" id="request-document" data-url="<%= @s3_direct_post.url %>" data-fields="<%= @s3_direct_post.fields.to_json %>">
           <div class="dz-message">
             <span>Drag documents here</span>
           </div>          

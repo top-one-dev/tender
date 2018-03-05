@@ -1,14 +1,24 @@
 class RequisitionsController < ApplicationController
   before_action :set_requisition, only: [:show, :edit, :update, :destroy]
+  before_action :set_s3_direct_post, only: [:new, :create, :edit, :update]
 
   # GET /requisitions
   # GET /requisitions.json
   def index
-    @requisitions           = Requisition.all
-    @new_requisitions       = Requisition.where(status: 'new')
-    @open_requisitions      = Requisition.where(status: 'open')
-    @returned_requisitions  = Requisition.where(status: 'returned')
-    @tendering_requisitions = Requisition.where(status: 'tendering')
+    if current_company.nil?
+      flash[:notice] = 'You need to set company before creating requisition.'
+      redirect_to new_company_path
+    else 
+      @requisitions           = Requisition.all
+      @new_requisitions       = Requisition.where(status: 'new')
+      @open_requisitions      = Requisition.where(status: 'open')
+      @closed_requisitions    = Requisition.where(status: 'closed')
+      @returned_requisitions  = Requisition.where(status: 'returned')
+      @tendering_requisitions = Requisition.where(status: 'tendering')
+
+      company_token           = crypt.encrypt_and_sign current_company.id
+      @web_form               = new_requisition_url(token: company_token)
+    end
   end
 
   # GET /requisitions/1
@@ -18,7 +28,13 @@ class RequisitionsController < ApplicationController
 
   # GET /requisitions/new
   def new
-    @requisition = Requisition.new
+    begin      
+      @company       = Company.find crypt.decrypt_and_verify(params[:token])
+      @requisition   = @company.requisitions.build
+    rescue => detail
+      flash[:error] = 'You typed invalid token. Please check link you received.'
+      redirect_to root_path   
+    end    
   end
 
   # GET /requisitions/1/edit
@@ -74,5 +90,9 @@ class RequisitionsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def requisition_params
       params.require(:requisition).permit(:name, :description, :delivery_date, :quantity, :budget, :budget_currency, :project, :cost_center, :delivery_address, :contact_name, :contact_email, :contact_phone, :contact_department, :contact_manager, :additional_document, :company_id, :user_id, :status)
+    end
+
+    def set_s3_direct_post
+      @s3_direct_post = S3_BUCKET.presigned_post(key: "requisitions/#{Time.now.strftime("%Y%m%d%H%M%S%L")}/${filename}", success_action_status: '201', acl: 'public-read')
     end
 end

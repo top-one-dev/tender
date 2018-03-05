@@ -1,107 +1,150 @@
 <%= form_for(requisition) do |f| %>
   <% if requisition.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(requisition.errors.count, "error") %> prohibited this requisition from being saved:</h2>
-
-      <ul>
-      <% requisition.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
+    <%= error_message requisition %>
   <% end %>
+  <div class="panel panel-default">
+    <div class="panel-heading"><h4 class="text-center">What do you need?</h4></div>
+    <div class="panel-body">
+      <p class="text-muted">
+        Please describe what you want to procure or purchase. 
+        By completing this form, you confirm you have obtained approval from your manager for the below described good/service.
+      </p>
+      <div class="form-group required">
+        <small><%= f.label 'Name of product or service', class: 'control-label' %></small>
+        <%= f.text_field :name, class: 'form-control', required: true %>
+      </div>
 
-  <div class="field">
-    <%= f.label :name %>
-    <%= f.text_field :name %>
+      <div class="form-group required">
+        <small><%= f.label :description, class: 'control-label' %></small>
+        <%= f.text_area :description, class: 'form-control', reuqired: true %>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="form-group required">
+            <small><%= f.label :delivery_date, class: 'control-label'  %></small>
+            <div class='input-group date' id='delivery-date'>
+              <%= f.text_field :delivery_date, class: 'form-control', required: true %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group">
+            <small><%= f.label :quantity, class: 'control-label' %></small>
+            <%= f.number_field :quantity, class: 'form-control', step: '.01' %>
+          </div>
+        </div> 
+      </div>
+
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="row">
+            <div class="col-xs-6">
+              <div class="form-group">
+                <small><%= f.label :budget, class: 'control-label' %></small>
+                <%= f.text_field :budget, class: 'form-control' %>
+              </div>
+            </div>
+            <div class="col-xs-6">
+              <div class="form-group">
+                <small><%= f.label :budget_currency, class: 'control-label' %></small>
+                <%= f.select(:budget_currency, currency_list.first.collect {|key, value| [value, key]}, {:include_blank => "Select Currency", :selected => current_geo['currency']['code'] }, {:class => "form-control", placeholder: 'Select Currency' } ) %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group">
+            <small><%= f.label :project, class: 'control-label' %></small>
+            <%= f.text_field :project, class: 'form-control' %>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="form-group">
+            <small><%= f.label :cost_center, class: 'control-label' %></small>
+            <%= f.text_field :cost_center, class: 'form-control' %>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group">
+            <small><%= f.label :delivery_address, class: 'control-label' %></small>
+            <%= f.text_area :delivery_address, class: 'form-control' %>
+          </div>
+        </div>
+      </div>  
+
+    </div>
   </div>
 
-  <div class="field">
-    <%= f.label :description %>
-    <%= f.text_field :description %>
+  <div class="panel panel-default">
+    <div class="panel-heading"><h4 class="text-center">How can we contact you?</h4></div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="form-group required">
+            <small><%= f.label 'Name', class: 'control-label' %></small>
+            <%= f.text_field :contact_name, class: 'form-control', required: true %>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group required">
+            <small><%= f.label 'Email', class: 'control-label' %></small>
+            <%= f.text_field :contact_email, class: 'form-control', required: true %>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="form-group">
+            <small><%= f.label 'Phone', class: 'control-label' %></small>
+            <%= f.number_field :contact_phone, class: 'form-control' %>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group">
+            <small><%= f.label 'Department', class: 'control-label' %></small>
+            <%= f.text_field :contact_department, class: 'form-control' %>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group">
+            <small><%= f.label 'Manager\'s name', class: 'control-label' %></small>
+            <%= f.text_field :contact_manager, class: 'form-control' %>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div class="text-right">
+        <a href="javascript:;" class="btn btn-info btn-sm">Add colleague</a>
+      </div>
+      <hr>
+    </div>
   </div>
 
-  <div class="field">
-    <%= f.label :delivery_date %>
-    <%= f.datetime_select :delivery_date %>
+  <div class="panel panel-default">
+    <div class="panel-heading"><h4 class="text-center">Additional Document</h4></div>
+    <div class="panel-body">
+      <%= f.hidden_field :additional_document %>
+      <div class="well dropzone" id="requisition-document" data-url="<%= @s3_direct_post.url %>" data-fields="<%= @s3_direct_post.fields.to_json %>">
+        <div class="dz-message">
+          <span>Drag documents here</span>
+        </div>          
+      </div>
+    </div>
   </div>
 
-  <div class="field">
-    <%= f.label :quantity %>
-    <%= f.text_field :quantity %>
+  <%= f.hidden_field :company_id %>
+  <%= f.hidden_field :user_id %>
+  <%= f.hidden_field :status %>
+  <hr>
+  <div class="form-group text-right">
+    <%= f.submit 'Submit', class: 'btn btn-info' %>
   </div>
-
-  <div class="field">
-    <%= f.label :budget %>
-    <%= f.text_field :budget %>
-  </div>
-
-  <div class="field">
-    <%= f.label :budget_currency %>
-    <%= f.text_field :budget_currency %>
-  </div>
-
-  <div class="field">
-    <%= f.label :project %>
-    <%= f.text_field :project %>
-  </div>
-
-  <div class="field">
-    <%= f.label :cost_center %>
-    <%= f.text_field :cost_center %>
-  </div>
-
-  <div class="field">
-    <%= f.label :delivery_address %>
-    <%= f.text_field :delivery_address %>
-  </div>
-
-  <div class="field">
-    <%= f.label :contact_name %>
-    <%= f.text_field :contact_name %>
-  </div>
-
-  <div class="field">
-    <%= f.label :contact_email %>
-    <%= f.text_field :contact_email %>
-  </div>
-
-  <div class="field">
-    <%= f.label :contact_phone %>
-    <%= f.number_field :contact_phone %>
-  </div>
-
-  <div class="field">
-    <%= f.label :contact_department %>
-    <%= f.text_field :contact_department %>
-  </div>
-
-  <div class="field">
-    <%= f.label :contact_manager %>
-    <%= f.text_field :contact_manager %>
-  </div>
-
-  <div class="field">
-    <%= f.label :additional_document %>
-    <%= f.text_field :additional_document %>
-  </div>
-
-  <div class="field">
-    <%= f.label :company_id %>
-    <%= f.text_field :company_id %>
-  </div>
-
-  <div class="field">
-    <%= f.label :user_id %>
-    <%= f.text_field :user_id %>
-  </div>
-
-  <div class="field">
-    <%= f.label :status %>
-    <%= f.text_field :status %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+  <hr>
 <% end %>

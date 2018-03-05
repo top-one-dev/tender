@@ -6,14 +6,14 @@
       <li class="active"><a data-toggle="pill" href="#reqruisitionsActiveRequisitions">Active requisitions</a></li>
       <li><a data-toggle="pill" href="#requisitionsArchivedRequisitions">Archived requisitions</a></li>
       <li class="pull-right">
-        <button class="btn btn-sm btn-success">
+        <button class="btn btn-sm btn-success"  data-toggle="modal" data-target="#webformModal">
           <i class="glyphicon glyphicon-plus"></i>
           Access requisition web form
         </button>
-        <button class="btn btn-sm btn-success">
+        <!-- <button class="btn btn-sm btn-success">
           <i class="glyphicon glyphicon-remove-sign"></i>
           Clear Filters
-        </button>
+        </button> -->
         
       </li>
     </ul>
@@ -29,9 +29,8 @@
       <h5>By buyer</h5>
       <hr>
       <select class="form-control">
-        <option>Buyer1</option>
-        <option>Buyer3</option>
-        <option>Buyer2</option>
+        <option>Assign to me</option>
+        <option>All requisitions</option>
       </select>
       <hr>
       <h5>By status</h5>
@@ -139,7 +138,7 @@
                     <tr>
                       <td colspan="5">
                         <p class="text-muted">
-                          There are no new requisitions.
+                          There are no open requisitions.
                         </p>
                       </td>
                     </tr>
@@ -196,11 +195,11 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <% if @open_requisitions.empty? %>
+                    <% if @returned_requisitions.empty? %>
                     <tr>
                       <td colspan="5">
                         <p class="text-muted">
-                          There are no new requisitions.
+                          There are no returned requisitions.
                         </p>
                       </td>
                     </tr>
@@ -257,22 +256,22 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <% if @open_requisitions.empty? %>
+                    <% if @tendering_requisitions.empty? %>
                     <tr>
                       <td colspan="5">
                         <p class="text-muted">
-                          There are no new requisitions.
+                          There are no tendering requisitions.
                         </p>
                       </td>
                     </tr>
                     <% else %>
-                      <% @returned_requisitions.each do |requisition| %>
+                      <% @tendering_requisitions.each do |requisition| %>
                         <tr>
                           <td><%= requisition.name %></td>
                           <td><i class="glyphicon glyphicon-envelope"></i> <%= requisition.messages.count %></td>
                           <td><%= requisition.contact_name %></td>
                           <td><%= requisition.user.name %></td>
-                          <td><%= requisition.delivery_date %></td>
+                          <td><%= requisition.request.name %></td>
                           <td><%= link_to 'View Request', '#', class: 'btn btn-default btn-sm' %></td>
                         </tr>
                       <% end %>
@@ -287,12 +286,12 @@
       </div>
       <div id="requisitionsArchivedRequisitions" class="tab-pane fade">
         <br>
-        <div class="panel-group" id="accordion">
+        <div class="panel-group" id="accordion1">
           <div class="panel panel-info">
             <div class="panel-heading">
               <h4 class="panel-title">
-                <a data-toggle="collapse" data-parent="#accordion" href="#collapse21">
-                  New
+                <a data-toggle="collapse" data-parent="#accordion1" href="#collapse21">
+                  Tendering
                   <small class="pull-right">
                     <i class="glyphicon glyphicon-triangle-bottom"></i>
                   </small>
@@ -314,28 +313,46 @@
                         <small class="text-muted">Requisitioner</small>
                       </th>
                       <th>
-                        <small class="text-muted">Delivery date</small>
+                        <small class="text-muted">Buyer</small>
                       </th>
+                      <th>
+                        <small class="text-muted">RFx</small>
+                      </th>
+                      <th></th>
                     </tr>
                   </thead>
                   <tbody>
+                    <% if @tendering_requisitions.empty? %>
                     <tr>
-                      <td colspan="4">
+                      <td colspan="5">
                         <p class="text-muted">
-                          There are no new requisitions.
+                          There are no tendering requisitions.
                         </p>
                       </td>
                     </tr>
+                    <% else %>
+                      <% @tendering_requisitions.each do |requisition| %>
+                        <tr>
+                          <td><%= requisition.name %></td>
+                          <td><i class="glyphicon glyphicon-envelope"></i> <%= requisition.messages.count %></td>
+                          <td><%= requisition.contact_name %></td>
+                          <td><%= requisition.user.name %></td>
+                          <td><%= requisition.request.name %></td>
+                          <td><%= link_to 'View Request', '#', class: 'btn btn-default btn-sm' %></td>
+                        </tr>
+                      <% end %>
+                    <% end %>
                   </tbody>
                 </table>
               </div>
             </div>
           </div>
+
           <div class="panel panel-info">
             <div class="panel-heading">
               <h4 class="panel-title">
-                <a data-toggle="collapse" data-parent="#accordion" href="#collapse22">
-                  Open
+                <a data-toggle="collapse" data-parent="#accordion1" href="#collapse22">
+                  Closed
                   <small class="pull-right">
                     <i class="glyphicon glyphicon-triangle-bottom"></i>
                   </small>
@@ -357,72 +374,35 @@
                         <small class="text-muted">Requisitioner</small>
                       </th>
                       <th>
-                        <small class="text-muted">Delivery date</small>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td colspan="4">
-                        <p class="text-muted">
-                          There are no new requisitions.
-                        </p>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-
-          <div class="panel panel-info">
-            <div class="panel-heading">
-              <h4 class="panel-title">
-                <a data-toggle="collapse" data-parent="#accordion" href="#collapse23">
-                  Returned
-                  <small class="pull-right">
-                    <i class="glyphicon glyphicon-triangle-bottom"></i>
-                  </small>
-                </a>
-              </h4>
-            </div>
-            <div id="collapse23" class="panel-collapse collapse">
-              <div class="panel-body table-responsive">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th>
-                        <small class="text-muted">Name</small>
+                        <small class="text-muted">Buyer</small>
                       </th>
                       <th>
-                        <small class="text-muted">Messages</small>
-                      </th>
-                      <th>
-                        <small class="text-muted">Requisitioner</small>
-                      </th>
-                      <th>
-                        <small class="text-muted">Delivery date</small>
+                        <small class="text-muted">Result</small>
                       </th>
                       <th></th>
                     </tr>
                   </thead>
                   <tbody>
+                    <% if @closed_requisitions.empty? %>
                     <tr>
-                      <td>#1 laptop</td>
-                      <td></td>
-                      <td>
-                        elvis njau
-                      </td>
-                      <td>
-                        roger ndungu
-                      </td>
-                      <td>
-                        Jan 26, 2018
-                      </td>
-                      <td>
-                        <button class="btn btn-default btn-sm">View</button>
+                      <td colspan="5">
+                        <p class="text-muted">
+                          There are no closed requisitions.
+                        </p>
                       </td>
                     </tr>
+                    <% else %>
+                      <% @closed_requisitions.each do |requisition| %>
+                        <tr>
+                          <td><%= requisition.name %></td>
+                          <td><i class="glyphicon glyphicon-envelope"></i> <%= requisition.messages.count %></td>
+                          <td><%= requisition.contact_name %></td>
+                          <td><%= requisition.user.name %></td>
+                          <td><%= requisition.request.name %></td>
+                          <td><%= link_to 'View', '#', class: 'btn btn-default btn-sm' %></td>
+                        </tr>
+                      <% end %>
+                    <% end %>
                   </tbody>
                 </table>
               </div>
@@ -435,66 +415,22 @@
   </div>
 </section>
 
-
-<!-- <p id="notice"><%= notice %></p>
-
-<h1>Requisitions</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Description</th>
-      <th>Delivery date</th>
-      <th>Quantity</th>
-      <th>Budget</th>
-      <th>Budget currency</th>
-      <th>Project</th>
-      <th>Cost center</th>
-      <th>Delivery address</th>
-      <th>Contact name</th>
-      <th>Contact email</th>
-      <th>Contact phone</th>
-      <th>Contact department</th>
-      <th>Contact manager</th>
-      <th>Additional document</th>
-      <th>Company</th>
-      <th>User</th>
-      <th>Status</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @requisitions.each do |requisition| %>
-      <tr>
-        <td><%= requisition.name %></td>
-        <td><%= requisition.description %></td>
-        <td><%= requisition.delivery_date %></td>
-        <td><%= requisition.quantity %></td>
-        <td><%= requisition.budget %></td>
-        <td><%= requisition.budget_currency %></td>
-        <td><%= requisition.project %></td>
-        <td><%= requisition.cost_center %></td>
-        <td><%= requisition.delivery_address %></td>
-        <td><%= requisition.contact_name %></td>
-        <td><%= requisition.contact_email %></td>
-        <td><%= requisition.contact_phone %></td>
-        <td><%= requisition.contact_department %></td>
-        <td><%= requisition.contact_manager %></td>
-        <td><%= requisition.additional_document %></td>
-        <td><%= requisition.company %></td>
-        <td><%= requisition.user %></td>
-        <td><%= requisition.status %></td>
-        <td><%= link_to 'Show', requisition %></td>
-        <td><%= link_to 'Edit', edit_requisition_path(requisition) %></td>
-        <td><%= link_to 'Destroy', requisition, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Requisition', new_requisition_path %>
- -->
+<div id="webformModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Access requisition web form</h4>
+      </div>
+      <div class="modal-body">
+        <p class="text-muted">Share this link with colleagues who wish to make a purchase requieset.</p>
+        <div class="form-group">
+          <input type="text" class="form-control" id="web-form" value="<%= @web_form %>">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-info" id="copy-web-form">Copy to clipboard</button>
+      </div>
+    </div>
+  </div>
+</div>

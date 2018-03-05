@@ -1,5 +1,8 @@
-<h1>New Requisition</h1>
-
-<%= render 'form', requisition: @requisition %>
-
-<%= link_to 'Back', requisitions_path %>
+<% provide(:title, "Create Requisition") %>
+<section style="min-height: 60vh;">
+  <div class="container">
+	<h3>Create Requisition</h3>
+	<hr>
+	<%= render 'form', requisition: @requisition %>
+	</div>
+</section>

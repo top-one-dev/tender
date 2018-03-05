@@ -4,8 +4,7 @@
 $(document).on 'turbolinks:load', ->
 	if $('#request_end_time').length
 		$('#request_end_time').val ''
-
-	$('#request-end-time').datetimepicker format: 'YYYY-MM-DD HH:mm'
+		$('#request-end-time').datetimepicker format: 'YYYY-MM-DD HH:mm'
 
 	$('#request-end-time').on "dp.change", (e)->
 		val = $('#request_end_time').val()
@@ -156,14 +155,14 @@ $(document).on 'turbolinks:load', ->
 		$(this).parent().parent().remove()
 
 
-	if $('div#document').length
-		document = new Dropzone 'div#document',
-            url: $('div#document').attr('data-url')
+	if $('div#request-document').length
+		document = new Dropzone 'div#request-document',
+            url: $('div#request-document').attr('data-url')
             method: 'post'
             maxFiles: 1
             timeout: 18000000
             sending: (data, xhr, formData)->
-            	$.each JSON.parse($('div#document').attr('data-fields')), (key, value)->
+            	$.each JSON.parse($('div#request-document').attr('data-fields')), (key, value)->
                     formData.append key, value
             # renameFile: (file)->
             # 	extention = file.name.split('.').pop()
