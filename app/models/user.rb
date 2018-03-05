@@ -7,6 +7,7 @@ class User < ApplicationRecord
 
   has_one :notification, dependent: :destroy
   has_many :requests
+  has_many :requisitions # assigned requisitions
   has_many :messages
   has_one :supplier
   has_and_belongs_to_many :companies
