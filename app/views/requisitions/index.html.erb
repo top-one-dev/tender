@@ -1,0 +1,61 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Requisitions</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Delivery date</th>
+      <th>Quantity</th>
+      <th>Budget</th>
+      <th>Budget currency</th>
+      <th>Project</th>
+      <th>Cost center</th>
+      <th>Delivery address</th>
+      <th>Contact name</th>
+      <th>Contact email</th>
+      <th>Contact phone</th>
+      <th>Contact department</th>
+      <th>Contact manager</th>
+      <th>Additional document</th>
+      <th>Company</th>
+      <th>User</th>
+      <th>Status</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @requisitions.each do |requisition| %>
+      <tr>
+        <td><%= requisition.name %></td>
+        <td><%= requisition.description %></td>
+        <td><%= requisition.delivery_date %></td>
+        <td><%= requisition.quantity %></td>
+        <td><%= requisition.budget %></td>
+        <td><%= requisition.budget_currency %></td>
+        <td><%= requisition.project %></td>
+        <td><%= requisition.cost_center %></td>
+        <td><%= requisition.delivery_address %></td>
+        <td><%= requisition.contact_name %></td>
+        <td><%= requisition.contact_email %></td>
+        <td><%= requisition.contact_phone %></td>
+        <td><%= requisition.contact_department %></td>
+        <td><%= requisition.contact_manager %></td>
+        <td><%= requisition.additional_document %></td>
+        <td><%= requisition.company %></td>
+        <td><%= requisition.user %></td>
+        <td><%= requisition.status %></td>
+        <td><%= link_to 'Show', requisition %></td>
+        <td><%= link_to 'Edit', edit_requisition_path(requisition) %></td>
+        <td><%= link_to 'Destroy', requisition, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Requisition', new_requisition_path %>

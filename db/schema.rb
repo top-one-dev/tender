@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180226094937) do
+ActiveRecord::Schema.define(version: 20180305102313) do
 
   create_table "bids", force: :cascade do |t|
     t.integer  "request_id"
@@ -106,9 +106,11 @@ ActiveRecord::Schema.define(version: 20180226094937) do
     t.integer  "user_id"
     t.integer  "supplier_id"
     t.integer  "request_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.integer  "requisition_id"
     t.index ["request_id"], name: "index_messages_on_request_id"
+    t.index ["requisition_id"], name: "index_messages_on_requisition_id"
     t.index ["supplier_id"], name: "index_messages_on_supplier_id"
     t.index ["user_id"], name: "index_messages_on_user_id"
   end
@@ -140,6 +142,8 @@ ActiveRecord::Schema.define(version: 20180226094937) do
     t.integer  "bid_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.boolean  "like"
+    t.text     "comments"
     t.index ["bid_id"], name: "index_qanswers_on_bid_id"
     t.index ["question_id"], name: "index_qanswers_on_question_id"
   end
@@ -184,6 +188,42 @@ ActiveRecord::Schema.define(version: 20180226094937) do
     t.integer "supplier_id", null: false
     t.index ["request_id", "supplier_id"], name: "index_requests_suppliers_on_request_id_and_supplier_id"
     t.index ["supplier_id", "request_id"], name: "index_requests_suppliers_on_supplier_id_and_request_id"
+  end
+
+  create_table "requisitions", force: :cascade do |t|
+    t.string   "name"
+    t.string   "description"
+    t.datetime "delivery_date"
+    t.float    "quantity"
+    t.float    "budget"
+    t.string   "budget_currency"
+    t.string   "project"
+    t.string   "cost_center"
+    t.string   "delivery_address"
+    t.string   "contact_name"
+    t.string   "contact_email"
+    t.integer  "contact_phone"
+    t.string   "contact_department"
+    t.string   "contact_manager"
+    t.string   "additional_document"
+    t.integer  "company_id"
+    t.integer  "user_id"
+    t.string   "status"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+    t.index ["company_id"], name: "index_requisitions_on_company_id"
+    t.index ["user_id"], name: "index_requisitions_on_user_id"
+  end
+
+  create_table "stockholders", force: :cascade do |t|
+    t.string   "name"
+    t.string   "email"
+    t.string   "job"
+    t.integer  "phone"
+    t.integer  "requisition_id"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.index ["requisition_id"], name: "index_stockholders_on_requisition_id"
   end
 
   create_table "suppliers", force: :cascade do |t|

@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  resources :stockholders
+  resources :requisitions
   resources :bids
   resources :qanswers
   resources :ianswers

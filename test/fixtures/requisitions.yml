@@ -1,0 +1,41 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  description: MyString
+  delivery_date: 2018-03-04 23:06:45
+  quantity: 1.5
+  budget: 1.5
+  budget_currency: MyString
+  project: MyString
+  cost_center: MyString
+  delivery_address: MyString
+  contact_name: MyString
+  contact_email: MyString
+  contact_phone: 1
+  contact_department: MyString
+  contact_manager: MyString
+  additional_document: MyString
+  company: one
+  user: one
+  status: MyString
+
+two:
+  name: MyString
+  description: MyString
+  delivery_date: 2018-03-04 23:06:45
+  quantity: 1.5
+  budget: 1.5
+  budget_currency: MyString
+  project: MyString
+  cost_center: MyString
+  delivery_address: MyString
+  contact_name: MyString
+  contact_email: MyString
+  contact_phone: 1
+  contact_department: MyString
+  contact_manager: MyString
+  additional_document: MyString
+  company: two
+  user: two
+  status: MyString

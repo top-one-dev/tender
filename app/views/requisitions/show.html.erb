@@ -1,0 +1,94 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @requisition.name %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @requisition.description %>
+</p>
+
+<p>
+  <strong>Delivery date:</strong>
+  <%= @requisition.delivery_date %>
+</p>
+
+<p>
+  <strong>Quantity:</strong>
+  <%= @requisition.quantity %>
+</p>
+
+<p>
+  <strong>Budget:</strong>
+  <%= @requisition.budget %>
+</p>
+
+<p>
+  <strong>Budget currency:</strong>
+  <%= @requisition.budget_currency %>
+</p>
+
+<p>
+  <strong>Project:</strong>
+  <%= @requisition.project %>
+</p>
+
+<p>
+  <strong>Cost center:</strong>
+  <%= @requisition.cost_center %>
+</p>
+
+<p>
+  <strong>Delivery address:</strong>
+  <%= @requisition.delivery_address %>
+</p>
+
+<p>
+  <strong>Contact name:</strong>
+  <%= @requisition.contact_name %>
+</p>
+
+<p>
+  <strong>Contact email:</strong>
+  <%= @requisition.contact_email %>
+</p>
+
+<p>
+  <strong>Contact phone:</strong>
+  <%= @requisition.contact_phone %>
+</p>
+
+<p>
+  <strong>Contact department:</strong>
+  <%= @requisition.contact_department %>
+</p>
+
+<p>
+  <strong>Contact manager:</strong>
+  <%= @requisition.contact_manager %>
+</p>
+
+<p>
+  <strong>Additional document:</strong>
+  <%= @requisition.additional_document %>
+</p>
+
+<p>
+  <strong>Company:</strong>
+  <%= @requisition.company %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @requisition.user %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @requisition.status %>
+</p>
+
+<%= link_to 'Edit', edit_requisition_path(@requisition) %> |
+<%= link_to 'Back', requisitions_path %>
