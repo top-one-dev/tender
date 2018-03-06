@@ -1,94 +1,327 @@
-<p id="notice"><%= notice %></p>
+<% provide(:title, "Requisition") %>
 
-<p>
-  <strong>Name:</strong>
-  <%= @requisition.name %>
-</p>
+<section style="min-height: 60vh;">
+  <div class="container">
 
-<p>
-  <strong>Description:</strong>
-  <%= @requisition.description %>
-</p>
+    <% if @requisitioner and @requisition.status == 'new' %>
+    <div class="alert alert-warning">
+      <button type="button" class="close" data-dismiss="alert">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      You submitted this requisition for review.
+    </div>
+    <div class="well-sm well">
+      <h5>Requisition number: #<%= @requisition.id %></h5>
+    </div>
+    <% end %>
 
-<p>
-  <strong>Delivery date:</strong>
-  <%= @requisition.delivery_date %>
-</p>
+    <% if @colleague and @requisition.status == 'new' %>
+    <div class="alert alert-warning">
+      <button type="button" class="close" data-dismiss="alert">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <b class="text-info"><%= @requisition.contact_name %></b> submitted this requisition for review and added you to this requisition.
+    </div>
+    <div class="well-sm well">
+      <h5>Requisition number: #<%= @requisition.id %></h5>
+    </div>    
+    <% end %>
 
-<p>
-  <strong>Quantity:</strong>
-  <%= @requisition.quantity %>
-</p>
+    <% if @is_company %>
+    <div class="alert alert-warning">
+      <button type="button" class="close" data-dismiss="alert">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <b class="text-info"><%= @requisition.contact_name %></b> submitted this requisition for review and you received this requisition.
+    </div>
+    <div class="well-sm well">
+      <h5>Requisition number: #<%= @requisition.id %></h5>
+    </div>    
+    <% end %>
 
-<p>
-  <strong>Budget:</strong>
-  <%= @requisition.budget %>
-</p>
+    <% unless @requisition.request.nil? %>
+    <div class="alert alert-warning">
+      <button type="button" class="close" data-dismiss="alert">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      An RFX has been created from this requisition.
+    </div>
+    <div class="well-sm well">
+      <h5>Result: created an RFx: <%= @requisition.request.name %></h5>
+      <h5>Requisition number: #<%= @requisition.id %></h5>
+      <h5>Assigned to: <%= @requisition.user.name %></h5>
+    </div>
+    <% end %>
+    <hr>
 
-<p>
-  <strong>Budget currency:</strong>
-  <%= @requisition.budget_currency %>
-</p>
+    
+    <div class="panel panel-default">
+      <div class="panel-heading"><h4 class="text-center text-muted">What do you need?</h4></div>
+      <div class="panel-body">
+        
+        <div class="form-group required">
+          <small><label class="control-label" >Name of product or service</label></small>
+          <input type="text" value="<%= @requisition.name %>" class="form-control" disabled>
+        </div>
 
-<p>
-  <strong>Project:</strong>
-  <%= @requisition.project %>
-</p>
+        <div class="form-group required">
+          <small><label class="control-label" >Description</label></small>
+          <textarea class="form-control" disabled><%= @requisition.description %></textarea>
+        </div>
 
-<p>
-  <strong>Cost center:</strong>
-  <%= @requisition.cost_center %>
-</p>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group required">
+              <small><label class="control-label" >Delivery date</label></small>
+                <input type="text" value="<%= @requisition.delivery_date %>" class="form-control" disabled>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <small><label class="control-label" >Quantity</label></small>
+                <input type="text" value="<%= @requisition.quantity %>" class="form-control" disabled>
+              </div>
+            </div> 
+          </div>
 
-<p>
-  <strong>Delivery address:</strong>
-  <%= @requisition.delivery_address %>
-</p>
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="row">
+                <div class="col-xs-6">
+                  <div class="form-group">
+                    <small><label class="control-label" >Budget</label></small>
+                    <input type="text" value="<%= @requisition.budget %>" class="form-control" disabled>
+                  </div>
+                </div>
+                <div class="col-xs-6">
+                  <div class="form-group">
+                    <small><label class="control-label" >Budget currency</label></small>
+                    <input type="text" value="<%= @requisition.budget_currency %>" class="form-control" disabled>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <small><label class="control-label" >Project</label></small>
+                <input type="text" value="<%= @requisition.project %>" class="form-control" disabled>
+              </div>
+            </div>
+          </div>
 
-<p>
-  <strong>Contact name:</strong>
-  <%= @requisition.contact_name %>
-</p>
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <small><label class="control-label" >Cost center</label></small>
+                <input type="text" value="<%= @requisition.cost_center %>" class="form-control" disabled>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <small><label class="control-label" >Delivery address</label></small>
+                <textarea class="form-control" disabled><%= @requisition.delivery_address %></textarea>
+              </div>
+            </div>
+          </div>  
 
-<p>
-  <strong>Contact email:</strong>
-  <%= @requisition.contact_email %>
-</p>
+        </div>
+      </div>
 
-<p>
-  <strong>Contact phone:</strong>
-  <%= @requisition.contact_phone %>
-</p>
+      <div class="panel panel-default">
+        <div class="panel-heading"><h4 class="text-center text-muted">How can we contact you?</h4></div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group required">
+                <small><label class="control-label" >Name</label></small>
+                <input type="text" value="<%= @requisition.contact_name %>" class="form-control" disabled>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group required">
+                <small><label class="control-label" >Email</label></small>
+                <input type="text" value="<%= @requisition.contact_email %>" class="form-control" disabled>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <small><label class="control-label" >Phone</label></small>
+                <input type="text" value="<%= @requisition.contact_phone %>" class="form-control" disabled>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <small><label class="control-label" >Department</label></small>
+                <input type="text" value="<%= @requisition.contact_department %>" class="form-control" disabled>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <small><label class="control-label" >Manager's name</label></small>
+                <input type="text" value="<%= @requisition.contact_manager %>" class="form-control" disabled>
+              </div>
+            </div>
+          </div>   
+        </div>
+      </div> 
 
-<p>
-  <strong>Contact department:</strong>
-  <%= @requisition.contact_department %>
-</p>
+      <div class="panel panel-default" >
+        <div class="panel-heading"><h4 class="text-center text-muted">Stackholders</h4></div>
+        <div class="panel-body">
+          <% unless @colleague %>
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group required">
+                  <small><label class="control-label">Name</label></small>
+                  <input type="text" id="colleague-name" class="form-control colleague-input-ajax" >
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group required">
+                  <small><label class="control-label">Email</label></small>
+                  <input type="eamil" id="colleague-email" class="form-control colleague-input-ajax" >
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <small><label class="control-label">Phone</label></small>
+                  <input type="text" id="colleague-phone" class="form-control colleague-input-ajax" >
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <small><label class="control-label">Job title</label></small>
+                  <input type="text" id="colleague-job" class="form-control colleague-input-ajax" >
+                </div>
+              </div>
+            </div>
+            <div class="alert" id="stockholder-result"></div>
+          <% end %>
+          <table class="table" id="colleague-table">
+            <tbody>
 
-<p>
-  <strong>Contact manager:</strong>
-  <%= @requisition.contact_manager %>
-</p>
+              <% @requisition.stockholders.each do |colleague| %>
+                <tr>
+                  <td>
+                    <span><%= colleague.name %></span>
+                    <input type="text" value="<%= colleague.name %>" class="form-control">
+                  </td>
+                  <td>
+                    <span><%= colleague.email %></span>
+                    <input type="text" value="<%= colleague.email %>" class="form-control">
+                  </td>
+                  <td>
+                    <span><%= colleague.phone %></span>
+                    <input type="text" value="<%= colleague.phone %>" class="form-control">
+                  </td>
+                  <td>
+                    <span><%= colleague.job %></span>
+                    <input type="text" value="<%= colleague.job %>" class="form-control">
+                  </td>
+                  <td>
+                    <% unless @colleague %>
+                      <i class="glyphicon glyphicon-check text-success" data-url="<%= stockholder_url(colleague.id) %>" ></i>&nbsp;
+                      <i class="glyphicon glyphicon-edit text-info"></i>&nbsp;
+                      <i class="glyphicon glyphicon-remove text-danger" data-url="<%= stockholder_url(colleague.id) %>" ></i>
+                    <% end %>                    
+                  </td>
+                </tr>
+              <% end %>
 
-<p>
-  <strong>Additional document:</strong>
-  <%= @requisition.additional_document %>
-</p>
+            </tbody>
+          </table>
+          <% unless @colleague %>
+          <hr>
+          <div class="text-right">
+            <a 
+              href="javascript:;" 
+              class="btn btn-info btn-sm" 
+              id="add-colleague-ajax" 
+              data-id="<%= @requisition.id %>" 
+              data-url="<%= stockholders_url() %>" >Add</a>
+          </div>
+          <% end %>
+        </div>
+      </div>
 
-<p>
-  <strong>Company:</strong>
-  <%= @requisition.company %>
-</p>
+      <div class="panel panel-default">
+        <div class="panel-heading"><h4 class="text-center text-muted">Additional Document</h4></div>
+        <div class="panel-body">
+          <% if @requisition.additional_document.empty? %>
+            <p class="text-muted">There is no additional document...</p>
+          <% else %>
+            <%= link_to @requisition.additional_document, @requisition.additional_document %>
+          <% end %>
+        </div>
+      </div>
 
-<p>
-  <strong>User:</strong>
-  <%= @requisition.user %>
-</p>
+      <div class="panel panel-default">
+        <div class="panel-heading" id="message-board-title"><h4 class="text-center text-muted">Messages</h4></div>
+        <div class="panel-body">
+          <div class="alert" id="message-result"></div>
+          <div class="form-group"><textarea class="form-control" rows="3" id="message-content" ></textarea></div>
+          <hr>          
+          <div class="text-right">
+            <a 
+              href="javascript:;" 
+              class="btn btn-info text-uppercase" 
+              id="send-message" 
+              data-requisition='<%= @requisition.id %>'
+              data-url='<%= messages_path %>'
+              <% if @is_company %>
+              data-buyer='<%= current_company.id %>'
+              <% end %> >send message</a>
+          </div>
+          
+          <hr>
+          <% @requisition.messages.reverse_each do |message| %>
+          <div class="well well-sm message-box">
+            <h4 class="text-info">
+              <% if message.from == 'company' %>
+                <%= @requisition.company.name %>
+              <% elsif message.from == 'requisitioner' %>
+                <%= @requisition.contact_name %>
+              <% end %>
+              &nbsp;&nbsp;
+              <% if ( message.from == 'company' and @requisitioner ) or ( message.from == 'requisitioner' and @is_company ) %>
+                <a href="javascript:;" class="btn btn-xs btn-info reply-message">Reply</a>
+                <% unless message.read %>
+                  <a href="javascript:;" class="btn btn-xs btn-primary mark-read" data-url="<%= message_url(message.id) %>" >Mark as read</a>
+                <% end %>
+              <% end %>
 
-<p>
-  <strong>Status:</strong>
-  <%= @requisition.status %>
-</p>
+              <% if message.read %>
+                <small><span class="label label-success">Read</span></small>
+              <% end %>
+            </h4>
+            <hr>
+            <p><%= message.content %></p>
+            <div class='text-right'>
+              <small class="text-muted">
+                <i class="glyphicon glyphicon-time"></i>
+                <%= message.created_at %>
+              </small>
+            </div>
+          </div>
+          <% end %>
+          <div class="well well-sm message-box">
+            <h4 class="text-info"><%= @requisition.contact_name %></h4><hr>
+            <p>
+              <%= @requisition.contact_name %> created this requisition and submitted
+            </p>
+            <div class='text-right'>
+              <small class="text-muted">
+                <i class="glyphicon glyphicon-time"></i>
+                <%= @requisition.created_at %>
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
 
-<%= link_to 'Edit', edit_requisition_path(@requisition) %> |
-<%= link_to 'Back', requisitions_path %>
+      
+
+    </div>
+  </section>

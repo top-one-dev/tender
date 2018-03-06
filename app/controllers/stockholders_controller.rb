@@ -28,11 +28,15 @@ class StockholdersController < ApplicationController
 
     respond_to do |format|
       if @stockholder.save
+        # TenderBooksNotifierMailer.create_requisition_company(@requisition, @requisition.company).deliver_later
+        # TenderBooksNotifierMailer.create_requisition_requisitioner(@requisition).deliver_later
+        TenderBooksNotifierMailer.create_requisition_colleague(@stockholder.requisition, @stockholder).deliver_later
+
         format.html { redirect_to @stockholder, notice: 'Stockholder was successfully created.' }
-        format.json { render :show, status: :created, location: @stockholder }
+        format.json { render json: {  status: 'success', url: stockholder_url(@stockholder), message: 'Stockholder was successfully created.' } }
       else
         format.html { render :new }
-        format.json { render json: @stockholder.errors, status: :unprocessable_entity }
+        format.json { render json: {  status: 'error', message: @stockholder.errors.full_messages.join(',') } }
       end
     end
   end
@@ -43,10 +47,10 @@ class StockholdersController < ApplicationController
     respond_to do |format|
       if @stockholder.update(stockholder_params)
         format.html { redirect_to @stockholder, notice: 'Stockholder was successfully updated.' }
-        format.json { render :show, status: :ok, location: @stockholder }
+        format.json { render json: {  status: 'success', message: 'Stockholder was successfully updated.' } }
       else
         format.html { render :edit }
-        format.json { render json: @stockholder.errors, status: :unprocessable_entity }
+        format.json { render json: {  status: 'error', message: @stockholder.errors.full_messages.join(',') } }
       end
     end
   end
@@ -54,10 +58,15 @@ class StockholdersController < ApplicationController
   # DELETE /stockholders/1
   # DELETE /stockholders/1.json
   def destroy
+    colleague = {}
+    colleague[:name]  = @stockholder.name
+    colleague[:email] = @stockholder.email
+    requisition       = @stockholder.requisition
     @stockholder.destroy
     respond_to do |format|
+      TenderBooksNotifierMailer.remove_colleague(requisition, colleague).deliver_later
       format.html { redirect_to stockholders_url, notice: 'Stockholder was successfully destroyed.' }
-      format.json { head :no_content }
+      format.json { render json: {  status: 'success', message: 'Stockholder was successfully destroyed.' } }
     end
   end
 

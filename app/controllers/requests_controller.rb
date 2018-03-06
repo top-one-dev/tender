@@ -94,8 +94,8 @@ class RequestsController < ApplicationController
               if User.where(email: supplier.email).exists?
                 supplier.update( user_id: current_user.id )
               end
-              TenderBooksNotifierMailer.invite_supplier(supplier, @request).deliver
-              TenderBooksNotifierMailer.invite_notifier(current_user, supplier, @request).deliver
+              TenderBooksNotifierMailer.invite_supplier(supplier, @request).deliver_later
+              TenderBooksNotifierMailer.invite_notifier(current_user, supplier, @request).deliver_later
               @request.messages.create!(
                 from: 'buyer',
                 read: false,
@@ -159,8 +159,7 @@ class RequestsController < ApplicationController
                   if User.where(email: supplier.email).exists?
                     supplier.update( user_id: current_user.id )
                   end
-                  TenderBooksNotifierMailer.invite_supplier(supplier, @request).deliver
-                  TenderBooksNotifierMailer.invite_notifier(current_user, supplier, @request).deliver
+                  TenderBooksNotifierMailer.update_supplier(supplier, @request).deliver_later
                   @request.messages.create!(
                     from: 'buyer',
                     read: false,
