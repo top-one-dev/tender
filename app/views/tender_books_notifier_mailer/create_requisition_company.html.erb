@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h2>Hi, <%= @company.name %></h2>
+    <h3>There is a requisition #<%= @requisition.id %> for <b><%= @requisition.name %></b> from <%= @requisition.contact_name %></h3>
+    <p>Check for status updates and communicate with the requisitioner by clicking on the following link:</p>
+    <%= link_to 'Show the requisition', requisition_url(@requisition.id) %>
+  </body>
+</html>

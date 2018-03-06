@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h2>Hi, <%= @requisition.contact_name %></h2>
+    <h3>Your requisition #<%= @requisition.id %> for <b><%= @requisition.name %></b> have been received.</h3>
+    <p>Check for status updates and communicate with the buyer by clicking on the following link:</p>
+    <%= link_to 'Show your requisition', "#{requisition_url(@requisition.id)}?token=#{@token}" %>
+    <p>You will be notified when the buyer has processed your requisition.</p>
+  </body>
+</html>

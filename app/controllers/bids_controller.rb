@@ -76,8 +76,8 @@ class BidsController < ApplicationController
             end       
           end
 
-          TenderBooksNotifierMailer.bid_supplier(@bid.request.user, @bid.supplier, @bid.request).deliver
-          TenderBooksNotifierMailer.bid_buyer(@bid.request.user, @bid.supplier, @bid.request).deliver
+          TenderBooksNotifierMailer.bid_supplier(@bid.request.user, @bid.supplier, @bid.request).deliver_later
+          TenderBooksNotifierMailer.bid_buyer(@bid.request.user, @bid.supplier, @bid.request).deliver_later
 
           if @bid.supplier.user.nil?
             format.html { redirect_to new_user_registration_path, notice: "Successfully submitted. You need to signup with this email to continue." }
