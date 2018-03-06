@@ -8,6 +8,7 @@ $(document).on 'turbolinks:load', ->
 		supplier 	= $(this).attr 'data-supplier'
 		request  	= $(this).attr 'data-request'
 		requisition = $(this).attr 'data-requisition'
+		colleague 	= $(this).attr 'data-colleague'
 		url		 	= $(this).attr 'data-url'
 		content  	= $('#message-content').val()
 
@@ -19,10 +20,13 @@ $(document).on 'turbolinks:load', ->
 			data = { 'message': { 'content' : content, 'from': 'supplier', 'read': false,  'user_id': buyer, 'supplier_id': supplier, 'request_id': request } }
 		
 		if requisition?
-			if buyer?
-				data = { 'message': { 'content' : content, 'from': 'company', 'read': false, 'requisition_id': requisition } }
+			if colleague?
+				data = { 'message': { 'content' : content, 'from': "colleague_#{colleague}", 'read': false, 'requisition_id': requisition } }
 			else
-				data = { 'message': { 'content' : content, 'from': 'requisitioner', 'read': false, 'requisition_id': requisition } }
+				if buyer?
+					data = { 'message': { 'content' : content, 'from': 'company', 'read': false, 'requisition_id': requisition } }
+				else
+					data = { 'message': { 'content' : content, 'from': 'requisitioner', 'read': false, 'requisition_id': requisition } }
 
 		$(this).html('<i class="fa fa-spinner fa-spin" style="font-size: 18px;" ></i> sending...').attr "disabled", true
 		$('#message-content').attr "disabled", true

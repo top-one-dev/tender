@@ -272,6 +272,9 @@
               data-url='<%= messages_path %>'
               <% if @is_company %>
               data-buyer='<%= current_company.id %>'
+              <% end %>
+              <% if @colleague %>
+              data-colleague='<%= @colleague.name %>'
               <% end %> >send message</a>
           </div>
           
@@ -283,9 +286,13 @@
                 <%= @requisition.company.name %>
               <% elsif message.from == 'requisitioner' %>
                 <%= @requisition.contact_name %>
+              <% elsif message.from.start_with? 'colleague_' %>
+                <%= message.from.split('_')[1] %> ( colleague )
               <% end %>
               &nbsp;&nbsp;
-              <% if ( message.from == 'company' and @requisitioner ) or ( message.from == 'requisitioner' and @is_company ) %>
+              <% if ( message.from == 'company' and @requisitioner ) or 
+                    ( message.from == 'requisitioner' and @is_company ) or 
+                    ( message.from.start_with?('colleague_') and @is_company ) %>
                 <a href="javascript:;" class="btn btn-xs btn-info reply-message">Reply</a>
                 <% unless message.read %>
                   <a href="javascript:;" class="btn btn-xs btn-primary mark-read" data-url="<%= message_url(message.id) %>" >Mark as read</a>

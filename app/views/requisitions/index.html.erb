@@ -91,7 +91,7 @@
                           <td><i class="glyphicon glyphicon-envelope"></i> <%= requisition.messages.count %></td>
                           <td><%= requisition.contact_name %></td>
                           <td><%= requisition.delivery_date %></td>
-                          <td><%= link_to 'View', '#', class: 'btn btn-default btn-sm' %></td>
+                          <td><%= link_to 'View', requisition_path(requisition.id), class: 'btn btn-default btn-sm' %></td>
                         </tr>
                       <% end %>
                     <% end %>
