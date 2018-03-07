@@ -127,6 +127,7 @@ $(document).on 'turbolinks:load', ->
 			email 	= $('#colleague-email').val()
 			phone 	= $('#colleague-phone').val()
 			job 	= $('#colleague-job').val()
+			requisition = $('#add-colleague-ajax').attr 'data-id'
 
 			if name == ''
 				$('#colleague-name').parent().addClass('has-error')
@@ -139,7 +140,7 @@ $(document).on 'turbolinks:load', ->
 			$('#add-colleague-ajax').html('<i class="fa fa-spinner fa-spin" style="font-size: 18px;" ></i> Adding...').attr "disabled", true
 			$('.colleague-input-ajax').attr "disabled", true
 
-			url = $(this).attr 'data-url'
+			url = $('#add-colleague-ajax').attr 'data-url'
 
 			$.ajax
 				type: 'POST'
@@ -152,7 +153,7 @@ $(document).on 'turbolinks:load', ->
 
 					if res.status == 'success'
 						$('#stockholder-result').fadeIn(200).removeClass('alert-danger').addClass('alert-info').html(res.message).fadeOut(3000)
-						$('#colleague-table tbody').append "<tr><td>#{name}</td><td>#{email}</td><td>#{phone}</td><td>#{job}</td><td><i class='glyphicon glyphicon-check text-success' data-url='#{res.url}' ></i>&nbsp;<i class='glyphicon glyphicon-edit text-info'></i>&nbsp;<i class='glyphicon glyphicon-remove text-danger' data-url='#{res.url}' ></td></tr>"
+						$('#colleague-table tbody').append "<tr><td><span>#{name}</span><input type='text' value='#{name}' class='form-control'></td><td><span>#{email}</span><input type='text' value='#{email}' class='form-control'></td><td><span>#{phone}</span><input type='text' value='#{phone}' class='form-control'></td><td><span>#{job}</span><input type='text' value='#{job}' class='form-control'></td><td><i class='glyphicon glyphicon-check text-success' data-url='#{res.url}' ></i>&nbsp;<i class='glyphicon glyphicon-edit text-info'></i>&nbsp;<i class='glyphicon glyphicon-remove text-danger' data-url='#{res.url}' ></td></tr>"
 						$('.colleague-input-ajax').val('').parent().removeClass 'has-error'
 						$('#colleague-name').focus()
 					else
@@ -190,7 +191,7 @@ $(document).on 'turbolinks:load', ->
 
 				if res.status == 'success'
 					$('#stockholder-result').fadeIn(200).removeClass('alert-danger').addClass('alert-info').html(res.message).fadeOut(3000)
-					$('#colleague-table tbody').append "<tr><td>#{name}</td><td>#{email}</td><td>#{phone}</td><td>#{job}</td><td><i class='glyphicon glyphicon-check text-success' data-url='#{res.url}' ></i>&nbsp;<i class='glyphicon glyphicon-edit text-info'></i>&nbsp;<i class='glyphicon glyphicon-remove text-danger' data-url='#{res.url}' ></td></tr>"
+					$('#colleague-table tbody').append "<tr><td><span>#{name}</span><input type='text' value='#{name}' class='form-control'></td><td><span>#{email}</span><input type='text' value='#{email}' class='form-control'></td><td><span>#{phone}</span><input type='text' value='#{phone}' class='form-control'></td><td><span>#{job}</span><input type='text' value='#{job}' class='form-control'></td><td><i class='glyphicon glyphicon-check text-success' data-url='#{res.url}' ></i>&nbsp;<i class='glyphicon glyphicon-edit text-info'></i>&nbsp;<i class='glyphicon glyphicon-remove text-danger' data-url='#{res.url}' ></td></tr>"
 					$('.colleague-input-ajax').val('').parent().removeClass 'has-error'
 					$('#colleague-name').focus()
 				else

@@ -295,10 +295,12 @@
               &nbsp;&nbsp;
               <% if ( message.from == 'company' and @requisitioner ) or 
                     ( message.from == 'requisitioner' and @is_company ) or 
-                    ( message.from.start_with?('colleague_') and @is_company ) %>
-                <a href="javascript:;" class="btn btn-xs btn-info reply-message">Reply</a>
+                    ( message.from.start_with?('colleague_') and @is_company ) %>                
                 <% unless message.read %>
+                  <a href="javascript:;" class="btn btn-xs btn-info reply-message">Reply</a>
                   <a href="javascript:;" class="btn btn-xs btn-primary mark-read" data-url="<%= message_url(message.id) %>" >Mark as read</a>
+                <% else %>
+                  <small><span class="label label-success">Read</span></small>
                 <% end %>
               <% else %>
                 <% if message.read %>

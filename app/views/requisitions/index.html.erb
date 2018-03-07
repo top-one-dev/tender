@@ -284,7 +284,7 @@
                           <td><%= requisition.contact_name %></td>
                           <td><% unless requisition.user.nil? %> <%= requisition.user.name %> <% end %></td>
                           <td><%= requisition.request.name %></td>
-                          <td><%= link_to 'View Request', requisition_path(requisition.id), class: 'btn btn-default btn-sm' %></td>
+                          <td><%= link_to 'View', requisition_path(requisition.id), class: 'btn btn-default btn-sm' %></td>
                         </tr>
                       <% end %>
                     <% end %>
@@ -353,7 +353,7 @@
                           <td><%= requisition.contact_name %></td>
                           <td><% unless requisition.user.nil? %> <%= requisition.user.name %> <% end %></td>
                           <td><%= requisition.request.name %></td>
-                          <td><%= link_to 'View Request', requisition_path(requisition.id), class: 'btn btn-default btn-sm' %></td>
+                          <td><%= link_to 'View', requisition_path(requisition.id), class: 'btn btn-default btn-sm' %></td>
                         </tr>
                       <% end %>
                     <% end %>
