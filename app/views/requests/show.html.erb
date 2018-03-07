@@ -236,7 +236,7 @@
                   <b>
                   <% unless bid.supplier.user.nil? %>
                     <% if bid.supplier.user.companies.exists? %>
-                      <%= bid.supplier.user.company.name %>
+                      <%= bid.supplier.user.companies.first.name %>
                     <% else %>
                       Unknown Company
                     <% end %>

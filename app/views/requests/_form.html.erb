@@ -8,6 +8,9 @@
 <%= f.hidden_field :company_id, value: current_company.id %>
 <%= f.hidden_field :folder_id, value: 1 %>
 <%= f.hidden_field :request_type, value: @type %>
+<% unless @requisition.nil? %>
+<%= f.hidden_field :requisition_id, value: @requisition.id %>
+<% end %>
 
 <div class="panel-group" id="accordion">
   <div class="panel panel-info">
@@ -33,7 +36,7 @@
             <div class="form-group required">
               <%= f.label :end_time, class: 'control-label' %>
               <div class='input-group date' id='request-end-time'>
-                <%= f.text_field :end_time, class: 'form-control', required: true, placeholder: 'Enter end time...' %>
+                <%= f.text_field :end_time, class: 'form-control', required: true %>
                 <span class="input-group-addon">
                   <span class="glyphicon glyphicon-calendar"></span>
                 </span>

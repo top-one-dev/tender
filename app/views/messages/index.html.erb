@@ -5,7 +5,7 @@
       <div class="col-md-4">
         <% @requests.each do |request| %>
           <%= link_to( messages_path( id:request.id ) ) do %>         
-            <div class="well <%= 'active' if request.id.to_i == @request_id.to_i %>">
+            <div class="well <%= 'active' if request.id.to_i == @request.id.to_i %>">
               <h5>
                 <small class="pull-right">                
                   <span class="badge bg-blue">
@@ -21,31 +21,74 @@
       <div class="col-md-8">
         <div class="well">
           <div>
-            <button class="btn btn-default btn-sm">
-              NEW MESSAGE
-            </button>
-            <button class="btn btn-default btn-sm pull-right">
-              OPEN REQUEST DETAILS
-            </button>
+            <button class="btn btn-default btn-sm" id="new-message">NEW MESSAGE</button>
+            <button class="btn btn-default btn-sm pull-right" id="open-request-detail">OPEN REQUEST DETAILS</button>
           </div>
+
+          <div id="message-request-detail">
+            <hr>
+            <pre>
+              <%= @request.description %>
+            </pre>
+          </div> 
+
+          <div id="new-message-div">
+            <hr>
+            <div class="alert" id="message-result"></div>
+            <div class="form-group"><textarea class="form-control" rows="3" id="message-content" ></textarea></div>
+            <hr>          
+            <div class="text-right">
+              <a 
+                href="javascript:;" 
+                class="btn btn-info text-uppercase" 
+                id="send-message" 
+                data-request='<%= @request.id %>'
+                data-url='<%= messages_path %>'
+                <% if current_user == @request.user %>
+                data-buyer='<%= current_user.id %>'
+                <% else %>
+                data-supplier='<%= current_user.supplier.id %>'
+                <% end %>
+                >send message</a>
+            </div>
+          </div>         
           <hr>
-          <% @messages.each do |message| %>
+          <% @messages.reverse_each do |message| %>
             <div>
-              <h5>Unread conversations</h5>
-              <%= message.supplier.email %>
-              <div>
-                <button class="btn btn-success btn-xs">
-                  Reply
-                </button>
-                <button class="btn btn-info btn-xs">
-                  Mark as read
-                </button>
+              <small class="text-muted pull-right">
+                <i class="glyphicon glyphicon-time"></i> <%= distance_of_time_in_words(Time.now, message.created_at) %> ago
+              </small>
+              <% if message.from == 'buyer' %>
+              <h5><%= message.user.name %> : <em><%= @request.company.name %></em></h5>
+              <% else %>
+                <h5>
+                  <% unless message.supplier.user.nil? %><%= message.supplier.user.name %><% end %>
+                  <% if message.supplier.user.companies.exists? %>
+                    : <em><%= message.supplier.user.companies.first.name %></em>
+                  <% end %>  
+                </h5>
+              <% end %>              
+              <div>                
+                <% unless message.read %>
+                  <% if ( message.from == 'buyer' and current_user != @request.user ) or 
+                        ( message.from == 'supplier' and current_user == @request.user ) %>
+                    <button class="btn btn-success btn-xs reply-message">
+                      Reply
+                    </button>
+                    <button class="btn btn-info btn-xs mark-read" data-url="<%= message_url(message.id) %>" >
+                      Mark as read
+                    </button>
+                  <% else %>
+                    <small><span class="label label-warning">Unread</span></small>
+                  <% end %>
+                <% else %>
+                <small><span class="label label-success">Read</span></small>
+                <% end %>
               </div>
-              <b class="text-muted">Posted on <%= distance_of_time_in_words(Time.now, message.created_at) %> ago</b><br>
-              <p><%= message.content %></p>
+              <pre><%= message.content %></pre>              
               <% unless message.attach.nil? %>
                 <%= link_to 'Attach', '#'  %>
-              <% end %>
+              <% end %>              
             </div>
             <hr>
           <% end %>

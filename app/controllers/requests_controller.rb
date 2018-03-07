@@ -45,6 +45,14 @@ class RequestsController < ApplicationController
       redirect_to new_company_path
     else
       @request = Request.new
+      unless params[:requisition_id].nil?
+        @requisition                = Requisition.find params[:requisition_id]
+        @request.name               = @requisition.name
+        @request.end_time           = @requisition.delivery_date
+        @request.description        = @requisition.description
+        @request.expected_budget    = @requisition.budget
+        @request.preferred_currency = @requisition.budget_currency
+      end 
       @type    = params[:format]
     end     
   end
@@ -105,7 +113,13 @@ class RequestsController < ApplicationController
                 )
             end
 
-          end          
+          end
+
+          unless request_params[:requisition_id].empty?
+            TenderBooksNotifierMailer.create_request_company(@request).deliver_later
+            TenderBooksNotifierMailer.create_request_requisitioner(@request).deliver_later
+            @request.requisition.update!( status: 'tendering' )
+          end         
           
           format.html { redirect_to requests_path, notice: 'Request was successfully created.' }
           format.json { render :show, status: :created, location: requests_path }
@@ -214,7 +228,8 @@ class RequestsController < ApplicationController
         :user_id, 
         :company_id, 
         :folder_id, 
-        :request_type
+        :request_type,
+        :requisition_id
         )
     end
 
