@@ -204,7 +204,7 @@ $(document).on 'turbolinks:load', ->
 		phone 		= $(this).parent().parent().children('td').eq(2).children('input.form-control')
 		job 		= $(this).parent().parent().children('td').eq(3).children('input.form-control')
 		url 		= $(this).attr 'data-url'
-		
+		_this 		= this
 		if name.val() == ''
 			name.parent().addClass('has-error')
 			return
@@ -233,6 +233,8 @@ $(document).on 'turbolinks:load', ->
 					email.hide().parent().children('span').show().html email.val()
 					phone.hide().parent().children('span').show().html phone.val()
 					job.hide().parent().children('span').show().html job.val()
+					$(_this).hide()
+					$(_this).parent().children('i.glyphicon-edit').show()
 					$('#stockholder-result').fadeIn(200).removeClass('alert-danger').addClass('alert-info').html(res.message).fadeOut(3000)
 				else
 					$('#stockholder-result').fadeIn(200).removeClass('alert-info').addClass('alert-danger').html(res.message).fadeOut(3000)

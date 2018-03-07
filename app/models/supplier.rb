@@ -1,6 +1,6 @@
 class Supplier < ApplicationRecord
   belongs_to :user
   has_and_belongs_to_many :requests
-  has_many :messages
-  has_many :bids
+  has_many :messages, dependent: :destroy
+  has_many :bids, dependent: :destroy
 end

@@ -6,10 +6,10 @@ class User < ApplicationRecord
          :confirmable, :lockable
 
   has_one :notification, dependent: :destroy
-  has_many :requests
+  has_many :requests, dependent: :destroy
   has_many :requisitions # assigned requisitions
-  has_many :messages
-  has_one :supplier
+  has_many :messages, dependent: :destroy
+  has_one :supplier, dependent: :destroy
   has_and_belongs_to_many :companies
 
   def send_devise_notification(notification, *args)

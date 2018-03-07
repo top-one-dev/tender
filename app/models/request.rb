@@ -1,12 +1,12 @@
 class Request < ApplicationRecord
-  belongs_to :user, dependent: :destroy
-  belongs_to :company, dependent: :destroy
-  belongs_to :requisition, dependent: :destroy
+  belongs_to :user
+  belongs_to :company
+  belongs_to :requisition
   belongs_to :folder
   has_and_belongs_to_many :suppliers
-  has_many :items
-  has_many :questions
-  has_many :messages
-  has_many :bids
+  has_many :items, dependent: :destroy
+  has_many :questions, dependent: :destroy
+  has_many :messages, dependent: :destroy
+  has_many :bids, dependent: :destroy
   
 end

@@ -140,6 +140,7 @@ class RequestsController < ApplicationController
       if @request.update(request_params)
 
           unless item_params.empty?
+            
             JSON.parse(item_params.to_s).each_with_index do |item, index|
               unless @request.items[index].nil?
                 @request.items[index].update!(item)
@@ -147,10 +148,20 @@ class RequestsController < ApplicationController
                 @request.items.create!(item)
               end              
             end
+            
+            unless JSON.parse(item_params.to_s).count > @request.items.count
+              @request.items.each_with_index do |item, index|
+                if index >= JSON.parse(item_params.to_s).count
+                  item.destroy
+                end
+              end
+            end
+
           end
 
           unless question_params.empty?
-           JSON.parse(question_params.to_s).each_with_index do |question, index|
+            
+            JSON.parse(question_params.to_s).each_with_index do |question, index|
               @request.questions.create!(question)
               unless @request.questions[index].nil?
                 @request.questions.update!(question)
@@ -158,6 +169,15 @@ class RequestsController < ApplicationController
                 @request.questions.create!(question)
               end
             end
+            
+            unless JSON.parse(question_params.to_s).count > @request.items.count
+              @request.questions.each_with_index do |question, index|
+                if index >= JSON.parse(question_params.to_s).count
+                  item.destroy
+                end
+              end
+            end
+
           end
 
           unless participant_params.nil?
