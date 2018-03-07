@@ -3,6 +3,19 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 $(document).on 'turbolinks:load', ->
 
+	$('#open-request-detail').on 'click', ->
+		console.log $(this).html()
+		if $(this).html() == 'OPEN REQUEST DETAILS'
+			$('#message-request-detail').slideDown()
+			$(this).html 'HIDE REQUEST DETAILS'
+		else		
+			$('#message-request-detail').slideUp()
+			$(this).html 'OPEN REQUEST DETAILS'
+
+	$('#new-message').on 'click', ->
+		$('#new-message-div').slideDown()
+		$('#message-content').focus()
+
 	$('body').on 'click', '#send-message', (event) ->
 		buyer	 	= $(this).attr 'data-buyer'
 		supplier 	= $(this).attr 'data-supplier'
@@ -17,7 +30,11 @@ $(document).on 'turbolinks:load', ->
 			return
 
 		if request?
-			data = { 'message': { 'content' : content, 'from': 'supplier', 'read': false,  'user_id': buyer, 'supplier_id': supplier, 'request_id': request } }
+			if supplier?
+				data = { 'message': { 'content' : content, 'from': 'supplier', 'read': false,  'supplier_id': supplier, 'request_id': request } }
+			else
+				data = { 'message': { 'content' : content, 'from': 'buyer', 'read': false,  'user_id': buyer, 'request_id': request } }
+			
 		
 		if requisition?
 			if colleague?
@@ -41,10 +58,19 @@ $(document).on 'turbolinks:load', ->
 				$('#message-content').attr "disabled", false
 				if res.status == 'success'
 					$('#message-result').fadeIn(200).removeClass('alert-danger').addClass('alert-info').html(res.message).fadeOut(3000)
+					location.reload();
 				else
 					$('#message-result').fadeIn(200).removeClass('alert-info').addClass('alert-danger').html(res.message).fadeOut(3000)
 
 
+	$('body').on 'click', '.reply-message', ->
+		if $('#message-board-title').length
+			top = $('#message-board-title').offset().top			
+		if $('#new-message-div').length
+			$('#new-message-div').slideDown()
+			top = $('#new-message-div').offset().top
+		$('html, body').animate({scrollTop: top - 10 }, 500)
+		$('#message-content').focus()
 
 	$('body').on 'click', '.mark-read', ->
 		url = $(this).attr 'data-url'

@@ -107,6 +107,8 @@ $(document).on 'turbolinks:load', ->
     	$(this).parent().parent().children('td').children('input.form-control').show()
 
 	$('body').on 'click', '#colleague-table i.glyphicon-remove', ->
+		unless confirm('Are you sure to remove this colleague?')
+			return
 		url = $(this).attr 'data-url'
 		_this = this
 		$.ajax
@@ -234,10 +236,7 @@ $(document).on 'turbolinks:load', ->
 				else
 					$('#stockholder-result').fadeIn(200).removeClass('alert-info').addClass('alert-danger').html(res.message).fadeOut(3000)
 
-	$('body').on 'click', '.reply-message', ->
-		top = $('#message-board-title').offset().top
-		$('html, body').animate({scrollTop: top - 10 }, 500)
-		$('#message-content').focus()
+	
 
 validateEmail = (email) ->
 	re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/

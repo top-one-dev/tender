@@ -6,18 +6,18 @@ class MessagesController < ApplicationController
   def index
     if params[:id].nil?
       if current_user.requests.exists?
-        @request_id = current_user.requests.first.id
+        @request = current_user.requests.first
       else
-        @request_id = current_user.supplier.requests.first.id
+        @request = current_user.supplier.requests.first
       end
     else
-      @request_id = params[:id]
+      @request = Request.find params[:id]
     end
-    @messages   = current_user.messages.where(request_id: @request_id)
+    @messages   = @request.messages
     @requests   = current_user.requests
-    if @messages.empty?
-      @messages = current_user.supplier.messages.where(request_id: @request_id)
-      @requests = current_user.supplier.requests
+    unless current_user.supplier.nil?
+      @supplier_requests = current_user.supplier.requests
+      @requests = @requests.to_a.concat @supplier_requests.to_a
     end
   end
 
