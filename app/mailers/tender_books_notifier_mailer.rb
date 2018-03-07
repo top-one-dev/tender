@@ -62,6 +62,18 @@ class TenderBooksNotifierMailer < ApplicationMailer
 		mail( :to => @colleague[:email],	:subject => "You were removed from requisition ##{@requisition.id} for #{@requisition.name} by #{@requisition.contact_name}" )
 	end
 
+	def create_request_company(request)
+		@request 		= request
+		@requisition 	= @request.requisition
+		mail(:to => @request.company.email, :subject => "Request ##{@request.id} for requisition ##{@requisition.id} for #{@requisition.name} was created.")
+	end
+
+	def create_request_requisitioner(request)
+		@request 		= request
+		@requisition 	= @request.requisition
+		mail(:to => @requisition.contact_email, :subject => "Request ##{@request.id} for requisition ##{@requisition.id} for #{@requisition.name} was created.")
+	end
+
 	private
 	
 	def crypt
