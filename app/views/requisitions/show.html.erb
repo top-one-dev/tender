@@ -27,7 +27,7 @@
     </div>    
     <% end %>
 
-    <% if @is_company %>
+    <% if @is_company and @requisition.status == 'new' %>
     <div class="alert alert-warning">
       <button type="button" class="close" data-dismiss="alert">
         <span aria-hidden="true">&times;</span>
@@ -35,7 +35,10 @@
       <b class="text-info"><%= @requisition.contact_name %></b> submitted this requisition for review and you received this requisition.
     </div>
     <div class="well-sm well">
-      <h5>Requisition number: #<%= @requisition.id %></h5>
+      <h5>
+        Requisition number: #<%= @requisition.id %>
+        <%= link_to '<b>Open request</b>'.html_safe, "#{new_request_path('RFQ')}?requisition_id=#{@requisition.id}", class: 'btn btn-default btn-sm pull-right' %>
+      </h5> 
     </div>    
     <% end %>
 
@@ -44,12 +47,12 @@
       <button type="button" class="close" data-dismiss="alert">
         <span aria-hidden="true">&times;</span>
       </button>
-      An RFX has been created from this requisition.
+      A RFX has been created from this requisition.
     </div>
     <div class="well-sm well">
       <h5>Result: created an RFx: <%= @requisition.request.name %></h5>
       <h5>Requisition number: #<%= @requisition.id %></h5>
-      <h5>Assigned to: <%= @requisition.user.name %></h5>
+      <h5>Assigned to: <% unless @requisition.user.nil? %> <%= @requisition.user.name %> <% end %></h5>
     </div>
     <% end %>
     <hr>
@@ -297,14 +300,16 @@
                 <% unless message.read %>
                   <a href="javascript:;" class="btn btn-xs btn-primary mark-read" data-url="<%= message_url(message.id) %>" >Mark as read</a>
                 <% end %>
-              <% end %>
-
-              <% if message.read %>
-                <small><span class="label label-success">Read</span></small>
-              <% end %>
+              <% else %>
+                <% if message.read %>
+                  <small><span class="label label-success">Read</span></small>
+                <% else %>
+                  <small><span class="label label-warning">Unread</span></small>
+                <% end %>
+              <% end %>              
             </h4>
             <hr>
-            <p><%= message.content %></p>
+            <pre><%= message.content %></pre>
             <div class='text-right'>
               <small class="text-muted">
                 <i class="glyphicon glyphicon-time"></i>
@@ -314,7 +319,10 @@
           </div>
           <% end %>
           <div class="well well-sm message-box">
-            <h4 class="text-info"><%= @requisition.contact_name %></h4><hr>
+            <h4 class="text-info">
+              <%= @requisition.contact_name %>&nbsp;&nbsp;
+              <small><span class="label label-success"><i class="glyphicon glyphicon-info-sign"></i></span></small>
+            </h4><hr>
             <p>
               <%= @requisition.contact_name %> created this requisition and submitted
             </p>

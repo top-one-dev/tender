@@ -49,6 +49,9 @@
               <h4 class="panel-title">
                 <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
                   New
+                  <% unless @new_requisitions.empty? %>
+                    <span class="badge"><%= @new_requisitions.count %></span>
+                  <% end %>
                   <small class="pull-right">
                     <i class="glyphicon glyphicon-triangle-bottom"></i>
                   </small>
@@ -105,6 +108,9 @@
               <h4 class="panel-title">
                 <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
                   Open
+                  <% unless @open_requisitions.empty? %>
+                    <span class="badge"><%= @open_requisitions.count %></span>
+                  <% end %>
                   <small class="pull-right">
                     <i class="glyphicon glyphicon-triangle-bottom"></i>
                   </small>
@@ -150,7 +156,7 @@
                           <td><%= requisition.contact_name %></td>
                           <td><%= requisition.user.name %></td>
                           <td><%= requisition.delivery_date %></td>
-                          <td><%= link_to 'View', '#', class: 'btn btn-default btn-sm' %></td>
+                          <td><%= link_to 'View', requisition_path(requisition.id), class: 'btn btn-default btn-sm' %></td>
                         </tr>
                       <% end %>
                     <% end %>
@@ -165,6 +171,9 @@
               <h4 class="panel-title">
                 <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
                   Returned
+                  <% unless @returned_requisitions.empty? %>
+                    <span class="badge"><%= @returned_requisitions.count %></span>
+                  <% end %>
                   <small class="pull-right">
                     <i class="glyphicon glyphicon-triangle-bottom"></i>
                   </small>
@@ -211,7 +220,7 @@
                           <td><%= requisition.contact_name %></td>
                           <td><%= requisition.user.name %></td>
                           <td><%= requisition.delivery_date %></td>
-                          <td><%= link_to 'View', '#', class: 'btn btn-default btn-sm' %></td>
+                          <td><%= link_to 'View', requisition_path(requisition.id), class: 'btn btn-default btn-sm' %></td>
                         </tr>
                       <% end %>
                     <% end %>
@@ -226,6 +235,9 @@
               <h4 class="panel-title">
                 <a data-toggle="collapse" data-parent="#accordion" href="#collapse4">
                   Tendering
+                  <% unless @tendering_requisitions.empty? %>
+                    <span class="badge"><%= @tendering_requisitions.count %></span>
+                  <% end %>
                   <small class="pull-right">
                     <i class="glyphicon glyphicon-triangle-bottom"></i>
                   </small>
@@ -270,9 +282,9 @@
                           <td><%= requisition.name %></td>
                           <td><i class="glyphicon glyphicon-envelope"></i> <%= requisition.messages.count %></td>
                           <td><%= requisition.contact_name %></td>
-                          <td><%= requisition.user.name %></td>
+                          <td><% unless requisition.user.nil? %> <%= requisition.user.name %> <% end %></td>
                           <td><%= requisition.request.name %></td>
-                          <td><%= link_to 'View Request', '#', class: 'btn btn-default btn-sm' %></td>
+                          <td><%= link_to 'View Request', requisition_path(requisition.id), class: 'btn btn-default btn-sm' %></td>
                         </tr>
                       <% end %>
                     <% end %>
@@ -292,6 +304,9 @@
               <h4 class="panel-title">
                 <a data-toggle="collapse" data-parent="#accordion1" href="#collapse21">
                   Tendering
+                  <% unless @tendering_requisitions.empty? %>
+                    <span class="badge"><%= @tendering_requisitions.count %></span>
+                  <% end %>
                   <small class="pull-right">
                     <i class="glyphicon glyphicon-triangle-bottom"></i>
                   </small>
@@ -336,9 +351,9 @@
                           <td><%= requisition.name %></td>
                           <td><i class="glyphicon glyphicon-envelope"></i> <%= requisition.messages.count %></td>
                           <td><%= requisition.contact_name %></td>
-                          <td><%= requisition.user.name %></td>
+                          <td><% unless requisition.user.nil? %> <%= requisition.user.name %> <% end %></td>
                           <td><%= requisition.request.name %></td>
-                          <td><%= link_to 'View Request', '#', class: 'btn btn-default btn-sm' %></td>
+                          <td><%= link_to 'View Request', requisition_path(requisition.id), class: 'btn btn-default btn-sm' %></td>
                         </tr>
                       <% end %>
                     <% end %>
@@ -353,6 +368,9 @@
               <h4 class="panel-title">
                 <a data-toggle="collapse" data-parent="#accordion1" href="#collapse22">
                   Closed
+                  <% unless @closed_requisitions.empty? %>
+                    <span class="badge"><%= @closed_requisitions.count %></span>
+                  <% end %>
                   <small class="pull-right">
                     <i class="glyphicon glyphicon-triangle-bottom"></i>
                   </small>
@@ -399,7 +417,7 @@
                           <td><%= requisition.contact_name %></td>
                           <td><%= requisition.user.name %></td>
                           <td><%= requisition.request.name %></td>
-                          <td><%= link_to 'View', '#', class: 'btn btn-default btn-sm' %></td>
+                          <td><%= link_to 'View', requisition_path(requisition.id), class: 'btn btn-default btn-sm' %></td>
                         </tr>
                       <% end %>
                     <% end %>

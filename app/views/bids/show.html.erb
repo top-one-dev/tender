@@ -1,10 +1,11 @@
 <% provide(:title, "View bid") %>
 <section>
 	<div class="container">
-		<% unless @bid.request.created_at == @bid.request.updated_at %>
+		<% unless @bid.request.created_at == @bid.request.updated_at  and @bid.created_at < @bid.request.updated_at %>
 		<div class="alert alert-info">
 			<a href="javascript" data-dismiss="alert" class="close">×</a>
-			This request was updated by buyer at <%= @bid.request.updated_at.strftime("%b %d, %Y %H:%M ( %Z%z )") %> . Please read again and edit your bid...
+			This request was updated by buyer at <%= @bid.request.updated_at.strftime("%b %d, %Y %H:%M ( %Z%z )") %> . 
+			<% if @bid.supplier == current_user.supplier %>Please read again and make your bid again...<% end %>
 		</div>
 		<% end %>
 		<h3>
