@@ -13,7 +13,19 @@ class User < ApplicationRecord
   has_and_belongs_to_many :companies
 
   def send_devise_notification(notification, *args)
-	devise_mailer.send(notification, self, *args).deliver_later
+	 devise_mailer.send(notification, self, *args).deliver_later
+  end
+
+  def status
+    unless self.locked_at
+      if self.confirmed_at
+        "active"
+      else
+        "unconfirmed"
+      end 
+    else
+      "locked"
+    end
   end
 
 end

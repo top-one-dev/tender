@@ -48,8 +48,10 @@ ActiveRecord::Schema.define(version: 20180305111036) do
   end
 
   create_table "companies_users", id: false, force: :cascade do |t|
-    t.integer "company_id", null: false
-    t.integer "user_id",    null: false
+    t.integer  "company_id", null: false
+    t.integer  "user_id",    null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["company_id", "user_id"], name: "index_companies_users_on_company_id_and_user_id"
     t.index ["user_id", "company_id"], name: "index_companies_users_on_user_id_and_company_id"
   end
