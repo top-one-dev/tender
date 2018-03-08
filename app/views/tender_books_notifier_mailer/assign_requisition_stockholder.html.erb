@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h2>Hi, <%= @stockholder.name %></h2>
+    <h3><%= "#{@requisition.company.name} assigned the requisition for #{@requisition.name} to #{@user.name}" %></b>.</h3>
+    <p>Please check the requisition for for <b><%= @requisition.name %></b>...</p>
+  </body>
+</html>

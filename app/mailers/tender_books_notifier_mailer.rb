@@ -74,6 +74,25 @@ class TenderBooksNotifierMailer < ApplicationMailer
 		mail(:to => @requisition.contact_email, :subject => "Request ##{@request.id} for requisition ##{@requisition.id} for #{@requisition.name} was created.")
 	end
 
+	def assign_requisition_employee(requisition, user)
+		@requisition = requisition
+		@user 	 	 = user
+		mail(to: @user.email, subject: "#{@requisition.company.name} assigned the requisition for #{@requisition.name} to you!")
+	end
+
+	def assign_requisition_requisitioner(requisition, user)
+		@requisition 	= requisition
+		@user 			= user
+		mail(:to => @requisition.contact_email, :subject =>"#{@requisition.company.name} assigned the requisition for #{@requisition.name} to #{@user.name}" )		
+	end
+
+	def assign_requisition_stockholder(requisition, user, stockholder)
+		@requisition 	= requisition
+		@user 			= user
+		@stockholder 	= stockholder
+		mail(:to => @stockholder.email, :subject =>"#{@requisition.company.name} assigned the requisition for #{@requisition.name} to #{@user.name}" )
+	end
+
 	def company_invite_colleague(user, company, is_new_user)
 		@user 			= user
 		@company 		= company
