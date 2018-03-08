@@ -91,7 +91,7 @@ class RequisitionsController < ApplicationController
           TenderBooksNotifierMailer.create_requisition_colleague(@requisition, colleague).deliver_later
         end         
 
-        format.html { redirect_to @requisition, notice: 'Requisition was successfully created.' }
+        format.html { redirect_to root_url, notice: "Requisition ##{@requisition.id} for #{@requisition.name} was successfully created." }
         format.json { render :show, status: :created, location: @requisition }
       else
         format.html { render :new }
