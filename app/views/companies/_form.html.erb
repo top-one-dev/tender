@@ -204,3 +204,13 @@
 
   </div>
 </div>
+
+<% unless current_company.owner == current_user %>
+<script type="text/javascript">
+  $('input').attr('disabled', true);
+  $('select').attr('disabled', true);
+  $('textarea').attr('disabled', true);
+  $('a[data-target="#companyLogoModal"]').remove();
+  $('input[type="submit"]').remove();
+</script>
+<% end %> 
