@@ -1,24 +1,27 @@
 <% provide(:title, "Messages") %>
-<section>
+<section style="min-height: 60vh;">
   <div class="container">
     <div class="row">
       <div class="col-md-4">
-        <% @requests.each do |request| %>
-          <%= link_to( messages_path( id:request.id ) ) do %>         
-            <div class="well <%= 'active' if request.id.to_i == @request.id.to_i %>">
-              <h5>
-                <small class="pull-right">                
-                  <span class="badge bg-blue">
-                    <small class="text-white"><%= request.messages.count %> <i class="glyphicon glyphicon-triangle-right"></i></small>
-                  </span>
-                </small>
-                #<%= request.id %> <%= request.name %><br><small><%= request.created_at.strftime("%b %d, %Y %H:%M") %></small>          
-              </h5>
-            </div>
+        <% unless @requests.nil? %>
+          <% @requests.each do |request| %>
+            <%= link_to( messages_path( id:request.id ) ) do %>         
+              <div class="well <%= 'active' if request.id.to_i == @request.id.to_i %>">
+                <h5>
+                  <small class="pull-right">                
+                    <span class="badge bg-blue">
+                      <small class="text-white"><%= request.messages.count %> <i class="glyphicon glyphicon-triangle-right"></i></small>
+                    </span>
+                  </small>
+                  #<%= request.id %> <%= request.name %><br><small><%= request.created_at.strftime("%b %d, %Y %H:%M") %></small>          
+                </h5>
+              </div>
+             <% end %>
            <% end %>
-         <% end %>
+        <% end %>        
       </div>
       <div class="col-md-8">
+        <% unless @request.nil? %>
         <div class="well">
           <div>
             <button class="btn btn-default btn-sm" id="new-message">NEW MESSAGE</button>
@@ -62,10 +65,14 @@
               <h5><%= message.user.name %> : <em><%= @request.company.name %></em></h5>
               <% else %>
                 <h5>
-                  <% unless message.supplier.user.nil? %><%= message.supplier.user.name %><% end %>
-                  <% if message.supplier.user.companies.exists? %>
-                    : <em><%= message.supplier.user.companies.first.name %></em>
-                  <% end %>  
+                  <% unless message.supplier.user.nil? %>
+                    <%= message.supplier.user.name %>
+                    <% if message.supplier.user.companies.exists? %>
+                      : <em><%= message.supplier.user.companies.first.name %></em>
+                    <% end %>
+                  <% else %>
+                    <%= message.supplier.email %>
+                  <% end %>
                 </h5>
               <% end %>              
               <div>                
@@ -93,7 +100,9 @@
             <hr>
           <% end %>
         </div>
-
+        <% else %>
+        <p>No messsage yet...</p>
+        <% end %>
       </div>
     </div>
   </div>

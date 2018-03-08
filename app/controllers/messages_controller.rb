@@ -7,18 +7,22 @@ class MessagesController < ApplicationController
     if params[:id].nil?
       if current_user.requests.exists?
         @request = current_user.requests.first
-      else
+      elsif !current_user.supplier.nil?
         @request = current_user.supplier.requests.first
       end
     else
       @request = Request.find params[:id]
     end
-    @messages   = @request.messages
-    @requests   = current_user.requests
-    unless current_user.supplier.nil?
-      @supplier_requests = current_user.supplier.requests
-      @requests = @requests.to_a.concat @supplier_requests.to_a
+
+    unless @request.nil?
+      @messages   = @request.messages
+      @requests   = current_user.requests
+      unless current_user.supplier.nil?
+        @supplier_requests = current_user.supplier.requests
+        @requests = @requests.to_a.concat @supplier_requests.to_a
+      end  
     end
+    
   end
 
   # GET /messages/1
