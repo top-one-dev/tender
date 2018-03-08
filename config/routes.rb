@@ -14,6 +14,8 @@ Rails.application.routes.draw do
   resources :suppliers
   get 'request/:id/view/:token', to: 'suppliers#view_request', as: 'view_request'
   resources :companies
+  post 'company/invite', to: 'companies#invite_colleague', as: 'invite_colleague'
+  get  'accept/:user/invite/:company', to: 'companies#accept_colleage_invite', as: 'accept_invite'
 
   get 'dashboard/request', to: 'dashboard#trequest', as: 'dashboard_request'
 

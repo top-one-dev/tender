@@ -20,7 +20,7 @@ class CompaniesController < ApplicationController
   end
 
   # GET /companies/1/edit
-  def edit
+  def edit    
   end
 
   # POST /companies
@@ -66,6 +66,58 @@ class CompaniesController < ApplicationController
     end
   end
 
+  def invite_colleague
+    unless colleague_params[:company].nil?
+      @company = Company.find colleague_params[:company]
+      if User.where(email: colleague_params[:email]).exists?
+        @user = User.where(email: colleague_params[:email]).first
+        @user.update(company: @company.id)
+        if @user.company and !@user.confirmed_at          
+          is_new_user = true 
+        else          
+          is_new_user = false
+        end
+      else
+        @user = User.new({  email:                  colleague_params[:email], 
+                            name:                   colleague_params[:name], 
+                            phone:                  colleague_params[:phone],
+                            mobile:                 colleague_params[:mobile],
+                            company:                colleague_params[:company],
+                            password:               "#{colleague_params[:email]}password",
+                            password_confirmation:  "#{colleague_params[:email]}password"  })
+
+        @user.save
+        is_new_user = true
+      end
+
+      respond_to do |format|
+        if TenderBooksNotifierMailer.company_invite_colleague(@user, @company, is_new_user).deliver_later
+          format.html { redirect_to @company, notice: 'An invite was successfully sent.' }
+          format.json { render json: {  status: 'success', message: 'An invite was successfully sent.' } }
+        else
+          format.html { redirect_to @company, error: 'There is some error to send an invite.' }
+          format.json { render json: {  status: 'error', message: @user.errors.full_messages.join(',') } }
+        end
+      end 
+    end
+  end
+
+  def accept_colleage_invite
+    @company  = Company.find params[:company]
+    @user     = User.find params[:user]
+
+    respond_to do |format|
+      if @company.users << @user
+        @user.update(company: nil)
+        format.html { redirect_to @company, notice: 'Thanks for accepting invitation.' }
+        format.json { render json: {  status: 'success', message: 'Thanks for accepting invitation.' } }
+      else
+        format.html { redirect_to root_url, error: 'There is some error to accept an invite.' }
+        format.json { render json: {  status: 'error', message: 'There is some error to accept an invite.' } }
+      end
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_company
@@ -76,6 +128,10 @@ class CompaniesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def company_params
       params.require(:company).permit(:name, :logo, :country, :city, :address, :zip, :email, :phone, :homepage, { business_type: [] }, :employees, :turnover, :established, :introduction, :language, :user)
+    end
+
+    def colleague_params
+      params.require(:colleague).permit(:name, :email, :phone, :mobile, :company)      
     end
 
     def set_s3_direct_post

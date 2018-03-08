@@ -74,6 +74,13 @@ class TenderBooksNotifierMailer < ApplicationMailer
 		mail(:to => @requisition.contact_email, :subject => "Request ##{@request.id} for requisition ##{@requisition.id} for #{@requisition.name} was created.")
 	end
 
+	def company_invite_colleague(user, company, is_new_user)
+		@user 			= user
+		@company 		= company
+		@is_new_user 	= is_new_user
+		mail(:to => @user.email, :subject => "#{@company.owner.name} invites you to join company '#{@company.name}'")
+	end
+
 	private
 	
 	def crypt

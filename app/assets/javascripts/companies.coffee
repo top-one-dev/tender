@@ -22,4 +22,4 @@ $(document).on 'turbolinks:load', ->
             	$('.company-logo').attr 'src', image_url
 
     $('#companyLogoModal .close').on 'click', ->
-    	companylogo.removeAllFiles()	        
+    	companylogo.removeAllFiles()
