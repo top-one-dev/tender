@@ -118,6 +118,37 @@ class CompaniesController < ApplicationController
     end
   end
 
+  def assign_colleague
+    @user = User.find params[:assign][:colleague]
+    @requisition = Requisition.find params[:assign][:requisition]
+
+    respond_to do |format|
+      if @user.requisitions << @requisition
+    
+        @requisition.messages.create!({ user_id:  current_company.id,
+                                        from:     'company',
+                                        read:     false,
+                                        content:  "#{@requisition.company.name} assigned the requisition for #{@requisition.name} to #{@user.name}" })
+
+        TenderBooksNotifierMailer.assign_requisition_requisitioner(@requisition, @user).deliver_later
+
+        @requisition.stockholders.each do |stockholder|
+          TenderBooksNotifierMailer.assign_requisition_stockholder(@requisition, @user, stockholder).deliver_later
+        end
+
+        TenderBooksNotifierMailer.assign_requisition_employee(@requisition, @user).deliver_later
+
+        @requisition.update!(status: 'open')
+        
+        format.html { redirect_to @requisition, notice: "Requisition for #{@requisition.name} was assigned to #{@user.name}." }
+        format.json { render json: {  status: 'success', message: "Requisition for #{@requisition.name} was assigned to #{@user.name}." } }
+      else
+        format.html { redirect_to @requisition, error: 'There is some error to assign.' }
+        format.json { render json: {  status: 'error', message: 'There is some error to assign.' } }
+      end
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_company

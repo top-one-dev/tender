@@ -3,7 +3,7 @@
 <section style="min-height: 60vh;">
   <div class="container">
 
-    <% if @requisitioner and @requisition.status == 'new' %>
+    <% if @requisitioner and ['new', 'open'].include? @requisition.status %>
     <div class="alert alert-warning">
       <button type="button" class="close" data-dismiss="alert">
         <span aria-hidden="true">&times;</span>
@@ -12,10 +12,11 @@
     </div>
     <div class="well-sm well">
       <h5>Requisition number: #<%= @requisition.id %></h5>
+      <h5>Assigned to: <% unless @requisition.user.nil? %> <%= @requisition.user.name %> <% end %></h5>
     </div>
     <% end %>
 
-    <% if @colleague and @requisition.status == 'new' %>
+    <% if @colleague and ['new', 'open'].include? @requisition.status %>
     <div class="alert alert-warning">
       <button type="button" class="close" data-dismiss="alert">
         <span aria-hidden="true">&times;</span>
@@ -24,20 +25,31 @@
     </div>
     <div class="well-sm well">
       <h5>Requisition number: #<%= @requisition.id %></h5>
+      <h5>Assigned to: <% unless @requisition.user.nil? %> <%= @requisition.user.name %> <% end %></h5>
     </div>    
     <% end %>
 
-    <% if @is_company and @requisition.status == 'new' %>
+    <% if @is_company and ['new', 'open'].include? @requisition.status %>
     <div class="alert alert-warning">
       <button type="button" class="close" data-dismiss="alert">
         <span aria-hidden="true">&times;</span>
       </button>
-      <b class="text-info"><%= @requisition.contact_name %></b> submitted this requisition for review and you received this requisition.
+      <b class="text-info"><%= @requisition.contact_name %></b> submitted this requisition for review and your company received this requisition<% if @requisition.user == current_user %>, and company assigned this to you<% end %>.
     </div>
     <div class="well-sm well">
       <h5>
         Requisition number: #<%= @requisition.id %>
-        <%= link_to '<b>Open request</b>'.html_safe, "#{new_request_path('RFQ')}?requisition_id=#{@requisition.id}", class: 'btn btn-default btn-sm pull-right' %>
+        <% unless @requisition.user.nil? %>
+          <% if @requisition.user == current_user %>
+          <%= link_to '<b>Open request</b>'.html_safe, "#{new_request_path('RFQ')}?requisition_id=#{@requisition.id}", class: 'btn btn-default btn-sm pull-right' %>
+          <% else %>
+          <br><br>Assigned to: <%= @requisition.user.name %>
+          <% end %>
+        <% else %>
+          <% if current_company.owner == current_user %>
+          <a href="javascript:;" class="btn btn-default btn-sm pull-right" data-toggle="modal" data-target="#assignModal" ><b>Assign to colleague</b></a>
+          <% end %>
+        <% end %>
       </h5> 
     </div>    
     <% end %>
@@ -342,3 +354,29 @@
 
     </div>
   </section>
+
+
+  <!-- Modal -->
+<div id="assignModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <%= form_for :assign, url: assign_colleague_path, method: :post do |f| %>
+      <%= f.hidden_field :requisition, value: @requisition.id %>
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Assign this requisition to a colleague</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group required">
+          <label class="control-label">Colleague</label>
+          <%= f.select(:colleague, @requisition.company.users.collect {|s| [s[:name].to_s, s[:id].to_s]}, {},{:class => "form-control", :requried => true} ) %>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-default" data-dismiss="modal">Cancel</a>
+        <%= f.submit 'Assign', class:'btn btn-info' %>
+      </div>
+    <% end %>
+    </div>
+  </div>
+</div>

@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   resources :companies
   post 'company/invite', to: 'companies#invite_colleague', as: 'invite_colleague'
   get  'accept/:user/invite/:company', to: 'companies#accept_colleage_invite', as: 'accept_invite'
+  post 'assign/requisition', to: 'companies#assign_colleague', as: 'assign_colleague'
 
   get 'dashboard/request', to: 'dashboard#trequest', as: 'dashboard_request'
 
