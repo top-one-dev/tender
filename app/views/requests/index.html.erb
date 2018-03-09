@@ -89,7 +89,7 @@
               <div class="panel-heading">
                 <h4 class="panel-title">
                   <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
-                    Active requests
+                    Active requests <%= "<span class='badge'>#{@active_requests.count}</span>".html_safe if @active_requests.count > 0 %>
                     <small class="pull-right">
                       <i class="glyphicon glyphicon-triangle-bottom"></i>
                     </small>
@@ -162,7 +162,7 @@
               <div class="panel-heading">
                 <h4 class="panel-title">
                   <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
-                    Ended requests
+                    Ended requests <%= "<span class='badge'>#{@ended_requests.count}</span>".html_safe if @ended_requests.count > 0 %>
                     <small class="pull-right">
                       <i class="glyphicon glyphicon-triangle-bottom"></i>
                     </small>
@@ -233,7 +233,7 @@
               <div class="panel-heading">
                 <h4 class="panel-title">
                   <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
-                    Closed requests
+                    Closed requests <%= "<span class='badge'>#{@closed_requests.count}</span>".html_safe if @closed_requests.count > 0 %>
                     <small class="pull-right">
                       <i class="glyphicon glyphicon-triangle-bottom"></i>
                     </small>
@@ -306,7 +306,7 @@
           <br>
           <div class="panel panel-info">
               <div class="panel-heading">
-                <h4 class="panel-title">Archived Requests</h4>
+                <h4 class="panel-title">Archived Requests <%= "<span class='badge'>#{@archived_requests.count}</span>".html_safe if @archived_requests.count > 0 %></h4>
               </div>
               <div class="panel-body">
                 <table class="table">

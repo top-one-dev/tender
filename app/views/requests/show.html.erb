@@ -10,16 +10,32 @@
     </h3>
     <hr>
     <% if @request.company.owner == current_user or @request.user == current_user %>
+      <% if @request.folder_id == 1 %>
+      
       <div>
         <% if @request.company.owner == current_user %>
-          <%= link_to '<b>Assign</b>'.html_safe, '#', class: 'btn btn-sm btn-default' %>
+          <%= link_to '<b>Assign</b>'.html_safe, 'javascript:;', class: 'btn btn-sm btn-default', 'data-toggle': "modal", 'data-target': "#assignRequestModal" %>
         <% end %>
-        <%= link_to '<b>Extend end time</b>'.html_safe, '#', class: 'btn btn-sm btn-default' %>
-        <%= link_to '<b>Archive request</b>'.html_safe, '#', class: 'btn btn-sm btn-default' %>
-        <%= link_to '<b>Compare bids</b>'.html_safe, '#', class: 'btn btn-sm btn-default' %>
-        <%= link_to '<b>Cancel request</b>'.html_safe, '#', class: 'btn btn-sm btn-default' %>
+        <%= link_to '<b>Extend end time</b>'.html_safe, edit_request_path(@request), class: 'btn btn-sm btn-default' %>
+        <%= link_to '<b>Archive request</b>'.html_safe, change_status_path(@request.id, 3), class: 'btn btn-sm btn-default' %>
+        <%= link_to '<b>Compare bids</b>'.html_safe, compare_bids_path(@request.id), class: 'btn btn-sm btn-default' %>
+        <%= link_to '<b>Cancel request</b>'.html_safe, change_status_path(@request.id, 2), class: 'btn btn-sm btn-default', 'data-confirm': 'After cancelling a request you cannot republish it anymore. Are you sure to cancel?' %>
         <%= link_to '<b class="text-muted"><i class="glyphicon glyphicon-envelope"></i> View Messages</b>'.html_safe, "#{messages_url}?id=#{@request.id}", class: "btn btn-default btn-sm pull-right" %>
       </div>
+      
+      <% elsif @request.folder_id == 2 %>
+      
+      <div class="alert alert-warning">
+        This request was closed by <b class="text-info"><%= @request.user.name %></b> at <%= @request.updated_at.strftime("%b %d, %Y %H:%M ( %Z%z )") %>
+      </div>
+
+      <% elsif @request.folder_id == 3 %>
+      
+      <div class="alert alert-warning">
+        This request was archived by <b class="text-info"><%= @request.user.name %></b> at <%= @request.updated_at.strftime("%b %d, %Y %H:%M ( %Z%z )") %>
+      </div>
+
+      <% end %>
     <% end %>
     <hr>
     <ul class="nav nav-tabs">
@@ -276,3 +292,29 @@
 
     </div>
   </section>
+
+
+<div id="assignRequestModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <%= form_for :assign, url: assign_request_path, method: :post do |f| %>
+      <%= f.hidden_field :request, value: @request.id %>
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Assign this request to a colleague</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group required">
+          <label class="control-label">Colleague</label>
+          <%= f.select(:buyer, @request.company.users.collect {|s| [s[:name].to_s, s[:id].to_s]}, {},{:class => "form-control", :requried => true} ) %>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-default" data-dismiss="modal">Cancel</a>
+        <%= f.submit 'Assign', class:'btn btn-info' %>
+      </div>
+    <% end %>
+    </div>
+  </div>
+</div>
+

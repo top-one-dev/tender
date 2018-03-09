@@ -1,6 +1,6 @@
 class RequestsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_request, only: [:show, :edit, :update, :destroy]
+  before_action :set_request, only: [:show, :edit, :update, :destroy, :change_status, :compare_bids]
   before_action :set_company
   before_action :set_s3_direct_post, only: [:new, :create, :edit, :update]
 
@@ -17,18 +17,30 @@ class RequestsController < ApplicationController
     unless current_company.nil?
       @ended_requests = []
       @active_requests = []
+      
+      if current_company.owner == current_user
+        @requests = current_company.requests.where(folder_id: 1)
+        @closed_requests  =  current_company.requests.where(folder_id: 2)
+        @archived_requests  =  current_company.requests.where(folder_id: 3)
+      else 
+        @requests = current_company.requests.where(:user_id => current_user.id).where(folder_id: 1)
+        @closed_requests    =  current_company.requests.where(:user_id => current_user.id).where(folder_id: 2)
+        @archived_requests  =  current_company.requests.where(:user_id => current_user.id).where(folder_id: 3)
+      end 
 
-      @requests = current_company.requests.where(:user_id => current_user.id).where(folder_id: 1)
       @requests.each do |request|
         if Time.now > request.end_time
           @ended_requests << request
         else
           @active_requests << request
         end
-      end
+      end    
 
-      @closed_requests    =  current_company.requests.where(:user_id => current_user.id).where(folder_id: 2)
-      @archived_requests  =  current_company.requests.where(:user_id => current_user.id).where(folder_id: 3)
+      if current_company.owner == current_user
+        @requests = current_company.requests
+      else
+        @requests = current_company.requests.where(:user_id => current_user.id)
+      end 
 
     else
       @requests = {}
@@ -242,6 +254,68 @@ class RequestsController < ApplicationController
     end
   end
 
+  def change_status
+    status = params[:status]
+    folder = Folder.find status.to_i
+    respond_to do |format|
+      @request.folder = folder
+      if @request.save!
+        if status == '2'
+          notice = 'Request was successfully closed. You can\'t open request again anymore.'
+          TenderBooksNotifierMailer.close_request_buyer(@request.user, @request).deliver_later
+          @request.suppliers.each do |supplier|
+            TenderBooksNotifierMailer.close_request_supplier(@request.user, supplier, @request).deliver_later
+            @request.messages.create!(
+              from: 'buyer',
+              read: false,
+              user_id: current_user.id, 
+              supplier_id: supplier.id,
+              content: "Request was closed..."
+              )
+          end
+        else
+          notice = 'Request was successfully archieved.'
+        end 
+        format.html { redirect_to @request, notice: notice }
+        format.json { render :show, status: :ok, location: @request }
+      else
+        format.html { redirect_to @request, notice: 'There was an error to assign.' }
+        format.json { render json: @request.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def assign_request
+    request = Request.find assign_params[:request]
+    buyer   = User.find assign_params[:buyer]
+    respond_to do |format|
+      request.user = buyer
+      if request.save!
+        TenderBooksNotifierMailer.assign_request_buyer(buyer, request).deliver_later
+        request.suppliers.each do |supplier|
+          TenderBooksNotifierMailer.assign_request_supplier(buyer, supplier, request).deliver_later
+          request.messages.create!(
+            from: 'buyer',
+            read: false,
+            user_id: current_user.id, 
+            supplier_id: supplier.id,
+            content: "Request was assigned to #{buyer.name}"
+            )
+        end
+        format.html { redirect_to request, notice: "Request for #{request.name} was successfully assigned to #{buyer.name}." }
+        format.json { render :show, status: :ok, location: request }
+      else
+        format.html { redirect_to request, notice: 'There was an error to assign.' }
+        format.json { render json: request.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def compare_bids
+    @bids = @request.bids
+    
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_request
@@ -287,6 +361,10 @@ class RequestsController < ApplicationController
       else
         session[:current_company_id] = 0
       end 
+    end
+
+    def assign_params
+      params.require(:assign).permit(:request, :buyer )
     end
 
     def set_s3_direct_post
