@@ -11,6 +11,9 @@ Rails.application.routes.draw do
   resources :questions
   resources :items
   resources :requests
+  get 'request/:id/status/:status', to: 'requests#change_status', as: 'change_status'
+  post 'assign/request', to: 'requests#assign_request', as: 'assign_request'
+  get 'request/:id/bids', to: 'requests#compare_bids', as: 'compare_bids'
   resources :suppliers
   get 'request/:id/view/:token', to: 'suppliers#view_request', as: 'view_request'
   resources :companies
