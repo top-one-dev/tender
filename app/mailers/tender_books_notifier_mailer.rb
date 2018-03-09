@@ -2,6 +2,36 @@ class TenderBooksNotifierMailer < ApplicationMailer
 
 	default :from => 'tenderbooks@support.com'
 
+	# Bids....
+
+	def bid_supplier(buyer, supplier, request)
+		@buyer 		= buyer
+		@supplier 	= supplier
+		@request 	= request
+		mail( :to => @supplier.email,	:subject => 'Thanks for your bidding.' )
+	end
+
+	def bid_buyer( buyer, supplier, request)
+		@buyer 		= buyer
+		@supplier 	= supplier
+		@request 	= request
+		mail( :to => @buyer.email,	:subject => "#{@supplier.email} made a bid for you" )
+	end
+
+	# Rquests....
+
+	def create_request_company(request)
+		@request 		= request
+		@requisition 	= @request.requisition
+		mail(:to => @request.company.email, :subject => "Request ##{@request.id} for requisition ##{@requisition.id} for #{@requisition.name} was created.")
+	end
+
+	def create_request_requisitioner(request)
+		@request 		= request
+		@requisition 	= @request.requisition
+		mail(:to => @requisition.contact_email, :subject => "Request ##{@request.id} for requisition ##{@requisition.id} for #{@requisition.name} was created.")
+	end
+
 	def invite_supplier(supplier, request)
 		@supplier 		= supplier
 		@supplier_token = crypt.encrypt_and_sign @supplier.id
@@ -23,19 +53,33 @@ class TenderBooksNotifierMailer < ApplicationMailer
 		mail( :to => @supplier.email,	:subject => "#{@request.name} was updated at #{@request.updated_at}" )
 	end
 
-	def bid_supplier(buyer, supplier, request)
-		@buyer 		= buyer
-		@supplier 	= supplier
-		@request 	= request
-		mail( :to => @supplier.email,	:subject => 'Thanks for your bidding.' )
+	def assign_request_buyer(buyer, request)
+		@buyer 			= buyer
+		@request 		= request
+		mail( :to => @buyer.email,	:subject => "#{@request.company.name} assigned the request for #{@request.name} to you." )		
 	end
 
-	def bid_buyer( buyer, supplier, request)
-		@buyer 		= buyer
-		@supplier 	= supplier
-		@request 	= request
-		mail( :to => @buyer.email,	:subject => "#{@supplier.email} made a bid for you" )
+	def assign_request_supplier(buyer, supplier, request)
+		@buyer 			= buyer
+		@request 		= request
+		@supplier 		= supplier
+		mail( :to => @supplier.email,	:subject => "#{@request.company.name} assigned the request for #{@request.name} to #{@buyer.name}." )		
 	end
+
+	def close_request_buyer(buyer, request)
+		@buyer 			= buyer
+		@request 		= request
+		mail( :to => @buyer.email,	:subject => "#{@request.company.name} closed the request for #{@request.name}." )
+	end
+
+	def close_request_supplier(buyer, supplier, request)
+		@buyer 			= buyer
+		@request 		= request
+		@supplier 		= supplier
+		mail( :to => @supplier.email,	:subject => "#{@request.company.name} closed the request for #{@request.name}." )				
+	end
+
+	# Requisitions....
 
 	def create_requisition_company(requisition, company)
 		@requisition 	= requisition
@@ -60,18 +104,6 @@ class TenderBooksNotifierMailer < ApplicationMailer
 		@requisition 	= requisition
 		@colleague 		= colleague
 		mail( :to => @colleague[:email],	:subject => "You were removed from requisition ##{@requisition.id} for #{@requisition.name} by #{@requisition.contact_name}" )
-	end
-
-	def create_request_company(request)
-		@request 		= request
-		@requisition 	= @request.requisition
-		mail(:to => @request.company.email, :subject => "Request ##{@request.id} for requisition ##{@requisition.id} for #{@requisition.name} was created.")
-	end
-
-	def create_request_requisitioner(request)
-		@request 		= request
-		@requisition 	= @request.requisition
-		mail(:to => @requisition.contact_email, :subject => "Request ##{@request.id} for requisition ##{@requisition.id} for #{@requisition.name} was created.")
 	end
 
 	def assign_requisition_employee(requisition, user)
