@@ -18,14 +18,17 @@ class RequestsController < ApplicationController
       @ended_requests = []
       @active_requests = []
 
-      @requests = current_company.requests.where(:user_id => current_user.id)
+      @requests = current_company.requests.where(:user_id => current_user.id).where(folder_id: 1)
       @requests.each do |request|
         if Time.now > request.end_time
           @ended_requests << request
         else
           @active_requests << request
         end
-      end           
+      end
+
+      @closed_requests    =  current_company.requests.where(:user_id => current_user.id).where(folder_id: 2)
+      @archived_requests  =  current_company.requests.where(:user_id => current_user.id).where(folder_id: 3)
 
     else
       @requests = {}
@@ -180,32 +183,45 @@ class RequestsController < ApplicationController
 
           end
 
-          unless participant_params.nil?
+          # unless participant_params.nil?
 
-            unless participant_params.empty?
+          #   unless participant_params.empty?
 
-              participant_params.each do |participant|
+          #     participant_params.each do |participant|
 
-                supplier = Supplier.find_or_create_by(email: participant)
+          #       supplier = Supplier.find_or_create_by(email: participant)
                 
-                unless @request.suppliers.include? supplier
-                  @request.suppliers << supplier
-                  if User.where(email: supplier.email).exists?
-                    supplier.update( user_id: current_user.id )
-                  end
-                  TenderBooksNotifierMailer.update_supplier(supplier, @request).deliver_later
-                  @request.messages.create!(
-                    from: 'buyer',
-                    read: false,
-                    user_id: current_user.id, 
-                    supplier_id: supplier.id,
-                    content: 'Please apply...'
-                    )
-                end
+          #       unless @request.suppliers.include? supplier
+          #         @request.suppliers << supplier
+          #         if User.where(email: supplier.email).exists?
+          #           supplier.update( user_id: current_user.id )
+          #         end
+          #         TenderBooksNotifierMailer.update_supplier(supplier, @request).deliver_later
+          #         @request.messages.create!(
+          #           from: 'buyer',
+          #           read: false,
+          #           user_id: current_user.id, 
+          #           supplier_id: supplier.id,
+          #           content: 'Request updated, please review and make a bid again...'
+          #           )
+          #       end
 
-              end
-            end 
+          #     end
+          #   end 
+
+          # end
+
+          @request.suppliers.each do |supplier|
+            TenderBooksNotifierMailer.update_supplier(supplier, @request).deliver_later
+            @request.messages.create!(
+              from: 'buyer',
+              read: false,
+              user_id: current_user.id, 
+              supplier_id: supplier.id,
+              content: 'Request updated, please review and make a bid again...'
+              )
           end
+
 
         format.html { redirect_to @request, notice: 'Request was successfully updated.' }
         format.json { render :show, status: :ok, location: @request }

@@ -9,6 +9,19 @@
       </span>
     </h3>
     <hr>
+    <% if @request.company.owner == current_user or @request.user == current_user %>
+      <div>
+        <% if @request.company.owner == current_user %>
+          <%= link_to '<b>Assign</b>'.html_safe, '#', class: 'btn btn-sm btn-default' %>
+        <% end %>
+        <%= link_to '<b>Extend end time</b>'.html_safe, '#', class: 'btn btn-sm btn-default' %>
+        <%= link_to '<b>Archive request</b>'.html_safe, '#', class: 'btn btn-sm btn-default' %>
+        <%= link_to '<b>Compare bids</b>'.html_safe, '#', class: 'btn btn-sm btn-default' %>
+        <%= link_to '<b>Cancel request</b>'.html_safe, '#', class: 'btn btn-sm btn-default' %>
+        <%= link_to '<b class="text-muted"><i class="glyphicon glyphicon-envelope"></i> View Messages</b>'.html_safe, "#{messages_url}?id=#{@request.id}", class: "btn btn-default btn-sm pull-right" %>
+      </div>
+    <% end %>
+    <hr>
     <ul class="nav nav-tabs">
       <li class="active"><a data-toggle="tab" href="#request-details">Request details</a></li>
       <li><a data-toggle="tab" href="#suppliers">Suppliers</a></li>
@@ -157,21 +170,10 @@
                       <%= supplier.user.name %> ( <%= supplier.email %> )
                     <% end %>
                   </td>
-                  <td><%= supplier.bids.where(request_id: @request.id).where(status: 'sent').count %></td>
+                  <td><%= supplier.bids.where(request_id: @request.id).where(status: 'sent').count %> bid(s)</td>
                   <td><%= supplier.created_at.strftime("%b %d, %Y %H:%M ( %Z%z )") %></td>
                   <td>
-                    <div class="dropdown">
-                      <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Actions
-                      <span class="caret"></span></button>
-                      <ul class="dropdown-menu">
-                        <li><a href="#">View bid</a></li>
-                        <li><a href="#">Enter bid myself</a></li>
-                        <li><a href="#">Remove</a></li>
-                      </ul>
-                    </div>                
-                  </td>
-                  <td>
-                    <button class="btn btn-default"><i class="glyphicon glyphicon-envelope text-muted"></i></button>
+                    <%= link_to '<i class="glyphicon glyphicon-envelope text-muted"></i>'.html_safe, "#{messages_url}?id=#{@request.id}", class: "btn btn-default" %>
                   </td>
                 </tr>
               <% end %>
@@ -201,21 +203,10 @@
                   <%= supplier.user.name %> ( <%= supplier.email %> )
                 <% end %>
               </td>
-              <td><%= supplier.bids.where(request_id: @request.id).where(status: 'sent').count %></td>
+              <td><%= supplier.bids.where(request_id: @request.id).where(status: 'sent').count %> bid(s)</td>
               <td><%= supplier.created_at.strftime("%b %d, %Y %H:%M ( %Z%z )") %></td>
               <td>
-                <div class="dropdown">
-                  <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Actions
-                  <span class="caret"></span></button>
-                  <ul class="dropdown-menu">
-                    <li><a href="#">View bid</a></li>
-                    <li><a href="#">Enter bid myself</a></li>
-                    <li><a href="#">Remove</a></li>
-                  </ul>
-                </div>                
-              </td>
-              <td>
-                <button class="btn btn-default"><i class="glyphicon glyphicon-envelope text-muted"></i></button>
+                <%= link_to '<i class="glyphicon glyphicon-envelope text-muted"></i>'.html_safe, "#{messages_url}?id=#{@request.id}", class: "btn btn-default" %>
               </td>
               </tr>
               <% end %>
@@ -262,10 +253,19 @@
                        %>
                   <%= sprintf("%+.2f", difference) %> <%= @request.preferred_currency %> 
                 </td>
-                <td><%= bid.created_at.strftime("%b %d, %Y %H:%M ( %Z%z )") %></td>
+                <td><%= bid.created_at.strftime("%b %d, %Y %H:%M ( %Z%z )") %></td>                
                 <td>
-                  <%= link_to 'View bid', bid, class: 'btn btn-default' %>
-                  <button class="btn btn-default"><i class="glyphicon glyphicon-envelope text-muted"></i></button>
+                  <div class="dropdown">
+                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Actions
+                    <span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                      <li><%= link_to 'View bid', bid %></li>
+                      <li><%= link_to 'Remove bid', '#' %></li>
+                    </ul>
+                  </div>                
+                </td>
+                <td>
+                  <%= link_to '<i class="glyphicon glyphicon-envelope text-muted"></i>'.html_safe, "#{messages_url}?id=#{@request.id}", class: "btn btn-default" %>
                 </td>
               </tr>
               <% end %>
@@ -276,7 +276,3 @@
 
     </div>
   </section>
-<!-- 
-<%= link_to 'Edit', edit_request_path(@request) %> |
-<%= link_to 'Back', requests_path %>
- -->

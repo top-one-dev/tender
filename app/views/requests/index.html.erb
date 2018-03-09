@@ -21,6 +21,7 @@
       <ul class="nav nav-tabs">
         <li><a id="showFolders" href="javascript:;">Show folders</a></li>
         <li class="active"><a data-toggle="pill" href="#requestsActiveRequests">Active requests</a></li>
+        <li><a data-toggle="pill" href="#requestsArchivedRequests">Archived requests</a></li>
         <li class="pull-right">
           <div class="btn-group">
             <button type="button" class="btn btn-success">CREATE A NEW REQUEST</button>
@@ -228,7 +229,143 @@
                 </div>
               </div>
             </div>
+            <div class="panel panel-info">
+              <div class="panel-heading">
+                <h4 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
+                    Closed requests
+                    <small class="pull-right">
+                      <i class="glyphicon glyphicon-triangle-bottom"></i>
+                    </small>
+                  </a>
+                </h4>
+              </div>
+              <div id="collapse3" class="panel-collapse collapse">
+                <div class="panel-body table-responsive">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>
+                          <small class="text-muted">Name</small>
+                        </th>
+                        <th>
+                          <small class="text-muted">Buyer and folder</small>
+                        </th>
+                        <th>
+                        </th>
+                        <th>
+                          <small class="text-muted">
+                            <i class="glyphicon glyphicon-send"></i> &nbsp;
+                            <i class="glyphicon glyphicon-envelope"></i> &nbsp;
+                            <i class="glyphicon glyphicon-edit"></i> &nbsp;
+                            <i class="glyphicon glyphicon-usd"></i> &nbsp;
+                          </small>
+                        </th>
+                        <th>
+                          <small class="text-muted">Date ended</small>
+                        </th>
+                        <th></th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% @closed_requests.each do |request| %>
+                      <tr>
+                        <td><%= "##{request.id} #{request.name}" %></td>
+                        <td>
+                          <i class="glyphicon glyphicon-folder-close"></i>&nbsp;&nbsp;<%= request.user.name %>
+                        </td>
+                        <td>
+                          <big><i class="glyphicon glyphicon-envelope"></i></big>
+                          <small><span class="badge" style="vertical-align: top;"><%= request.messages.count %></span></small>
+                        </td>
+                        <td>
+                          <span class="label label-success"><%= request.messages.where( content: 'Please apply...').count %></span>
+                          <span class="label label-info"><%= request.messages.where( content: 'Supplier made a bid...').count %></span>
+                          <span class="label label-warning">1</span>
+                          <span class="label label-danger">0</span>
+                        </td>
+                        <td>
+                          <i class="glyphicon glyphicon-time"></i>&nbsp;
+                          <%= request.end_time.strftime("%b %d, %Y %H:%M") %>
+                        </td>
+                        <td></td>
+                        <td>
+                          <%= link_to 'View', request, class: "btn btn-default btn-sm" %>
+                        </td>
+                      </tr>
+                      <% end %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
           </div>          
+        </div>
+        <div id="requestsArchivedRequests" class="tab-pane fade">
+          <br>
+          <div class="panel panel-info">
+              <div class="panel-heading">
+                <h4 class="panel-title">Archived Requests</h4>
+              </div>
+              <div class="panel-body">
+                <table class="table">
+                    <thead>
+                      <tr>
+                        <th>
+                          <small class="text-muted">Name</small>
+                        </th>
+                        <th>
+                          <small class="text-muted">Buyer and folder</small>
+                        </th>
+                        <th>
+                        </th>
+                        <th>
+                          <small class="text-muted">
+                            <i class="glyphicon glyphicon-send"></i> &nbsp;
+                            <i class="glyphicon glyphicon-envelope"></i> &nbsp;
+                            <i class="glyphicon glyphicon-edit"></i> &nbsp;
+                            <i class="glyphicon glyphicon-usd"></i> &nbsp;
+                          </small>
+                        </th>
+                        <th>
+                          <small class="text-muted">Date ended</small>
+                        </th>
+                        <th></th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% @archived_requests.each do |request| %>
+                      <tr>
+                        <td><%= "##{request.id} #{request.name}" %></td>
+                        <td>
+                          <i class="glyphicon glyphicon-folder-close"></i>&nbsp;&nbsp;<%= request.user.name %>
+                        </td>
+                        <td>
+                          <big><i class="glyphicon glyphicon-envelope"></i></big>
+                          <small><span class="badge" style="vertical-align: top;"><%= request.messages.count %></span></small>
+                        </td>
+                        <td>
+                          <span class="label label-success"><%= request.messages.where( content: 'Please apply...').count %></span>
+                          <span class="label label-info"><%= request.messages.where( content: 'Supplier made a bid...').count %></span>
+                          <span class="label label-warning">1</span>
+                          <span class="label label-danger">0</span>
+                        </td>
+                        <td>
+                          <i class="glyphicon glyphicon-time"></i>&nbsp;
+                          <%= request.end_time.strftime("%b %d, %Y %H:%M") %>
+                        </td>
+                        <td></td>
+                        <td>
+                          <%= link_to 'View', request, class: "btn btn-default btn-sm" %>
+                        </td>
+                      </tr>
+                      <% end %>
+                    </tbody>
+                  </table>
+              </div>
+          </div>
         </div>
       </div>
     <% end %>
