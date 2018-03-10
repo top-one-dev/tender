@@ -7,13 +7,13 @@
 		</div>
 
 		<ul class="nav nav-tabs">
-			<li class="active"><a data-toggle="tab" href="#comparebid">Compare bids</a></li>
-			<li><a data-toggle="tab" href="#comparequestion">Compare questionnaire answers</a></li>
+			<li class="active"><a data-toggle="tab" href="#comparebid"><h4>Compare bids</h4></a></li>
+			<li><a data-toggle="tab" href="#comparequestion"><h4>Compare questionnaire answers</h4></a></li>
 		</ul>
 
 		<div class="tab-content">
 			<div id="comparebid" class="tab-pane fade in active">
-				<div class="sticky-table sticky-headers sticky-ltr-cells">
+				<div class="sticky-table sticky-headers sticky-ltr-cells">					
 					<table class="table table-striped" id="table-fixed-head">
 						<thead>
 							<tr class="sticky-row">
@@ -35,7 +35,7 @@
 				                    <% end %><br><br>
 				                    <span class="text-info">
 				                    	<% if bid.supplier.user.nil?%>
-					                      Anonymous Supplier <small class="text-muted"><em>( <%= bid.supplier.email %> )</em></small>
+					                      Anonymous <small class="text-muted"><em>( <%= bid.supplier.email %> )</em></small>
 					                    <% else %>
 					                      <%= bid.supplier.user.name %> <small class="text-muted"><em>( <%= bid.supplier.email %> )</em></small>
 					                    <% end %>
@@ -51,12 +51,27 @@
 								</th>
 								<% @bids.each do |bid| %>
 								<th>
-									<button class="btn btn-sm btn-success">Set winer</button>
+									<button class="btn btn-sm btn-success text-uppercase">Set winer</button>
 								</th>
 								<% end %>
 							</tr>
 						</thead>
-						<tbody>					
+						<tbody>
+							<tr>
+								<td class="text-muted sticky-cell">
+									
+								</td>
+								<% @bids.each do |bid| %>
+									<td>
+										<% unless bid.content == '' %>
+										<div class="well">
+											<em><%= bid.content %></em><br>
+											<i class="glyphicon glyphicon-comment text-muted pull-right"></i>
+										</div>
+										<% end %>
+									</td>
+								<% end %>
+							</tr>			
 
 							<tr>
 								<td class="text-muted sticky-cell">									
@@ -163,9 +178,78 @@
 				</div>
 			</div>
 			<div id="comparequestion" class="tab-pane fade">
-				<h3>Menu 1</h3>
-				<p>Some content in menu 1.</p>
+				<div class="sticky-table sticky-headers sticky-ltr-cells">
+					<table class="table table-striped">
+						<thead>
+							<tr class="sticky-row">
+								<% @bids.each do |bid| %>
+								<th>
+									<% unless bid.supplier.user.nil?%>
+				                      <% if bid.supplier.user.companies.exists? %>
+				                       <big><%= bid.supplier.user.companies.first.name %></big><br>
+				                        <small>
+				                        	<%= "#{bid.supplier.user.companies.first.zip}, #{bid.supplier.user.companies.first.city}, +#{bid.supplier.user.companies.first.phone}" %>
+				                        </small>
+				                      <% else %>
+				                        <big>Unknown Company</big>
+				                      <% end %>
+				                    <% else %>
+				                      <big>Unknown Company</big>
+				                    <% end %><br><br>
+				                    <span class="text-info">
+				                    	<% if bid.supplier.user.nil?%>
+					                      Anonymous Supplier <small class="text-muted"><em>( <%= bid.supplier.email %> )</em></small>
+					                    <% else %>
+					                      <%= bid.supplier.user.name %> <small class="text-muted"><em>( <%= bid.supplier.email %> )</em></small>
+					                    <% end %>
+				                    </span>				                    
+								</th>
+								<% end %>
+							</tr>
+							<tr class="bg-success sticky-row">
+								<% @bids.each do |bid| %>
+								<th>
+									<button class="btn btn-sm btn-success text-uppercase">Set winer</button>
+								</th>
+								<% end %>
+							</tr>
+						</thead>
+						<tbody>
+							<% @request.questions.each_with_index do |question, index| %>
+								<tr>
+									<td colspan="<%= @bids.count %>" class="well well-sm">
+										<%= "#{index+1}. <b>#{question.title}</b><br><small> ( #{question.description} )</small>".html_safe %>
+									</td>									
+								</tr>
+								<tr>
+									<% @bids.each do |bid| %>
+									<td class="answer-cell" data-url="<%= qanswer_url(bid.qanswers[index].id) %>" >
+										<h5 class="text-success"><b><%= bid.qanswers[index].answer %></b></h5>
+										<textarea 
+											class 		="form-control" 
+											placeholder ="Type here and hit 'Enter' to add comments..."
+											<% unless bid.qanswers[index].comments.nil? %>
+											disabled
+											<% end %> ><%= bid.qanswers[index].comments %></textarea>
+										<div>
+											<a href="javascript:;" class="btn btn-default btn-sm <%= "btn-success" if bid.qanswers[index].like %>" ><i class="glyphicon glyphicon-thumbs-up"></i></a>
+											<a href="javascript:;" class="btn btn-default btn-sm <%= "btn-danger" if bid.qanswers[index].like == false %>" ><i class="glyphicon glyphicon-thumbs-down"></i></a>
+										</div>
+									</td>
+									<% end %>
+								</tr>
+							<% end %>							
+						</tbody>
+					</table>
+				</div>				
 			</div>
 		</div>
+
+		<hr>
+		<div class="text-right">
+			<%= link_to '<b class="text-info">Back</b>'.html_safe, @request, class: 'btn btn-default' %>
+		</div>
+		<hr>
+
 	</div>
 </section>
