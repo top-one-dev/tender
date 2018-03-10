@@ -43,10 +43,10 @@ class QanswersController < ApplicationController
     respond_to do |format|
       if @qanswer.update(qanswer_params)
         format.html { redirect_to @qanswer, notice: 'Qanswer was successfully updated.' }
-        format.json { render :show, status: :ok, location: @qanswer }
+        format.json { render json: {  status: 'success', message: 'Qanswer was successfully updated.' } }
       else
         format.html { render :edit }
-        format.json { render json: @qanswer.errors, status: :unprocessable_entity }
+        format.json { render json: {  status: 'success', message: @qanswer.error } }
       end
     end
   end
@@ -69,6 +69,6 @@ class QanswersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def qanswer_params
-      params.require(:qanswer).permit(:answer, :attach, :question_id, :supplier_id)
+      params.require(:qanswer).permit(:answer, :attach, :question_id, :supplier_id, :comments, :like )
     end
 end
