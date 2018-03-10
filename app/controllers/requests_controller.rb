@@ -130,7 +130,7 @@ class RequestsController < ApplicationController
 
           end
 
-          unless request_params[:requisition_id].empty?
+          unless request_params[:requisition_id].nil?
             TenderBooksNotifierMailer.create_request_company(@request).deliver_later
             TenderBooksNotifierMailer.create_request_requisitioner(@request).deliver_later
             @request.requisition.update!( status: 'tendering' )
