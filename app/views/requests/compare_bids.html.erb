@@ -13,8 +13,154 @@
 
 		<div class="tab-content">
 			<div id="comparebid" class="tab-pane fade in active">
-				<h3>HOME</h3>
-				<p>Some content.</p>
+				<div class="sticky-table sticky-headers sticky-ltr-cells">
+					<table class="table table-striped" id="table-fixed-head">
+						<thead>
+							<tr class="sticky-row">
+								<th class="sticky-cell" >
+								</th>
+								<% @bids.each do |bid| %>
+								<th>
+									<% unless bid.supplier.user.nil?%>
+				                      <% if bid.supplier.user.companies.exists? %>
+				                       <big><%= bid.supplier.user.companies.first.name %></big><br>
+				                        <small>
+				                        	<%= "#{bid.supplier.user.companies.first.zip}, #{bid.supplier.user.companies.first.city}, +#{bid.supplier.user.companies.first.phone}" %>
+				                        </small>
+				                      <% else %>
+				                        <big>Unknown Company</big>
+				                      <% end %>
+				                    <% else %>
+				                      <big>Unknown Company</big>
+				                    <% end %><br><br>
+				                    <span class="text-info">
+				                    	<% if bid.supplier.user.nil?%>
+					                      Anonymous Supplier <small class="text-muted"><em>( <%= bid.supplier.email %> )</em></small>
+					                    <% else %>
+					                      <%= bid.supplier.user.name %> <small class="text-muted"><em>( <%= bid.supplier.email %> )</em></small>
+					                    <% end %>
+				                    </span>				                    
+								</th>
+								<% end %>
+							</tr>
+							<tr class="bg-success sticky-row">
+								<th class="text-center sticky-cell">
+									<button class="btn btn-sm" disabled>
+										<b><big>Choose winer <i class="glyphicon glyphicon-chevron-right"></i></big></b>
+									</button>
+								</th>
+								<% @bids.each do |bid| %>
+								<th>
+									<button class="btn btn-sm btn-success">Set winer</button>
+								</th>
+								<% end %>
+							</tr>
+						</thead>
+						<tbody>					
+
+							<tr>
+								<td class="text-muted sticky-cell">									
+									<table class="table table-striped">
+										<thead>
+											<tr>
+												<th>Items</th>
+												<th>Quantity</th>
+												<th>Unit</th>
+											</tr>
+										</thead>
+										<tbody>
+											<% @request.items.each do |item| %>
+											<tr>
+												<td><%= item.name %></td>
+												<td><%= item.quantity %></td>
+												<td><%= item.unit %></td>
+											</tr>
+											<% end %>
+										</tbody>
+									</table>
+								</td>
+								<% @bids.each do |bid| %>
+								<td>
+									<table class="table table-striped">
+										<thead>
+											<tr>
+												<th>Unit price</th>
+												<th>Item total</th>
+											</tr>
+										</thead>
+										<tbody>
+											<% bid.ianswers.each do |ianswer| %>
+											<tr>
+												<td><%= ianswer.unit_price %> <em><%= bid.bid_currency %></em></td>
+												<td><%= ianswer.item_total %> <em><%= bid.bid_currency %></em></td>
+											</tr>
+											<% end %>
+										</tbody>
+									</table>
+								</td>
+								<% end %>
+							</tr>
+
+							<tr>
+								<td  class="text-muted sticky-cell"><h4>Item total</h4></td>
+								<% @bids.each do |bid| %>
+								<td>
+									<h4>
+										<%= bid.item_total %> <em><%= bid.bid_currency %></em>
+									</h4>
+								</td>
+								<% end %>
+							</tr>
+
+							<tr>
+								<td class="text-muted sticky-cell">
+									<b>Difference</b>
+								</td>
+								<% @bids.each do |bid| %>
+								<td>
+									<%= difference @bids, bid %>
+								</td>
+								<% end %>
+							</tr>
+
+							<tr>
+								<td class="text-muted sticky-cell">
+									<b>Expected budget</b>
+								</td>
+								<% @bids.each do |bid| %>
+								<td>
+									<%= @request.expected_budget %> <%= @request.preferred_currency %>
+								</td>
+								<% end %>
+							</tr>
+
+							<tr>
+								<td class="text-muted sticky-cell">
+									<b>Difference from expected budget</b>
+								</td>
+								<% @bids.each do |bid| %>
+								<td>
+									<%= bid.difference_budget %>
+								</td>
+								<% end %>
+							</tr>
+
+							<tr>
+								<td class="text-muted sticky-cell">
+									<b>Documents attached to bid</b>
+								</td>
+								<% @bids.each do |bid| %>
+								<td>
+									<% if bid.document %>
+									<%= link_to "<i class='glyphicon glyphicon-file'></i> #{url_decode(bid.document).split('/').last}".html_safe, bid.document  %>
+									<% end %>
+								</td>
+								<% end %>
+							</tr>
+							
+						</tbody>
+					</table>
+				</div>
 			</div>
 			<div id="comparequestion" class="tab-pane fade">
 				<h3>Menu 1</h3>

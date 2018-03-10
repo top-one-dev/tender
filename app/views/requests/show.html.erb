@@ -262,12 +262,7 @@
                 </td>
                 <td><%= bid.bid_budget %> <%= bid.bid_currency %></td>
                 <td>
-                  <%  
-                    bid_budget = Money.new(bid.bid_budget*100, bid.bid_currency)
-                    expected_budget = Money.new(@request.expected_budget*100, @request.preferred_currency)
-                    difference = expected_budget - bid_budget.exchange_to(@request.preferred_currency)
-                       %>
-                  <%= sprintf("%+.2f", difference) %> <%= @request.preferred_currency %> 
+                  <%= bid.difference_budget %> 
                 </td>
                 <td><%= bid.created_at.strftime("%b %d, %Y %H:%M ( %Z%z )") %></td>                
                 <td>
