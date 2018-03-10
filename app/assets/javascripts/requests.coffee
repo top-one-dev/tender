@@ -172,6 +172,44 @@ $(document).on 'turbolinks:load', ->
             	document_url   = $(res_data).find("Location").text()
             	$('#request_attach').val document_url
 
+	$('.answer-cell textarea').keydown (event) ->
+		if event.keyCode == 13
+			event.preventDefault()
+			if $(this).val() == ''
+				return
+			comment = $(this).val()
+			url		= $(this).parent().attr 'data-url'
+			_this   = this
+			$.ajax
+				type: 'PUT'
+				url: url
+				dataType: 'json'
+				data: { 'qanswer': {'comments': comment}}
+				success: (res) ->
+					if res.status == 'success'
+						$(_this).blur().attr 'disabled', true
+
+	$('.answer-cell>div>a').on 'click', ->
+		url  	= $(this).parent().parent().attr 'data-url'
+		like 	= $(this).children('i').hasClass('glyphicon-thumbs-up')
+		_this 	= this
+
+		$.ajax
+			type: 'PUT'
+			url: url
+			dataType: 'json'
+			data: { 'qanswer': {'like': like}}
+			success: (res) ->
+				if res.status == 'success'
+					$(_this).parent().children('a').removeClass('btn-success').removeClass('btn-danger')
+					if $(_this).children('i').hasClass('glyphicon-thumbs-up')
+						$(_this).addClass('btn-success')
+					else
+						$(_this).addClass('btn-danger')
+
+
+
+
 
 validateEmail = (email) ->
 	re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
