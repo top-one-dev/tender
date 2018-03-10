@@ -1893,6 +1893,28 @@ module ApplicationHelper
     html.html_safe
   end
 
+  def difference bids, bid
+    item_total      = Money.new(bid.item_total*100, bid.bid_currency).exchange_to(bid.request.preferred_currency)
+    expected_budget = Money.new(bid.request.expected_budget*100, bid.request.preferred_currency)
+    min_difference  = Money.new(100000, bid.request.preferred_currency)
+    nearest_total   = Money.new(0, bid.request.preferred_currency)
+    bids.each do |b|
+      b_item_total = Money.new(b.item_total*100, b.bid_currency).exchange_to(b.request.preferred_currency)
+      b_difference = ( b_item_total - expected_budget ).abs
+      if b_difference < min_difference
+        min_difference  = b_difference
+        nearest_total   = b_item_total
+      end
+    end
+    difference      = item_total - nearest_total
+    percent         = number_to_percentage( (difference/item_total), precision: 2).to_s
+    unless difference == 0
+      sprintf("%+.2f #{bid.request.preferred_currency} <br>&nbsp;&nbsp;&nbsp;#{percent}", difference).html_safe
+    else
+      "-----<br>-----".html_safe
+    end
+  end
+
   def current_company
     if Company.exists? session[:current_company_id]
       return Company.find session[:current_company_id]
