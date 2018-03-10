@@ -22,6 +22,8 @@ class MessagesController < ApplicationController
         @requests = @requests.to_a.concat @supplier_requests.to_a
       end  
     end
+
+    @requests.uniq!
     
   end
 
