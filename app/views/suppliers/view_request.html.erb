@@ -1,10 +1,13 @@
 <% provide(:title, "View Request") %>
 <section>
-	<div class="container">
-		<div class="bg-info bid-nav">
-			<% if @request.end_time < Time.now or @request.bids.where( :status => 'assign' ).exists? %>
-				<a href="#" class="btn btn-lg btn-info" disabled data-toggle="tooltip" data-placement="bottom" title="This request is unavailable to make a bid now." >Make a bid</a>
-			<% else %>
+	<div class="container">		
+		<% unless @request.winner.nil? %>
+		  <div class="alert alert-success">
+            We selected winner (<%= @request.winner.email %>) for this request and closed it. Thanks for your interesting.
+          </div>
+		<% else %>
+			<div class="bg-info bid-nav">
+			<% unless @request.end_time < Time.now %>
 				<%= link_to 'Make a bid', new_bid_path( id: @request.id, token: @supplier_token ), class: 'btn btn-lg btn-info' %>
 			<% end %>
 
@@ -15,7 +18,9 @@
 			<% end %>
 			
 			<%= link_to 'Ask a question', 'javascript:;', class: 'btn btn-lg btn-default ask-question' %>
-		</div>
+			</div>
+		<% end %>
+		
 		<br>
 		<div class="row">
 			<div class="col-md-10 col-md-offset-1">
@@ -148,6 +153,8 @@
 						
 					</div>
 				</div>
+
+				<% if @request.winner.nil? %>
 				
 				<h3 id="message-board-title">Message board</h3>
 				<div class="well">
@@ -174,7 +181,7 @@
 						</div>
 					</div>			
 				</div>
-
+				<% end %>
 			</div>
 		</div>
 		
