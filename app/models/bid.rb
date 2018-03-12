@@ -25,4 +25,24 @@ class Bid < ApplicationRecord
       "No quote"
     end
   end
+
+  def winner
+    unless self.supplier.user.nil?
+      supplier_name = self.supplier.user.name
+      if supplier.user.companies.exists?
+        company = supplier.user.companies.first.name
+      else
+        company = 'Unknown Company'
+      end
+    else
+      supplier_name = 'Anonymous Supplier'
+      company       = 'Unknown Company'
+    end
+    { request:    "##{self.request.id} #{self.request.name}",
+      id:         self.id,
+      name:       supplier_name, 
+      email:      self.supplier.email, 
+      company:    company, 
+      bid_budget: "#{self.item_total} #{self.bid_currency}" }.to_json
+  end
 end
