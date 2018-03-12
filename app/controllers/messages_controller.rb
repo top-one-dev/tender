@@ -23,7 +23,9 @@ class MessagesController < ApplicationController
       end  
     end
 
-    @requests.uniq!
+    unless @requests.nil?
+      @requests.uniq!
+    end
     
   end
 
