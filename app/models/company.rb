@@ -10,6 +10,7 @@ class Company < ApplicationRecord
 	end
 	
 	def added_at user
-		ActiveRecord::Base.connection.execute("select * from companies_users where user_id = #{user.id} and company_id = #{self.id}").first[2].split('.').first
+		puts ActiveRecord::Base.connection.execute("select * from companies_users where user_id = #{user.id} and company_id = #{self.id}")
+		ActiveRecord::Base.connection.execute("select * from companies_users where user_id = #{user.id} and company_id = #{self.id}").first['created_at'].split('.').first
 	end
 end
