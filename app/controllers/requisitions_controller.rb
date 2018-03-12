@@ -7,8 +7,7 @@ class RequisitionsController < ApplicationController
   def index
     if current_company.nil?
       flash[:notice] = 'You need to set company before creating requisition.'
-      @web_form = "***"
-      # redirect_to new_company_path
+      redirect_to new_company_path
     else 
       @requisitions           = current_company.requisitions
       @new_requisitions       = current_company.requisitions.where(status: 'new')
