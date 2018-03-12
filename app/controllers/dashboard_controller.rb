@@ -18,6 +18,8 @@ class DashboardController < ApplicationController
   end
 
   def report
+    @requests = current_company.requests
+    @users    = current_company.users
   end
 
   private

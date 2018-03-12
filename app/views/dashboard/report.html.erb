@@ -1,7 +1,7 @@
 <% provide(:title, "Reports") %>
 <section style="min-height: 60vh;">
 	<div class="container">
-		<h3 class="text-muted">
+		<!-- <h3 class="text-muted">
 			Overview of requests
 			<span class="pull-right hidden-xs">
 				<span class="dropdown">
@@ -71,8 +71,19 @@
 					<button class="btn btn-default btn-sm">Month</button>
 				</span>
 			</div>				
-		</div>
-		<div id="report-chart">				
+		</div> -->
+		<div id="report-chart">
+			<h3 class="text-muted">Overview requests by user</h3>
+			<hr>
+			<% @users.each_with_index do |user, index| %> 
+				<%= "#{index+1} - <b>#{user.name}</b> , ".html_safe %> 
+			<% end %>
+			<hr>
+			<%= pie_chart @requests.group(:user_id).count %>
+			<br>
+			<h3 class="text-muted">Overview requests by date</h3>
+			<hr>
+			<%= area_chart @requests.group_by_day(:created_at).count %>
 		</div>
 		<div>
 			<button class="btn btn-default btn-sm">
@@ -96,26 +107,18 @@
 						<td>
 							<small>Requests by buyers</small>
 						</td>
-						<td>
+						<!-- <td>
 							<small>
 								Under registeration
 								<a href="#" class="text-muted" data-toggle="tooltip" data-placement="bottom" title="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." >
 									<i class="glyphicon glyphicon-info-sign"></i>
 								</a>
 							</small>
-						</td>
+						</td> -->
 						<td>
 							<small>
 								Active
-								<a href="#" class="text-muted" data-toggle="tooltip" data-placement="bottom" title="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." >
-									<i class="glyphicon glyphicon-info-sign"></i>
-								</a>
-							</small>
-						</td>
-						<td>
-							<small>
-								Bid closed
-								<a href="#" class="text-muted" data-toggle="tooltip" data-placement="bottom" title="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." >
+								<a href="#" class="text-muted" data-toggle="tooltip" data-placement="bottom" title="Current active requests by user of this company" >
 									<i class="glyphicon glyphicon-info-sign"></i>
 								</a>
 							</small>
@@ -123,7 +126,15 @@
 						<td>
 							<small>
 								Completed
-								<a href="#" class="text-muted" data-toggle="tooltip" data-placement="bottom" title="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." >
+								<a href="#" class="text-muted" data-toggle="tooltip" data-placement="bottom" title="Closed requests by user of this company" >
+									<i class="glyphicon glyphicon-info-sign"></i>
+								</a>
+							</small>
+						</td>
+						<td>
+							<small>
+								Archived
+								<a href="#" class="text-muted" data-toggle="tooltip" data-placement="bottom" title="Archived requests by user of this company" >
 									<i class="glyphicon glyphicon-info-sign"></i>
 								</a>
 							</small>
@@ -134,30 +145,35 @@
 					</tr>
 				</thead>
 				<tbody>
+					<% current_company.users.each do |user| %>
 					<tr>
-						<td>Roger Ndungu</td>
-						<td><h3 class="text-center">3</h3></td>
+						<td><h5><%= user.name  %> <small>( <%= user.email %> )</small></h5></td>
 						<td>
-							<h3 class="text-center">1</h3>
-							<span class="text-muted">67%</span>
-							<span class="pull-right text-muted">33%</span>
+							<h3 class="text-center text-info">
+								<%= current_company.requests.where(user_id: user.id).where(folder_id: 1).count %>
+							</h3>
 						</td>
-						<td></td>
-						<td></td>
-						<td><h3 class="text-center" >4</h3></td>
-					</tr>
-					<tr>
-						<td>Roger Ndungu</td>
-						<td><h3 class="text-center">3</h3></td>
 						<td>
-							<h3 class="text-center">1</h3>
-							<span class="text-muted">67%</span>
-							<span class="pull-right text-muted">33%</span>
+							<h3 class="text-center text-success">
+								<%= current_company.requests.where(user_id: user.id).where(folder_id: 2).count %><br>
+								<small> 
+									<% percent =  current_company.requests.where(user_id: user.id).exists? ? (current_company.requests.where(user_id: user.id).where(folder_id: 2).count / current_company.requests.where(user_id: user.id).count)*100 : 0 %>
+									<%= number_to_percentage(  percent, precision: 2 )  %>
+									</small>
+							</h3>
 						</td>
-						<td></td>
-						<td></td>
-						<td><h3 class="text-center" >4</h3></td>
+						<td>
+							<h3 class="text-center text-muted">
+								<%= current_company.requests.where(user_id: user.id).where(folder_id: 3).count %>
+							</h3>
+						</td>
+						<td>
+							<h3 class="text-center">
+								<%= current_company.requests.where(user_id: user.id).count %>
+							</h3>
+						</td>
 					</tr>
+					<% end %>
 				</tbody>
 			</table>
 		</div>
