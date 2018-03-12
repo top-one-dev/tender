@@ -4,7 +4,9 @@
     <h3>
       <%= "##{@request.id} #{@request.name}" %>
       <span class="pull-right">
+        <% if @request.winner.nil? %>
         <small class="text-danger"><i class="glyphicon glyphicon-time"></i> <%= distance_of_time_in_words(Time.now, @request.end_time) %> </small>&nbsp;
+        <% end %>
         <%= link_to '<b class="text-info">Back</b>'.html_safe, requests_path, class: 'btn btn-default' %>          
       </span>
     </h3>
@@ -24,10 +26,15 @@
       </div>
       
       <% elsif @request.folder_id == 2 %>
-      
-      <div class="alert alert-warning">
-        This request was closed by <b class="text-info"><%= @request.user.name %></b> at <%= @request.updated_at.strftime("%b %d, %Y %H:%M ( %Z%z )") %>
-      </div>
+        <% if @request.winner.nil? %>
+          <div class="alert alert-warning">
+            This request was closed by <b class="text-info"><%= @request.user.name %></b> at <%= @request.updated_at.strftime("%b %d, %Y %H:%M ( %Z%z )") %>
+          </div>
+        <% else %>
+          <div class="alert alert-success">
+            We selected winner (<%= @request.winner.email %>) for this request and closed it. Thanks for your interesting.
+          </div>
+        <% end %>
 
       <% elsif @request.folder_id == 3 %>
       
@@ -166,7 +173,7 @@
         <table class="table">
           <tbody>
             <% @suppliers.each do |supplier| %>
-              <% if supplier.bids.where(request_id: @request.id).where(status: 'sent').exists? %>
+              <% if supplier.bids.where(request_id: @request.id).exists? %>
                 <tr>
                   <td>
                     <b>
@@ -186,8 +193,8 @@
                       <%= supplier.user.name %> ( <%= supplier.email %> )
                     <% end %>
                   </td>
-                  <td><%= supplier.bids.where(request_id: @request.id).where(status: 'sent').count %> bid(s)</td>
-                  <td><%= supplier.created_at.strftime("%b %d, %Y %H:%M ( %Z%z )") %></td>
+                  <td><%= supplier.bids.where(request_id: @request.id).count %> bid(s)</td>
+                  <td><%= supplier.bids.where(request_id: @request.id).first.created_at.strftime("%b %d, %Y %H:%M ( %Z%z )") %></td>
                   <td>
                     <%= link_to '<i class="glyphicon glyphicon-envelope text-muted"></i>'.html_safe, "#{messages_url}?id=#{@request.id}", class: "btn btn-default" %>
                   </td>
@@ -219,7 +226,7 @@
                   <%= supplier.user.name %> ( <%= supplier.email %> )
                 <% end %>
               </td>
-              <td><%= supplier.bids.where(request_id: @request.id).where(status: 'sent').count %> bid(s)</td>
+              <!-- <td><%= supplier.bids.where(request_id: @request.id).where(status: 'sent').count %> bid(s)</td> -->
               <td><%= supplier.created_at.strftime("%b %d, %Y %H:%M ( %Z%z )") %></td>
               <td>
                 <%= link_to '<i class="glyphicon glyphicon-envelope text-muted"></i>'.html_safe, "#{messages_url}?id=#{@request.id}", class: "btn btn-default" %>
