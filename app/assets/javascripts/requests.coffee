@@ -207,8 +207,15 @@ $(document).on 'turbolinks:load', ->
 					else
 						$(_this).addClass('btn-danger')
 
-
-
+	$('.set-winner').on 'click', ->
+		data = JSON.parse $(this).attr 'data-winner'
+		$('#winnerModal #winner-name').html "#{data.company}<small>( #{data.name} )</small>"
+		$('#winnerModal #winner-budget').html data.bid_budget
+		$('#winnerModal #winner_subject1').val "Your bid got selected on request: #{data.request}"
+		$('#winnerModal #winner_subject2').val "Unfortunately your bid did not get selected on request: #{data.request}"
+		$('#winnerModal #winner_content1').val "Hello,\nThank you for your bid on request: #{data.request}!\nWe are pleased to announce that we have decided to select your bid!\nWe will contact you shortly to specify any necessary details.\n\nKind regards,\n[your name]\n[your company]\n[contact number]"
+		$('#winnerModal #winner_content2').val "Hello,\nThank you for your bid on request: #{data.request}!\nUnfortunately your bid was not selected. We have decided to award this request.\nWe are looking forward to working with you in the future and hope you will participate on our upcoming requests.\n\nKind regards,\n[your name]\n[your company]\n[contact number]"
+		$('#winnerModal #winner_winner_id').val data.id
 
 
 validateEmail = (email) ->

@@ -312,7 +312,43 @@ class RequestsController < ApplicationController
   end
 
   def compare_bids
-    @bids = @request.bids
+    @bids = @request.bids    
+  end
+
+  def set_winner
+    request = Request.find winner_params[:request_id]
+    win_bid = Bid.find winner_params[:winner_id]
+    winner_subject = winner_params[:subject1]
+    failer_subject = winner_params[:subject2]
+    winner_content = winner_params[:content1]
+    failer_content = winner_params[:content2]
+    
+    respond_to do |format|
+      
+      if request.update( folder_id: 2 )
+        request.bids.each do |bid|
+          if bid == win_bid
+            TenderBooksNotifierMailer.set_winner_supplier(request, bid.supplier, winner_subject, winner_content).deliver_later
+            bid.update!(status: 'win')
+            request.messages.create!(
+              from: 'buyer',
+              read: false,
+              user_id: current_user.id, 
+              supplier_id: bid.supplier.id,
+              content: "Hey, #{bid.supplier.email}, #{winner_subject}"
+              )
+          else
+            TenderBooksNotifierMailer.set_winner_supplier(request, bid.supplier, failer_subject, failer_content).deliver_later
+          end 
+        end
+        format.html { redirect_to request_url(request.id), notice: 'The winner was successfully set.' }
+        format.json { render json: {  status: 'success', message: 'The winner was successfully set.' } }
+      else
+        format.html { redirect_to compare_bids_url(request.id), error: 'There was an error to set winner.' }
+        format.json { render json: {  status: 'error', message: 'There was an error to set winner' } }
+      end
+
+    end
     
   end
 
@@ -365,6 +401,10 @@ class RequestsController < ApplicationController
 
     def assign_params
       params.require(:assign).permit(:request, :buyer )
+    end
+
+    def winner_params
+      params.require(:winner).permit(:request_id, :winner_id, :subject1, :subject2, :content1, :content2)
     end
 
     def set_s3_direct_post

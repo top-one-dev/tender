@@ -11,15 +11,18 @@ Rails.application.routes.draw do
   resources :questions
   resources :items
   resources :requests
-  get 'request/:id/status/:status', to: 'requests#change_status', as: 'change_status'
-  post 'assign/request', to: 'requests#assign_request', as: 'assign_request'
-  get 'request/:id/bids', to: 'requests#compare_bids', as: 'compare_bids'
+  get   'request/:id/status/:status', to: 'requests#change_status',   as: 'change_status'
+  post  'assign/request',             to: 'requests#assign_request',  as: 'assign_request'
+  get   'request/:id/bids',           to: 'requests#compare_bids',    as: 'compare_bids'
+  post  'request/set/winner',         to: 'requests#set_winner',       as: 'set_winner'
+  
   resources :suppliers
-  get 'request/:id/view/:token', to: 'suppliers#view_request', as: 'view_request'
+  get   'request/:id/view/:token',    to: 'suppliers#view_request',   as: 'view_request'
+  
   resources :companies
-  post 'company/invite', to: 'companies#invite_colleague', as: 'invite_colleague'
-  get  'accept/:user/invite/:company', to: 'companies#accept_colleage_invite', as: 'accept_invite'
-  post 'assign/requisition', to: 'companies#assign_colleague', as: 'assign_colleague'
+  post 'company/invite',                to: 'companies#invite_colleague',       as: 'invite_colleague'
+  get  'accept/:user/invite/:company',  to: 'companies#accept_colleage_invite', as: 'accept_invite'
+  post 'assign/requisition',            to: 'companies#assign_colleague',       as: 'assign_colleague'
 
   get 'dashboard/request', to: 'dashboard#trequest', as: 'dashboard_request'
 
