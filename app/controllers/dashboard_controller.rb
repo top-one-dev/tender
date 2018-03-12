@@ -18,8 +18,12 @@ class DashboardController < ApplicationController
   end
 
   def report
-    @requests = current_company.requests
-    @users    = current_company.users
+    unless current_company.nil?
+      @requests = current_company.requests
+      @users    = current_company.users
+    else
+      @requests = @users = []
+    end
   end
 
   private
