@@ -23,9 +23,11 @@ class MessagesController < ApplicationController
       end  
     end
 
-    unless @requests.nil?
+    if @requests.nil?
       @requests.uniq!
-    end
+    else
+      @requests = []
+    end 
     
   end
 
