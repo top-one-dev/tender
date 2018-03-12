@@ -132,6 +132,14 @@ class TenderBooksNotifierMailer < ApplicationMailer
 		mail(:to => @user.email, :subject => "#{@company.owner.name} invites you to join company '#{@company.name}'")
 	end
 
+	def set_winner_supplier(request, supplier, subject, content)
+		@request  = request
+		@supplier = supplier
+		@content  = content
+		@subject  = subject
+		mail(:to => @supplier.email, :subject => @subject )
+	end
+
 	private
 	
 	def crypt
