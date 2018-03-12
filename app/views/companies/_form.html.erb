@@ -206,7 +206,7 @@
 </div>
 
 <% unless current_company.nil? %>
-<% unelss current_company.owner == current_user %>
+<% unless current_company.owner == current_user %>
 <script type="text/javascript">
   $('input').attr('disabled', true);
   $('select').attr('disabled', true);
