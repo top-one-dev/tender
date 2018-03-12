@@ -36,36 +36,6 @@ $(document).on 'turbolinks:load', ->
     $('#sidebar-menu').css 'left', '-350px'
     return
 
-  # charts
-  if $('#report-chart').length
-    $('#report-chart').highcharts
-      title: text: '<b>Report Chart</b>'
-      chart:
-        type: 'column'
-        margin: 75
-        options3d:
-          enabled: true
-          alpha: 10
-          beta: 15
-          depth: 50
-      plotOptions: column: depth: 25
-      yAxis: [ { title: text: '...' } ]
-      series: [ {
-        name: 'Requests'
-        data: [
-          30
-          72
-          106
-          129
-          144
-          176
-          135
-          148
-          216
-          194
-          95
-          54
-        ]
-      } ]
+
       
   return
