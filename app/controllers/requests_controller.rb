@@ -69,7 +69,7 @@ class RequestsController < ApplicationController
         @request.preferred_currency = @requisition.budget_currency
       end 
       @type    = params[:format]
-    end     
+    end   
   end
 
   # GET /requests/1/edit

@@ -139,7 +139,13 @@
               <span class="input-group-addon">
                 <b class="text-muted"><i class="glyphicon glyphicon-user"></i></b>
               </span>
-              <%= select_tag 'suppliers', options_from_collection_for_select( Supplier.all, "id", "name" ), include_blank: "Add from suppliers", class: 'form-control' %>
+              <select class="form-control" id="suppliers-list">
+                <% current_company.suppliers.each do |supplier| %>
+                  <option value="<%= supplier[:email] %>" data-name="<%= supplier[:name] %>">
+                    <%= "#{supplier[:email]}" %>                      
+                  </option>
+                <% end %>
+              </select>
             </div>
           </div>
         </div>

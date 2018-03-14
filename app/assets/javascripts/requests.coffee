@@ -51,6 +51,15 @@ $(document).on 'turbolinks:load', ->
 			else
 				$(this).parent().addClass('has-error')
 
+	$('select#suppliers-list').on 'change', ->
+		name = $(this).find(":selected").attr('data-name')
+		email = $(this).find(":selected").attr('value')
+		if name == ''
+			name = 'Anonymous Supplier'
+		$('#participant-table tbody').append("<tr><td>#{name}<td><td>#{email}</td><td><i class='glyphicon glyphicon-trash'></i></td></tr><input type='hidden' name='participants[]' value='#{email}'>")
+
+
+
 	$('#item-add').on 'click', ->
 		name 		= $('#item-name').val()
 		unit 		= $('#item-unit').val()
