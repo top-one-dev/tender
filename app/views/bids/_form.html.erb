@@ -66,9 +66,9 @@
               <%= render 'inputs', question: question %>
             </div>
             <div class="col-sm-4">
-              <input type="hidden" name="qanswers[attach][]">
-              <div class="well text-center text-muted">
-                Drag & drop file here
+              <input type="hidden" name="qanswers[attach][]" id="qanswer<%= index %>_document_value">
+              <div class="well dropzone dropzone-small qanswer_document" id="qanswer<%= index %>_document" data-url="<%= @qanswer_s3_direct_post.url %>" data-fields="<%= @qanswer_s3_direct_post.fields.to_json %>">
+                <div class="dz-message"><b class="text-muted">Drag & drop file here</b></div> 
               </div>
             </div>
           </div>
