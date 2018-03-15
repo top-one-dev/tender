@@ -10,7 +10,7 @@ class Request < ApplicationRecord
   has_many :bids, dependent: :destroy
 
   def winner
-  	winner = {}
+  	winner = nil
   	self.bids.each do |bid|
   		if bid.status == 'win'
   			winner = bid.supplier
