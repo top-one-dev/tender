@@ -48,3 +48,13 @@
 .bg-muted{
     background-color: #ececec;
 }
+
+.dropzone{
+    min-height: initial;
+}
+.dropzone.dropzone-small{
+    padding: 0;
+    .dz-message{
+        margin: 2em 0 !important;
+    }
+}
