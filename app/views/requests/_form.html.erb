@@ -77,8 +77,9 @@
               </a>
             </div>
             <hr>
-            <div class="well text-center">
-              <span class="text-muted">Drop your list items here</span>
+            <div class="well-sm well">
+                <b class="text-muted">Pick your list items</b> <br><br>
+                <input type="file" id="list-items-document" autocomplete="off">
             </div>
           </div>
         </div>
@@ -93,26 +94,26 @@
         <% end %>
         <%= hidden_field_tag :request_items %>
         <table class="table" id="request-items-table">
-          <% unless @items.nil? %>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Unit</th>
-                <th>Quantity</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Unit</th>
+              <th>Quantity</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>              
+            <% unless @items.nil? %>            
               <% @items.each do |item| %>
-              <tr>
-                <td><%= item.name %></td>
-                <td><%= item.unit %></td>
-                <td><%= item.quantity %></td>
-                <td><%= item.description %></td>
-              </tr>
+                <tr>
+                  <td><%= item.name %></td>
+                  <td><%= item.unit %></td>
+                  <td><%= item.quantity %></td>
+                  <td><%= item.description %></td>
+                </tr>
               <% end %>
-            </tbody>
-          <% end %>
+            <% end %>
+          </tbody>
         </table>
 
         <hr>
@@ -189,15 +190,15 @@
               </a>
             </div>
             <hr>
-            <div class="well text-center">
-              <span class="text-muted">Drop your questionaries here</span>
+            <div class="well-sm well">
+                <b class="text-muted">Pick your questionaries</b> <br><br>
+                <input type="file" id="questions-document" autocomplete="off">
             </div>
           </div>
         </div>
         <%= hidden_field_tag :request_questions %>
         <table class="table" id="request-questions-table">
-          <% unless @questions.nil? %>
-            <thead>
+          <thead>
               <tr>
                 <th>Title</th>
                 <th>Description</th>
@@ -208,6 +209,7 @@
               </tr>
             </thead>
             <tbody>
+            <% unless @questions.nil? %>            
               <% @questions.each do |question| %>
               <tr>
                 <td><%= question.title %></td>
@@ -218,8 +220,8 @@
                 <td><%= question.mandatory %></td>
               </tr>
               <% end %>
+            <% end %>
             </tbody>
-          <% end %>
         </table>
         <hr>
         <div class="row">
@@ -254,7 +256,11 @@
           <div class="col-sm-6">
             <div class="form-group required">
               <label class="control-label">Preferred currency</label>
+              <% if request.preferred_currency.nil? %>
               <%= f.select(:preferred_currency, currency_list.first.collect {|key, value| [value, key]}, {:include_blank => "Select Currency", :selected => current_geo['currency']['code'] }, {:class => "form-control", placeholder: 'Select Currency' } ) %>
+              <% else %>
+              <%= f.select(:preferred_currency, currency_list.first.collect {|key, value| [value, key]}, {:include_blank => "Select Currency" }, {:class => "form-control", placeholder: 'Select Currency' } ) %>
+              <% end %>
             </div>    
           </div>
         </div>
@@ -386,10 +392,10 @@
         <div class="form-group">
           <label>Question type</label>
           <select class="form-control" id="question-type">
-            <option value="text">Text</option>
-            <option value="boolean">Yes/No</option>
-            <option value="list">Choose from a list</option>
-            <option value="check">Checkboxes</option>
+            <option value="Text">Text</option>
+            <option value="Yes/No">Yes/No</option>
+            <option value="Choose from a list">Choose from a list</option>
+            <option value="Checkboxes">Checkboxes</option>
           </select>
         </div>
         <div class="row" id="question-options-div">
