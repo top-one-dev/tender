@@ -225,6 +225,9 @@
 									<% @bids.each do |bid| %>
 									<td class="answer-cell" data-url="<%= qanswer_url(bid.qanswers[index].id) %>" >
 										<h5 class="text-success"><b><%= bid.qanswers[index].answer %></b></h5>
+										<% unless bid.qanswers[index].attach.nil? %>
+											<%= link_to "<i class='glyphicon glyphicon-file'></i> #{url_decode(bid.qanswers[index].attach).split('/').last}".html_safe, bid.qanswers[index].attach  %><br><br>
+										<% end %>
 										<textarea 
 											class 		="form-control" 
 											placeholder ="Type here and hit 'Enter' to add comments..."

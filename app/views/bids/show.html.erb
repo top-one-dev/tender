@@ -80,8 +80,12 @@
 						<span class="text-muted">
 							<%= qanswer.question.title %><br>
 							( <%= qanswer.question.description %> )
-						</span><br>
-						<b><%= qanswer.answer %></b>
+						</span><br><br>
+						<b><%= qanswer.answer %></b>						
+						<% unless qanswer.attach.nil? %>
+							<br><br>
+							<%= link_to "<i class='glyphicon glyphicon-file'></i> #{url_decode(qanswer.attach).split('/').last}".html_safe, qanswer.attach  %>
+						<% end %>
 					</li>
 					<hr>
 					<% end %>
