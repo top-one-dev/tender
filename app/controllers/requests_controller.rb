@@ -115,7 +115,7 @@ class RequestsController < ApplicationController
               supplier = Supplier.find_or_create_by(email: participant)
               @request.suppliers << supplier
               if User.where(email: supplier.email).exists?
-                supplier.update( user_id: current_user.id )
+                supplier.update( user_id: User.where(email: supplier.email).first.id )
               end
               TenderBooksNotifierMailer.invite_supplier(supplier, @request).deliver_later
               TenderBooksNotifierMailer.invite_notifier(current_user, supplier, @request).deliver_later
