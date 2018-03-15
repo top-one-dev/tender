@@ -1,6 +1,7 @@
 # Place all the behaviors and hooks related to the matching controller here.
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
+
 $(document).on 'turbolinks:load', ->
 	$('.price-input').on 'change', (event)->
 		event.preventDefault()
@@ -32,26 +33,43 @@ $(document).on 'turbolinks:load', ->
             	document_url   = $(res_data).find("Location").text()
             	$('#bid_document').val document_url
 
-    $('#bid_bid_currency').on 'change', (event)->
-    	$('#currency').html $('#bid_bid_currency option:selected').attr('value')
+  $('#bid_bid_currency').on 'change', (event)->
+  	$('#currency').html $('#bid_bid_currency option:selected').attr('value')
 
-   	if $('.qanswer-checkbox').length
-   		qanswers = []
-   		$('.qanswer-checkbox').each (index)->
-   			if $(this).is(':checked')
-   				qanswers.push $(this).attr('data-value')
-    	if qanswers.length > 0
-    		$('#qanswers-checkbox').val qanswers.join()   	
-   	
+ 	if $('.qanswer-checkbox').length
+ 		qanswers = []
+ 		$('.qanswer-checkbox').each (index)->
+ 			if $(this).is(':checked')
+ 				qanswers.push $(this).attr('data-value')
+  	if qanswers.length > 0
+  		$('#qanswers-checkbox').val qanswers.join()   	
+ 	
 
-    $('.qanswer-checkbox').on 'click', (event)->
-    	qanswers = []
-    	$('.qanswer-checkbox').each (index)->
-    		if $(this).is(':checked')
-   				qanswers.push $(this).attr('data-value')
-   		console.log qanswers
-    	if qanswers.length > 0
-    		$('#qanswers-checkbox').val qanswers.join()
+  $('.qanswer-checkbox').on 'click', (event)->
+  	qanswers = []
+  	$('.qanswer-checkbox').each (index)->
+  		if $(this).is(':checked')
+ 				qanswers.push $(this).attr('data-value')
+ 		console.log qanswers
+  	if qanswers.length > 0
+  		$('#qanswers-checkbox').val qanswers.join()
+
+
+  if $('.qanswer_document').length
+    $('.qanswer_document').each (index, el) ->
+      id = $(el).attr 'id'
+      new Dropzone "div##{id}",
+        url: $(el).attr('data-url')
+        method: 'post'
+        maxFiles: 1
+        timeout: 18000000
+        sending: (data, xhr, formData)->
+          $.each JSON.parse($(el).attr('data-fields')), (key, value)->
+                formData.append key, value
+        success: (file, result)->
+          res_data    = $.parseXML result
+          document_url   = $(res_data).find("Location").text()
+          $("##{id}_value").val document_url
 
 
 
