@@ -1,17 +1,17 @@
-<% if question.question_type == 'text' %>
+<% if question.question_type == 'Text' %>
 	<textarea name="qanswers[answer][]" class="form-control" placeholder="Enter your answer here..." ></textarea>
-<% elsif question.question_type == 'boolean' %>
+<% elsif question.question_type == 'Yes/No' %>
 	<select name="qanswers[answer][]" class="form-control" >
 		<option>Yes</option>
 		<option>No</option>
 	</select>
-<% elsif question.question_type == 'list' %>
+<% elsif question.question_type == 'Choose from a list' %>
 	<select name="qanswers[answer][]" class="form-control" >
 		<% question.options.split(',').each do |option| %>
 		<option><%= option %></option>
 		<% end %>
 	</select>
-<% elsif question.question_type == 'check' %>
+<% elsif question.question_type == 'Checkboxes' %>
 	<input type="hidden" name="qanswers[answer][]" id="qanswers-checkbox">
 	<% question.options.split(',').each do |option| %>
 		<div class="checkbox">
