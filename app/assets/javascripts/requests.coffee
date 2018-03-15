@@ -92,7 +92,7 @@ $(document).on 'turbolinks:load', ->
 		$('#items-table tbody tr').remove()
 
 	$('#question-type').on 'change', ->
-		if $(this).val() == 'list' || $(this).val() == 'check'
+		if $(this).val() == 'Choose from a list' || $(this).val() == 'Checkboxes'
 			$('#question-options-div').show()
 		else
 			$('#question-options-div').hide()
@@ -126,7 +126,7 @@ $(document).on 'turbolinks:load', ->
 		options = options.toString()
 
 		if title != '' && description != '' && type != ''
-			if type == 'list' || type == 'check'
+			if type == 'Choose from a list' || type == 'Checkboxes'
 				if options == ''
 					return
 			else
@@ -226,7 +226,42 @@ $(document).on 'turbolinks:load', ->
 		$('#winnerModal #winner_content2').val "Hello,\nThank you for your bid on request: #{data.request}!\nUnfortunately your bid was not selected. We have decided to award this request.\nWe are looking forward to working with you in the future and hope you will participate on our upcoming requests.\n\nKind regards,\n[your name]\n[your company]\n[contact number]"
 		$('#winnerModal #winner_winner_id').val data.id
 
+	$('#request_items').val ''
+	$('#list-items-document').on 'change', ->
+		parseExcel this.files[0], 'list'
+
+	$('#request_questions').val ''
+	$('#questions-document').on 'change', ->
+		parseExcel this.files[0], 'question'
+
 
 validateEmail = (email) ->
 	re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 	re.test email
+
+parseExcel = (file, type) ->
+	reader = new FileReader
+	reader.onload = (e) ->
+		data = e.target.result
+		workbook = XLSX.read(data, type: 'binary')
+		workbook.SheetNames.forEach (sheetName) ->
+			XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName])
+			json_object = JSON.stringify(XL_row_object)
+			
+			if type == 'list'				
+				unless $('#request_items').val() == json_object
+					$('#request_items').val json_object
+					XL_row_object.forEach (json)->
+						$('#request-items-table tbody').append("<tr><td>#{json.name}</td><td>#{json.unit}</td><td>#{json.quantity}</td><td>#{json.description}</td></tr>")
+
+			if type == 'question'
+				unless $('#request_questions').val() == json_object
+					$('#request_questions').val json_object
+					XL_row_object.forEach (json)->
+						$('#request-questions-table tbody').append("<tr><td>#{json.title}</td><td>#{json.description}</td><td>#{json.question_type}</td><td>#{json.options}</td><td>#{json.enable_attatch}</td><td>#{json.mandatory}</td></tr>")
+
+
+	reader.onerror = (ex) ->
+		alert ex
+
+	reader.readAsBinaryString(file)
