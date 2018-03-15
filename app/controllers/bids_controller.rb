@@ -2,6 +2,7 @@ class BidsController < ApplicationController
   before_action :authenticate_user!, only: [:show, :edit, :update, :destroy]
   before_action :set_bid, only: [:show, :edit, :update, :destroy]
   before_action :set_s3_direct_post, only: [:new, :create, :edit, :update]
+  before_action :set_qanswer_s3_direct_post, only: [:new, :create, :edit, :update]
   
   # GET /bids
   # GET /bids.json
@@ -145,4 +146,9 @@ class BidsController < ApplicationController
     def set_s3_direct_post
       @s3_direct_post = S3_BUCKET.presigned_post(key: "bids/#{Time.now.strftime("%Y%m%d%H%M%S%L")}/${filename}", success_action_status: '201', acl: 'public-read')
     end
+
+    def set_qanswer_s3_direct_post
+      @qanswer_s3_direct_post = S3_BUCKET.presigned_post(key: "qanswers/#{Time.now.strftime("%Y%m%d%H%M%S%L")}/${filename}", success_action_status: '201', acl: 'public-read')
+    end
+
 end
