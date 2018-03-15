@@ -81,6 +81,7 @@
               </small>
               <% if message.from == 'buyer' %>
               <h5><%= message.user.name %> : <em><%= @request.company.name %></em></h5>
+              <b>To:</b> <span class="text-muted"><%= message.supplier.email %></span>
               <% else %>
                 <h5>
                   <% unless message.supplier.user.nil? %>
