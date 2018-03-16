@@ -95,7 +95,7 @@
 			<h3 class="text-muted">Overview requests by user</h3>
 			<hr>
 			<% @users.each_with_index do |user, index| %> 
-				<%= "#{index+1} - <b>#{user.name}</b> , ".html_safe %> 
+				<%= "#{user.id} - <b>#{user.name}</b> , ".html_safe %> 
 			<% end %>
 			<hr>
 			<%= pie_chart @requests.group(:user_id).count %>
