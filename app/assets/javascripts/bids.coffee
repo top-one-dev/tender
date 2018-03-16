@@ -25,9 +25,6 @@ $(document).on 'turbolinks:load', ->
             sending: (data, xhr, formData)->
             	$.each JSON.parse($('div#bid-document').attr('data-fields')), (key, value)->
                     formData.append key, value
-            # renameFile: (file)->
-            # 	extention = file.name.split('.').pop()
-            # 	return "document.#{extention}"
             success: (file, result)->
             	res_data    = $.parseXML result
             	document_url   = $(res_data).find("Location").text()
@@ -70,7 +67,3 @@ $(document).on 'turbolinks:load', ->
           res_data    = $.parseXML result
           document_url   = $(res_data).find("Location").text()
           $("##{id}_value").val document_url
-
-
-
-
