@@ -445,13 +445,34 @@
         <hr>
         <div class="row">
           <div class="col-sm-4">
-            <a class="btn btn-default btn-block request-perm" id="public-request">public request</a>
+            <a class          = "btn btn-default btn-block request-perm"
+               id             = "public-request"
+              data-toggle     = "tooltip"
+              data-html       = "true"
+              data-placement  = "bottom"
+              title           = "
+                  You can share the request link on your website or in media and all interested suppliers can participate.
+                " >public request</a>            
           </div>
           <div class="col-sm-4">
-            <a class="btn btn-default btn-block request-perm" id="restricted-request">pestricted public request</a>
+            <a class          = "btn btn-default btn-block request-perm" 
+                id            = "restricted-request"
+              data-toggle     = "tooltip"
+              data-html       = "true"
+              data-placement  = "bottom"
+              title           = "
+                  Similar to public request, but only the rquest description is public. To access documents and make a bid, suppliers will have to send you a request.
+                " >restricted public request</a>
           </div>
           <div class="col-sm-4">
-            <a class="btn btn-success btn-block request-perm" id="private-request">private request <i class="glyphicon glyphicon-ok"></i></a>
+            <a class          = "btn btn-success btn-block request-perm" 
+                id            = "private-request"
+              data-toggle     = "tooltip"
+              data-html       = "true"
+              data-placement  = "bottom"
+              title           = "
+                  Information will only be available to the suppliers you have invited to participate.
+                " >private request <i class="glyphicon glyphicon-ok"></i></a>
           </div>
           <%= f.hidden_field :permission %>
         </div>
