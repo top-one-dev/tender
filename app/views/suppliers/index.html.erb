@@ -22,6 +22,7 @@
 
       <div class="tab-content" style="width: 100%;">
         <div id="suppliers" class="tab-pane fade in active">
+          <br>
           <div class="table-responsive">
             <table class="table">
               <thead>
@@ -44,7 +45,7 @@
                 <% @suppliers.each do |supplier| %>
                 <tr>
                   <td>
-                   <%= supplier.company.name %>
+                   <b><%= supplier.company.name %></b>
                   </td>
                   <td>
                     <%= supplier.company.phone %>
@@ -68,6 +69,7 @@
           </div>            
         </div>
         <div id="contacts" class="tab-pane fade">
+          <br>
           <div class="table-responsive">
             <table class="table">
               <thead>
