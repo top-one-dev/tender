@@ -1,35 +1,128 @@
-<p id="notice"><%= notice %></p>
+<% provide(:title, "Suppliers") %>
+<section style="min-height: 60vh; ">    
+    <div class="container">
+      <% unless @suppliers.empty? %>
+      <br>
+      <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="pill" href="#suppliers">Suppliers</a></li>
+        <li><a data-toggle="pill" href="#contacts">Contacts</a></li>
+        <!-- <li class="pull-right">
+          <button class="btn btn-default btn-sm">
+            <i class="glyphicon glyphicon-search"></i>
+          </button>
+          <button class="btn btn-default btn-sm">
+            <i class="glyphicon glyphicon-filter"></i>
+          </button>
+          <button class="btn btn-success btn-sm">
+            <i class="glyphicon glyphicon-plus"></i>
+            ADD NEW SUPPLIER
+          </button>
+        </li> -->
+      </ul>
 
-<h1>Suppliers</h1>
+      <div class="tab-content" style="width: 100%;">
+        <div id="suppliers" class="tab-pane fade in active">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr class="text-muted">
+                  <th><small>Name</small></th>
+                  <th><small>Phone</small></th>
+                  <th><small>Introduction</small></th>
+                  <th><small>Contacts</small></th>
+                  <th>
+                    <small>
+                      <i class="glyphicon glyphicon-send"></i> &nbsp;
+                      <i class="glyphicon glyphicon-envelope"></i> &nbsp;
+                      <i class="glyphicon glyphicon-usd"></i> &nbsp;
+                      <i class="glyphicon glyphicon-certificate"></i>
+                    </small>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @suppliers.each do |supplier| %>
+                <tr>
+                  <td>
+                   <%= supplier.company.name %>
+                  </td>
+                  <td>
+                    <%= supplier.company.phone %>
+                  </td>
+                  <td>
+                    <%= supplier.company.introduction %>
+                  </td>
+                  <td>
+                    <%= supplier.correct_user.name %>
+                  </td>
+                  <td>
+                    <span class="label label-info">2</span>
+                    <span class="label label-warning">1</span>
+                    <span class="label label-warning">1</span>
+                    <span class="label label-success">3</span>
+                  </td>
+                </tr>
+                <% end %>
+              </tbody>            
+            </table>
+          </div>            
+        </div>
+        <div id="contacts" class="tab-pane fade">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr class="text-muted">
+                  <th><small>Name</small></th>
+                  <th><small>Email</small></th>
+                  <th><small>Phone</small></th>
+                  <th><small>Title</small></th>
+                  <th><small>Supplier</small></th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @suppliers.each do |supplier| %>
+                <tr>
+                  <td>
+                    <b><%= supplier.correct_user.name %></b>
+                  </td>
+                  <td>
+                    <%= supplier.email %>
+                  </td>
+                  <td>
+                    <%= supplier.correct_user.phone %>
+                  </td>
+                  <td>
+                    <%= supplier.correct_user.job_title %>
+                  </td>
+                  <td>
+                    <%= supplier.company.name %>
+                  </td>
+                </tr>
+                <% end %>
+              </tbody>            
+            </table>
+          </div>          
+        </div>
+      </div>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Address</th>
-      <th>Email</th>
-      <th>Categories</th>
-      <th>User</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+      <% else %>
+      
+      <br><br>
+      <h1 class="text-info text-center">Suppliers with your company on Tenderbooks</h1>
+      <hr>
+      <div class="row">
+        <div class="col-md-3 col-md-offset-3">
+          <%= image_tag 'buyer/invitecolleagues.png', class: 'img-responsive', style: 'margin: 0 auto;' %>  
+        </div>
+        <div class="col-md-4 text-center">
+          <p>Suppliers will provide all what you want as buyer, you can provide them to requisitioners. They will make bids for your requests and you can contact them and set a winner of them on the rquest.</p>
+          <br>
+          <%= link_to 'Schedule a live demo', 'javascript:;', class: 'btn btn-info btn-lg', 'data-confirm': 'Sorry, Live demo is not yet ready.' %>
+        </div>        
+      </div>
+      <br><br>
 
-  <tbody>
-    <% @suppliers.each do |supplier| %>
-      <tr>
-        <td><%= supplier.name %></td>
-        <td><%= supplier.address %></td>
-        <td><%= supplier.email %></td>
-        <td><%= supplier.categories %></td>
-        <td><%= supplier.user %></td>
-        <td><%= link_to 'Show', supplier %></td>
-        <td><%= link_to 'Edit', edit_supplier_path(supplier) %></td>
-        <td><%= link_to 'Destroy', supplier, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+      <% end %>
 
-<br>
-
-<%= link_to 'New Supplier', new_supplier_path %>
+    </div>
+</section>
