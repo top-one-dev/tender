@@ -25,7 +25,16 @@
         <div class="row">
           <div class="col-md-7">
             <div class="form-group required">
-              <%= f.label :name, class: 'control-label' %>
+              <%= f.label :name, class: 'control-label' %> 
+              <a  href            = "javascript:;" 
+                  data-toggle     = "tooltip"
+                  data-html       = "true"
+                  data-placement  = "bottom"
+                  title           = "
+                   Enter a short descriptive name for this purchase
+                  ">
+                <i class="glyphicon glyphicon-info-sign"></i>
+              </a>  
               <%= f.text_field :name, class: 'form-control', required: true %>
               <small class="text-muted">
                 Example: Purchases of office supplies; Construction of sawmill; Railroad engineering works;
@@ -35,6 +44,16 @@
           <div class="col-md-5">
             <div class="form-group required">
               <%= f.label :end_time, class: 'control-label' %>
+              <a  href            = "javascript:;" 
+                  data-toggle     = "tooltip"
+                  data-html       = "true"
+                  data-placement  = "bottom"
+                  title           = "
+                   Pick a deadline when the suppliers need to submit their bids.<br>
+                   After the request has ended, suppliers can't make new bids or edit existing ones.
+                  ">
+                <i class="glyphicon glyphicon-info-sign"></i>
+              </a>  
               <div class='input-group date' id='request-end-time'>
                 <%= f.text_field :end_time, class: 'form-control', required: true %>
                 <span class="input-group-addon">
@@ -50,6 +69,16 @@
           <div class="col-md-12">
             <div class="form-group required">
               <%= f.label :description, class: 'control-label' %>
+              <a  href            = "javascript:;" 
+                  data-toggle     = "tooltip"
+                  data-html       = "true"
+                  data-placement  = "bottom"
+                  title           = "
+                    Please descibe in detail, what you want to buy.<br>
+                    Include specifications and any special requirements or restrictions you have.
+                  ">
+                <i class="glyphicon glyphicon-info-sign"></i>
+              </a>  
               <%= f.text_area :description, class: 'form-control', required: true %>              
             </div>
           </div>
@@ -61,7 +90,17 @@
           <div class="col-md-5">
             <br>
             <a class="btn btn-default btn-block" data-toggle="modal" data-target="#itemModal">
-              <b class="text-muted">CLICK HERE TO COMPOSE <br>A LIST OF ITEMS</b>
+              <b class="text-muted">CLICK HERE TO COMPOSE <br>A LIST OF ITEMS 
+                <i class          = "glyphicon glyphicon-info-sign text-info"
+                  data-toggle     = "tooltip"
+                  data-html       = "true"
+                  data-placement  = "bottom"
+                  title           = "
+                    Please descibe in detail, what you want to buy.<br>
+                    Include specifications and any special requirements or restrictions you have.
+                  "
+                ></i>
+              </b>              
             </a>
           </div>
           <div class="col-md-2 text-center">
@@ -69,7 +108,17 @@
           </div>
           <div class="col-md-5 text-center">
             <div class="btn-group">
-              <a href="https://s3.amazonaws.com/tenderbooks/tmp/excel/list_of_items_form.xlsx" target="_blank" class="btn btn-success">
+              <a href           = "https://s3.amazonaws.com/tenderbooks/tmp/excel/list_of_items_form.xlsx" 
+                target          = "_blank" 
+                class           = "btn btn-success"
+                data-toggle     = "tooltip"
+                data-html       = "true"
+                data-placement  = "bottom"
+                title           = "
+                  You can also use Excel if you have more than 10 items.<br>
+                  Download the template and save it to your computer. Open it with Excel, fill it in and upload the file back here.
+                "
+              >
                 <b><i class="glyphicon glyphicon glyphicon-download-alt"></i></b>
               </a>
               <a href="https://s3.amazonaws.com/tenderbooks/tmp/excel/list_of_items_form.xlsx" target="_blank" class="btn btn-default">
@@ -87,7 +136,18 @@
         <div>
           <br>
           <a class="btn btn-default btn-block" data-toggle="modal" data-target="#itemModal">
-            <b class="text-muted">CLICK HERE TO COMPOSE <br>A LIST OF ITEMS</b>
+            <b class="text-muted">
+              CLICK HERE TO COMPOSE <br>A LIST OF ITEMS
+              <i class          = "glyphicon glyphicon-info-sign text-info"
+                data-toggle     = "tooltip"
+                data-html       = "true"
+                data-placement  = "bottom"
+                title           = "
+                    Please descibe in detail, what you want to buy.<br>
+                    Include specifications and any special requirements or restrictions you have.
+                  "
+                ></i>
+            </b>
           </a>
           <br>
         </div>
@@ -120,11 +180,32 @@
         <%= f.hidden_field :attach %>
         <div class="well dropzone" id="request-document" data-url="<%= @s3_direct_post.url %>" data-fields="<%= @s3_direct_post.fields.to_json %>">
           <div class="dz-message">
-            <span>Drag documents here</span>
+            <span>
+              Drag documents here
+              <small>
+                <i class          = "glyphicon glyphicon-info-sign text-info"
+                  data-toggle     = "tooltip"
+                  data-html       = "true"
+                  data-placement  = "bottom"
+                  title           = "
+                    If you want to add pictures, diagrams, tables or other attachments, upload them here.
+                  "
+                ></i>
+              </small>
+            </span>
           </div>          
         </div>
         <hr>
         <label>Participants</label>
+        <i class          = "glyphicon glyphicon-info-sign text-info"
+          data-toggle     = "tooltip"
+          data-html       = "true"
+          data-placement  = "bottom"
+          title           = "
+            - Enter email address of the suppliers you want to invite to this request and hit <b>Enter</b> key or click <b>Add</b><br>
+            - If you have already stored your suppliercontacts in Tenderbooks, select here to add them.
+          "
+        ></i>
         <div class="row">
           <div class="col-md-5">
             <div class="input-group form-group">
@@ -174,7 +255,17 @@
           <div class="col-md-5">
             <br>
             <a class="btn btn-default btn-block" data-toggle="modal" data-target="#questionModal">
-              <b class="text-muted">CLICK HERE TO COMPOSE <br>A QUESTIONARIES</b>
+              <b class="text-muted">
+                CLICK HERE TO COMPOSE <br>A QUESTIONARIES
+                <i class          = "glyphicon glyphicon-info-sign text-info"
+                  data-toggle     = "tooltip"
+                  data-html       = "true"
+                  data-placement  = "bottom"
+                  title           = "
+                      Questionnaire helps to gather information form suppliers or qualify them. You can define free-text or multiple-choice questions and have suppliers attach files when answering.
+                    "
+                  ></i>
+              </b>
             </a>
           </div>
           <div class="col-md-2 text-center">
@@ -182,7 +273,16 @@
           </div>
           <div class="col-md-5 text-center">
             <div class="btn-group">
-              <a href="https://s3.amazonaws.com/tenderbooks/tmp/excel/Questionnaire_template.xlsx" target="_blank" class="btn btn-success">
+              <a href           = "https://s3.amazonaws.com/tenderbooks/tmp/excel/Questionnaire_template.xlsx" 
+                target          = "_blank" 
+                class           = "btn btn-success"
+                data-toggle     = "tooltip"
+                data-html       = "true"
+                data-placement  = "bottom"
+                title           = "
+                  You can also use Excel if you have more than 10 items.<br>
+                  Download the template and save it to your computer. Open it with Excel, fill it in and upload the file back here.
+                " >
                 <b><i class="glyphicon glyphicon glyphicon-download-alt"></i></b>
               </a>
               <a href="https://s3.amazonaws.com/tenderbooks/tmp/excel/Questionnaire_template.xlsx" target="_blank" class="btn btn-default">
@@ -226,36 +326,99 @@
         <hr>
         <div class="row">
           <div class="col-sm-4">
-            <a class="btn btn-default btn-block request-perm" id="public-request">public request</a>
+            <a class          = "btn btn-default btn-block request-perm"
+               id             = "public-request"
+              data-toggle     = "tooltip"
+              data-html       = "true"
+              data-placement  = "bottom"
+              title           = "
+                  You can share the request link on your website or in media and all interested suppliers can participate.
+                " >public request</a>            
           </div>
           <div class="col-sm-4">
-            <a class="btn btn-default btn-block request-perm" id="restricted-request">restricted public request</a>
+            <a class          = "btn btn-default btn-block request-perm" 
+                id            = "restricted-request"
+              data-toggle     = "tooltip"
+              data-html       = "true"
+              data-placement  = "bottom"
+              title           = "
+                  Similar to public request, but only the rquest description is public. To access documents and make a bid, suppliers will have to send you a request.
+                " >restricted public request</a>
           </div>
           <div class="col-sm-4">
-            <a class="btn btn-success btn-block request-perm" id="private-request">private request <i class="glyphicon glyphicon-ok"></i></a>
+            <a class          = "btn btn-success btn-block request-perm" 
+                id            = "private-request"
+              data-toggle     = "tooltip"
+              data-html       = "true"
+              data-placement  = "bottom"
+              title           = "
+                  Information will only be available to the suppliers you have invited to participate.
+                " >private request <i class="glyphicon glyphicon-ok"></i></a>
           </div>
           <%= f.hidden_field :permission %>
         </div>
         <hr>
         <%= f.check_box :total_price_must, 'data-toggle': 'toggle', 'data-size': 'small', 'data-on': 'Yes', 'data-off': 'No', 'data-onstyle': 'info' %>
         &nbsp;&nbsp;&nbsp;&nbsp;<label class="text-muted"> Suppliers must enter a total price when making a bid</label>
+        <i class          = "glyphicon glyphicon-info-sign text-info"
+          data-toggle     = "tooltip"
+          data-html       = "true"
+          data-placement  = "bottom"
+          title           = "
+              Turn this off if you want to create an RFI or only qualify your suppliers.
+            "
+          ></i>
         <hr>
         <%= f.check_box :allow_alternative_bids, 'data-toggle': 'toggle', 'data-size': 'small', 'data-on': 'Yes', 'data-off': 'No', 'data-onstyle': 'info' %>
         &nbsp;&nbsp;&nbsp;&nbsp;<label class="text-muted"> Allow alternative bids</label>
+        <i class          = "glyphicon glyphicon-info-sign text-info"
+          data-toggle     = "tooltip"
+          data-html       = "true"
+          data-placement  = "bottom"
+          title           = "
+              Suppliers can enter several alternative bids along with their primary offer to supply prices for different models or brands. If you enable this option, we suggest to add a line in the request description that explains what kind of alternatives do you expect.
+            "
+          ></i>
         <hr>
         <%= f.check_box :sealed_bids, 'data-toggle': 'toggle', 'data-size': 'small', 'data-on': 'Yes', 'data-off': 'No', 'data-onstyle': 'info' %>
         &nbsp;&nbsp;&nbsp;&nbsp;<label class="text-muted"> Sealed bids</label>
+        <i class          = "glyphicon glyphicon-info-sign text-info"
+          data-toggle     = "tooltip"
+          data-html       = "true"
+          data-placement  = "bottom"
+          title           = "
+              Enable sealed bids for this request.<br>
+              All bids with details will be available only after the request has ended.
+            "
+          ></i>
         <hr>
         <div class="row">
           <div class="col-sm-6">
             <div class="form-group">
               <label class="control-label">Expected budget</label>
+              <i class          = "glyphicon glyphicon-info-sign text-info"
+                data-toggle     = "tooltip"
+                data-html       = "true"
+                data-placement  = "bottom"
+                title           = "
+                    The expected budget is displayed in teh analysis stage to facilitate the evaluation of bids.<br>
+                    Note: suppliers cannot see this value.
+                  "
+                ></i>
               <%= f.text_field :expected_budget, class: 'form-control' %>
             </div>
           </div>
           <div class="col-sm-6">
             <div class="form-group required">
               <label class="control-label">Preferred currency</label>
+              <i class          = "glyphicon glyphicon-info-sign text-info"
+                data-toggle     = "tooltip"
+                data-html       = "true"
+                data-placement  = "bottom"
+                title           = "
+                    Set your preferred currency here. Suppliers can change the currency when makeing a bid, but we will handle the conversions so you can compare bids side-by-side.
+                  "
+                ></i>
               <% if request.preferred_currency.nil? %>
               <%= f.select(:preferred_currency, currency_list.first.collect {|key, value| [value, key]}, {:include_blank => "Select Currency", :selected => current_geo['currency']['code'] }, {:class => "form-control", placeholder: 'Select Currency' } ) %>
               <% else %>
