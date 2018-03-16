@@ -177,21 +177,9 @@
                 <tr>
                   <td>
                     <b>
-                    <% unless supplier.user.nil?%>
-                      <% if supplier.user.companies.exists? %>
-                        <%= supplier.user.companies.first.name %>
-                      <% else %>
-                        Unknown Company
-                      <% end %>
-                    <% else %>
-                      Unknown Company
-                    <% end %>
+                    <%= supplier.company.name %>
                     </b> : 
-                    <% if supplier.user.nil?%>
-                      Anonymous Supplier ( <%= supplier.email %> )
-                    <% else %>
-                      <%= supplier.user.name %> ( <%= supplier.email %> )
-                    <% end %>
+                    <%= supplier.correct_user.name %> ( <%= supplier.email %> )
                   </td>
                   <td><%= supplier.bids.where(request_id: @request.id).count %> bid(s)</td>
                   <td><%= supplier.bids.where(request_id: @request.id).first.created_at.strftime("%b %d, %Y %H:%M ( %Z%z )") %></td>
@@ -210,21 +198,9 @@
             <tr>
               <td>
                 <b>
-                <% unless supplier.user.nil?%>
-                  <% if supplier.user.companies.exists? %>
-                    <%= supplier.user.companies.first.name %>
-                  <% else %>
-                    Unknown Company
-                  <% end %>
-                <% else %>
-                  Unknown Company
-                <% end %>
+                <%= supplier.company.name %>
                 </b> : 
-                <% if supplier.user.nil?%>
-                  Anonymous Supplier ( <%= supplier.email %> )
-                <% else %>
-                  <%= supplier.user.name %> ( <%= supplier.email %> )
-                <% end %>
+                <%= supplier.correct_user.name %> ( <%= supplier.email %> )
               </td>
               <!-- <td><%= supplier.bids.where(request_id: @request.id).where(status: 'sent').count %> bid(s)</td> -->
               <td><%= supplier.created_at.strftime("%b %d, %Y %H:%M ( %Z%z )") %></td>
@@ -248,22 +224,10 @@
               <tr>                
                 <td>
                   <b>
-                  <% unless bid.supplier.user.nil? %>
-                    <% if bid.supplier.user.companies.exists? %>
-                      <%= bid.supplier.user.companies.first.name %>
-                    <% else %>
-                      Unknown Company
-                    <% end %>
-                  <% else %>
-                    Unknown Company
-                  <% end %>
+                  <%= bid.supplier.company.name %>
                   </b>
                    : 
-                  <% unless bid.supplier.user.nil? %>
-                    <%= bid.supplier.user.name %>
-                  <% else %>
-                     Anonymous Supplier
-                  <% end %>
+                  <%= bid.supplier.correct_user.name %>
 
                   ( <%= bid.supplier.email %> )
                 </td>

@@ -22,15 +22,7 @@
 							<td><h5 class="text-muted">Company:</h5></td>
 							<td>
 								<h5>
-									<% unless @bid.supplier.user.nil? %>
-									<% if @bid.supplier.user.companies.exists? %>
-									<%= @bid.supplier.user.companies.first.name %>
-									<% else %>
-									Unknown Company
-									<% end %>
-									<% else %>
-									Unknown Company
-									<% end %>
+									<%= @bid.supplier.company.name %>
 								</h5>
 							</td>
 						</tr>
@@ -38,11 +30,8 @@
 							<td><h5 class="text-muted">Contact:</h5></td>
 							<td>
 								<h5>
-									<% if @bid.supplier.user.nil?%>
-									Anonymous Supplier <small>( <%= @bid.supplier.email %> )</small>
-									<% else %>
-									<%= @bid.supplier.user.name %> <small>( <%= @bid.supplier.email %> )</small>
-									<% end %>
+									<%= @bid.supplier.correct_user.name %>
+									<small>( <%= @bid.supplier.email %> )</small>
 								</h5>
 							</td>
 						</tr>
@@ -93,6 +82,7 @@
 			</div>
 			<% if @bid.request.request_type == 'RFQ' %>
 			<div class="tab-pane fade " id="list-items">
+				<br><br>
 				<table class="table table-striped">
 					<thead>
 						<tr class="text-muted">
