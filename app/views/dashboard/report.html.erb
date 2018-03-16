@@ -13,7 +13,7 @@
 	        <div class="col-md-4 text-center">
 	          <p>You can see all requests overview by user of your company and created date of each requests on Tenderbooks.</p>
 	          <br>
-	          <a href="#" class="btn btn-info btn-lg">Schedule a live demo</a><br><br>
+	          <%= link_to 'Schedule a live demo', 'javascript:;', class: 'btn btn-info btn-lg', 'data-confirm': 'Sorry, Live demo is not yet ready.' %><br><br>
 	          In order to see overview, Create <%= link_to 'RFQ', new_request_path('RFQ') %> / <%= link_to 'RFI', new_request_path('RFI') %> first.
 	        </div>        
 	      </div>
