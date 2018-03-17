@@ -28,4 +28,12 @@ class User < ApplicationRecord
     end
   end
 
+  def complete_percent company
+    if company.requests.where(user_id: self.id).exists?
+      (company.requests.where(user_id: self.id).where(folder_id: 2).count.to_f / company.requests.where(user_id: self.id).count.to_f )*100
+    else
+      0
+    end    
+  end
+
 end

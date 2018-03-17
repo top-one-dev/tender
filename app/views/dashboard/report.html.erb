@@ -175,10 +175,9 @@
 						<td>
 							<h3 class="text-center text-success">
 								<%= current_company.requests.where(user_id: user.id).where(folder_id: 2).count %><br>
-								<small> 
-									<% percent =  current_company.requests.where(user_id: user.id).exists? ? (current_company.requests.where(user_id: user.id).where(folder_id: 2).count / current_company.requests.where(user_id: user.id).count)*100 : 0 %>
-									<%= number_to_percentage(  percent, precision: 2 )  %>
-									</small>
+								<small> 									
+									<%= number_to_percentage(  user.complete_percent(current_company), precision: 2 )  %>
+								</small>
 							</h3>
 						</td>
 						<td>
