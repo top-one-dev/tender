@@ -2,6 +2,8 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+@import url('https://fonts.googleapis.com/css?family=Dancing+Script');
+
 /*----- common styles ------*/
 .text-blue{
 	color: #09a3e0;
@@ -212,6 +214,34 @@ footer *{
 	letter-spacing: .8px;
 }
 
+
+// ----- Landing page
+
+#landing-page{
+	background: url(asset_path('home/landing_page.jpg')) no-repeat center;
+	background-color: #000;
+	background-size: cover;
+	div.container{
+		padding: calc(50vh - 350px) 20px calc(50vh - 200px);
+		div.row{
+			background: linear-gradient(rgba(0, 0, 0, .1), rgba(0, 0, 0, .5), rgba(0, 0, 0, .7));
+		}
+		.card{
+			background: url(asset_path('home/card.jpg')) no-repeat center;
+			background-size: cover;
+			margin: 40px;
+			padding: 100px 0;
+			h1{
+				line-height: 1.5;
+				font-family: Dancing Script;
+				font-weight: 600;
+				color: #fff;
+			}			
+		}
+	}
+}
+
+
 /*------responsive------*/
 @media only screen and ( min-width:600px) and ( max-width:767px ){
 	.testimonial-heading h1{
@@ -268,5 +298,14 @@ footer *{
 	}
 	.nav-tabs>li.pull-right button{
 		margin-top: 5px;
+	}
+
+	#landing-page{
+		div.container{
+			padding: 10vh 0;
+			.card{
+				padding: 50px 0;
+			}
+		}
 	}
 }
