@@ -220,12 +220,20 @@ footer *{
 			background-size: cover;
 			margin: 40px;
 			padding: 100px 0;
+			a{
+				text-decoration: none;
+			}
 			h1{
 				line-height: 1.5;
 				font-family: Dancing Script;
 				font-weight: 600;
 				color: #fff;
+				text-shadow: 0 0 2px white;
+				transition: all .5s ease-in;
 			}			
+			h1:hover{
+				transform: scale(1.1);
+			}
 		}
 	}
 }
