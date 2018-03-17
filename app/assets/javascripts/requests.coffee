@@ -229,6 +229,7 @@ $(document).on 'turbolinks:load', ->
 
 	$('#request_questions').val ''
 	$('#questions-document').on 'change', ->
+		console.log $(this)
 		parseExcel this.files[0], 'question'
 
 
@@ -247,12 +248,20 @@ parseExcel = (file, type) ->
 			
 			if type == 'list'				
 				unless $('#request_items').val() == json_object
+					unless XL_row_object[0].name?
+						alert "Invalid format Excel file..."
+						$('#list-items-document').val ''
+						return
 					$('#request_items').val json_object
 					XL_row_object.forEach (json)->
 						$('#request-items-table tbody').append("<tr><td>#{json.name}</td><td>#{json.unit}</td><td>#{json.quantity}</td><td>#{json.description}</td></tr>")
 
 			if type == 'question'
 				unless $('#request_questions').val() == json_object
+					unless XL_row_object[0].title?
+						alert "Invalid format Excel file..."
+						$('#questions-document').val ''
+						return
 					$('#request_questions').val json_object
 					XL_row_object.forEach (json)->
 						$('#request-questions-table tbody').append("<tr><td>#{json.title}</td><td>#{json.description}</td><td>#{json.question_type}</td><td>#{json.options}</td><td>#{json.enable_attatch}</td><td>#{json.mandatory}</td></tr>")
