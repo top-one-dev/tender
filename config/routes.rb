@@ -38,10 +38,10 @@ Rails.application.routes.draw do
 
   devise_for :users
 
-  get 'static/home'
-  get '/privacy-policy', to: 'static#privacy_policy', as: 'privacy_policy'
-  get '/terms-of-use', to: 'static#terms_of_use', as: 'terms_of_use'
+  get '/home',            to: 'static#home',            as: 'home'  
+  get '/privacy-policy',  to: 'static#privacy_policy',  as: 'privacy_policy'
+  get '/terms-of-use',    to: 'static#terms_of_use',    as: 'terms_of_use'
 
-  root 'static#home'
+  root 'static#landing_page'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
