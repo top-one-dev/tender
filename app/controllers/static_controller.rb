@@ -7,7 +7,9 @@ class StaticController < ApplicationController
   end
 
   def landing_page
-    
+    if user_signed_in?
+      redirect_to requests_path
+    end
   end
 
   def privacy_policy
