@@ -48,6 +48,8 @@ gem 'google_currency'
 gem 'chartkick'
 gem 'groupdate'
 
+gem "recaptcha", require: "recaptcha/rails"
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'sqlite3'
