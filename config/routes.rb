@@ -41,6 +41,8 @@ Rails.application.routes.draw do
   get '/home',            to: 'static#home',            as: 'home'  
   get '/privacy-policy',  to: 'static#privacy_policy',  as: 'privacy_policy'
   get '/terms-of-use',    to: 'static#terms_of_use',    as: 'terms_of_use'
+  get '/contact',         to: 'static#contact',         as: 'contact'
+  get '/demo',            to: 'static#demo',            as: 'demo'
 
   root 'static#landing_page'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
