@@ -140,6 +140,19 @@ class TenderBooksNotifierMailer < ApplicationMailer
 		mail(:to => @supplier.email, :subject => @subject )
 	end
 
+
+	# Contact
+
+	def contact_admin(contact)
+		@contact = contact
+		mail(:to => 'team@tenderbooks.com', :subject => @contact.subject )
+	end
+
+	def contact_user(contact)
+		@contact = contact
+		mail(:to => @contact.email, :subject => 'Thanks for your contacting...' )
+	end
+
 	private
 	
 	def crypt
