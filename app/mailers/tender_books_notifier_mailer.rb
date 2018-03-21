@@ -153,6 +153,18 @@ class TenderBooksNotifierMailer < ApplicationMailer
 		mail(:to => @contact.email, :subject => 'Thanks for your contacting...' )
 	end
 
+	# Request a Demo
+
+	def demo_admin(demo)
+		@demo = demo
+		mail(:to => 'team@tenderbooks.com', :subject => "Request a demo from #{@demo.email}")
+	end
+
+	def demo_user(demo)
+		@demo = demo
+		mail(to: @demo.email, subject: "You requested a demo")
+	end
+
 	private
 	
 	def crypt

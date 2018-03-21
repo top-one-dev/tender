@@ -1,4 +1,4 @@
-<% provide(:title, "Demo") %>
+<% provide(:title, "Request a Demo") %>
 
 <section>
 	<div class="container">
@@ -14,7 +14,12 @@
 				</p>
 			</div>
 			<div class="col-sm-6">
-				<%= form_for :contact, method: 'GET' do |f| %>
+				<%= form_for :demo, method: 'GET' do |f| %>
+				<% unless @demo.nil? %>
+					<% if @demo.errors.any? %>
+					<%= error_message @demo %>
+					<% end %>
+				<% end %>
 				<div class="row">
 					<div class="col-sm-6">
 						<div class="form-group required">
