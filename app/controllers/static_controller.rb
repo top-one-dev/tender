@@ -24,7 +24,14 @@ class StaticController < ApplicationController
   end
 
   def demo
-    
+    if params.has_key?(:demo)
+      @demo = Demo.new(demo_params)
+      if @demo.save
+        flash[:notice] = "Successfully sent..."
+        TenderBooksNotifierMailer.demo_admin(@demo).deliver_later
+        TenderBooksNotifierMailer.demo_user(@demo).deliver_later
+      end
+    end     
   end
 
   def privacy_policy
@@ -38,6 +45,10 @@ class StaticController < ApplicationController
   private
   def contact_params
     params.require(:contact).permit(:name, :email, :phone, :subject, :message)
+  end
+
+  def demo_params
+    params.require(:demo).permit(:first_name, :last_name, :email, :phone, :company, :role)
   end
 
 
