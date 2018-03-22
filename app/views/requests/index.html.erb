@@ -13,7 +13,7 @@
           <p>Want to see what a prepared <b>Request for Proposal</b> looks like in Tenderbooks? </p>
           <br>
           <%= link_to 'Click here to view a test RFP', 'javascript:;', class: 'btn btn-info btn-lg', 'data-confirm': 'Sorry, Test demo is not yet ready.' %><br><br>
-          or start composing a real <%= link_to 'RFQ', new_request_path('RFQ') %> / <%= link_to 'RFI', new_request_path('RFI') %>  right away
+          or start composing a real <%= link_to 'Request', new_request_path() %> right away
         </div>        
       </div>
       <br><br>
@@ -29,12 +29,11 @@
               <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
+              <% request_types.each do |index, type| %>
               <li>
-                <%= link_to 'New Request for Quotations', new_request_path('RFQ') %>
+                <%= link_to "New #{type}", new_request_path(index) %>
               </li>
-              <li>
-                <%= link_to 'New Request for Information', new_request_path('RFI') %>                  
-              </li>
+              <% end %>
             </ul>
           </div>
         </li>

@@ -3,7 +3,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-9">
-				<%= render 'form', request: @request, type: @type, title: "Create Request" %>
+				<%= render 'form', request: @request, type: @type, title: "Create #{request_types[@type]}" %>
 			</div>
 			<div class="col-md-3">
 				<hr>

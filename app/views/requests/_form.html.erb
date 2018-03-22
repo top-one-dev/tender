@@ -7,7 +7,6 @@
 <%= f.hidden_field :user_id, value: current_user.id %>
 <%= f.hidden_field :company_id, value: current_company.id %>
 <%= f.hidden_field :folder_id, value: 1 %>
-<%= f.hidden_field :request_type, value: @type %>
 <% unless @requisition.nil? %>
 <%= f.hidden_field :requisition_id, value: @requisition.id %>
 <% end %>
@@ -43,7 +42,7 @@
           </div>
           <div class="col-md-5">
             <div class="form-group required">
-              <%= f.label :end_time, class: 'control-label' %>
+              <%= f.label 'Closing Date', class: 'control-label' %>
               <a  href            = "javascript:;" 
                   data-toggle     = "tooltip"
                   data-html       = "true"
@@ -79,13 +78,43 @@
                   ">
                 <i class="glyphicon glyphicon-info-sign"></i>
               </a>  
-              <%= f.text_area :description, class: 'form-control', required: true %>              
+              <%= f.text_area :description, class: 'form-control', required: true, rows: 8 %>              
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group required">
+              <%= f.label :request_type, class: 'control-label' %>
+              <a  href            = "javascript:;" 
+                  data-toggle     = "tooltip"
+                  data-html       = "true"
+                  data-placement  = "bottom"
+                  title           = "
+                    Lorem text...
+                  ">
+                <i class="glyphicon glyphicon-info-sign"></i>
+              </a>  
+              <%= f.select(:request_type, request_types.collect {|key, value| [value, key]}, {:include_blank => "Select Type", :selected => @type }, {:class => "form-control", placeholder: 'Select Type', disabled: @type } ) %>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group required">
+              <%= f.label :procuring_entity, class: 'control-label' %>
+              <a  href            = "javascript:;" 
+                  data-toggle     = "tooltip"
+                  data-html       = "true"
+                  data-placement  = "bottom"
+                  title           = "
+                    Lorem text...
+                  ">
+                <i class="glyphicon glyphicon-info-sign"></i>
+              </a> 
+              <%= f.text_field :procuring_entity, class: 'form-control', required: true %>
             </div>
           </div>
         </div>
 
         <hr>
-        <% if @type == 'RFQ' %>
+        <% unless @type == 'RFI' %>
         <div class="row">
           <div class="col-md-5">
             <br>
@@ -239,7 +268,7 @@
     </div>
   </div>
 
-  <% if @type == 'RFQ' %>
+  <% unless @type == 'RFI' %>
   
   <div class="panel panel-info">
     <div class="panel-heading">
