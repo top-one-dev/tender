@@ -45,6 +45,14 @@
       <% end %>
     <% end %>
     <hr>
+    <small class="text-muted">
+      <b>
+        Public web address: 
+        <i class="glyphicon glyphicon-info-sign"></i> 
+        <%= link_to view_request_url( @request.id, ('a'..'z').to_a.shuffle[0,10].join ), view_request_url( @request.id, ('a'..'z').to_a.shuffle[0,10].join )  %>
+      </b>
+    </small>    
+    <hr>
     <ul class="nav nav-tabs">
       <li class="active"><a data-toggle="tab" href="#request-details">Request details</a></li>
       <li><a data-toggle="tab" href="#suppliers">Suppliers</a></li>

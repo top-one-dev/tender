@@ -1,24 +1,38 @@
 <% provide(:title, "View Request") %>
 <section>
-	<div class="container">		
-		<% unless @request.winner.nil? %>
-		  <div class="alert alert-success">
-            We selected winner (<%= @request.winner.email %>) for this request and closed it. Thanks for your interesting.
-          </div>
+	<div class="container">
+		<% if @supplier.nil? %>
+			<% unless user_signed_in? %>
+				<div class="bg-info bid-nav">
+					<%= link_to 'Login to view Details', new_user_session_path, class: 'btn btn-lg btn-info ask-question' %>
+				</div>
+			<% else %>
+				<div class="bg-info bid-nav">
+					<%= link_to 'Request access to information', '#', class: 'btn btn-lg btn-info ask-question' %>
+				</div>
+			<% end %>
 		<% else %>
-			<div class="bg-info bid-nav">
-			<% unless @request.end_time < Time.now %>
-				<%= link_to 'Make a bid', new_bid_path( id: @request.id, token: @supplier_token ), class: 'btn btn-lg btn-info' %>
+
+			<% unless @request.winner.nil? %>
+			  <div class="alert alert-success">
+	            We selected winner (<%= @request.winner.email %>) for this request and closed it. Thanks for your interesting.
+	          </div>
+			<% else %>
+				<div class="bg-info bid-nav">
+				<% unless @request.end_time < Time.now %>
+					<%= link_to 'Make a bid', new_bid_path( id: @request.id, token: @supplier_token ), class: 'btn btn-lg btn-info' %>
+				<% end %>
+
+				<% if @supplier.bids.where( :request_id => @request.id ).where( :status => 'reject' ).exists? %>
+					<a href="#" class="btn btn-lg btn-default" disabled disabled data-toggle="tooltip" data-placement="bottom" title="You already informed buyer your mind. No need to reject again." >Don't want to participate</a>
+				<% else %>
+					<%= link_to "Don't want to participate", bids_path(@reject_params), method: 'post', class: 'btn btn-lg btn-default', 'data-confirm': 'Are you sure to reject invite on this request?' %>
+				<% end %>
+				
+				<%= link_to 'Ask a question', 'javascript:;', class: 'btn btn-lg btn-default ask-question' %>
+				</div>
 			<% end %>
 
-			<% if @supplier.bids.where( :request_id => @request.id ).where( :status => 'reject' ).exists? %>
-				<a href="#" class="btn btn-lg btn-default" disabled disabled data-toggle="tooltip" data-placement="bottom" title="You already informed buyer your mind. No need to reject again." >Don't want to participate</a>
-			<% else %>
-				<%= link_to "Don't want to participate", bids_path(@reject_params), method: 'post', class: 'btn btn-lg btn-default', 'data-confirm': 'Are you sure to reject invite on this request?' %>
-			<% end %>
-			
-			<%= link_to 'Ask a question', 'javascript:;', class: 'btn btn-lg btn-default ask-question' %>
-			</div>
 		<% end %>
 		
 		<br>
@@ -66,15 +80,26 @@
 								</h4>
 								<% end %>
 							</div>
-							<% if @supplier.bids.where(request_id: @request.id ).exists? %>
-							<div class="col-sm-3 col-sm-offset-1">
-								<h5 class="text-success" style="cursor: pointer;">
-									<span  data-toggle="tooltip" title="You already made some bids on this request." data-placement='bottom' >Your last bid date <i class="glyphicon glyphicon-info-sign"></i></span>
-								</h5>
-								<h4 class="text-success">
-									<i class="glyphicon glyphicon-calendar"></i>&nbsp;<%= @supplier.bids.where(request_id: @request.id ).last.created_at.strftime("%b %d, %Y %H:%M") %>
-								</h4>
-							</div>
+							<% unless @supplier.nil? %>
+								<% if @supplier.bids.where(request_id: @request.id ).exists? %>
+								<div class="col-sm-3 col-sm-offset-1">
+									<h5 class="text-success" style="cursor: pointer;">
+										<span  data-toggle="tooltip" title="You already made some bids on this request." data-placement='bottom' >Your last bid date <i class="glyphicon glyphicon-info-sign"></i></span>
+									</h5>
+									<h4 class="text-success">
+										<i class="glyphicon glyphicon-calendar"></i>&nbsp;<%= @supplier.bids.where(request_id: @request.id ).last.created_at.strftime("%b %d, %Y %H:%M") %>
+									</h4>
+								</div>
+								<% end %>
+							<% else %>
+								<div class="col-sm-3 col-sm-offset-1">
+									<h5 class="text-success" style="cursor: pointer;">
+										Total bids 
+									</h5>
+									<h4 class="text-success">
+										<i class="glyphicon glyphicon-info-sign"></i> <%= @request.bids.count %>
+									</h4>
+								</div>
 							<% end %>
 						</div>
 					</div>
@@ -154,7 +179,7 @@
 					</div>
 				</div>
 
-				<% if @request.winner.nil? %>
+				<% if @request.winner.nil? and !@supplier.nil? %>
 				
 				<h3 id="message-board-title">Message board</h3>
 				<div class="well">
@@ -166,7 +191,7 @@
 					<div class="alert" id="message-result">
 				    </div>
 					<div class="form-group">
-						<textarea class="form-control" rows="8" id="message-content"></textarea>	
+						<textarea class="form-control" rows="8" id="message-content" placeholder="Enter message here..."></textarea>	
 					</div>
 					<div class="form-group">
 						<div class="text-right">
