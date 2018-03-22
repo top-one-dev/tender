@@ -81,6 +81,9 @@
               <%= f.text_area :description, class: 'form-control', required: true, rows: 8 %>              
             </div>
           </div>
+        </div>
+        <hr>
+        <div class="row">
           <div class="col-md-6">
             <div class="form-group required">
               <%= f.label :request_type, class: 'control-label' %>
@@ -111,6 +114,81 @@
               <%= f.text_field :procuring_entity, class: 'form-control', required: true %>
             </div>
           </div>
+          <div class="col-md-6">
+            <div class="form-group required">
+              <%= f.label :submission_type, class: 'control-label' %>
+              <a  href            = "javascript:;" 
+                  data-toggle     = "tooltip"
+                  data-html       = "true"
+                  data-placement  = "bottom"
+                  title           = "
+                    Lorem text...
+                  ">
+                <i class="glyphicon glyphicon-info-sign"></i>
+              </a> 
+              <%= f.select :submission_type, ['Hardcopy Submission', 'Online Submission'], { :include_blank => "Select Submission Type" },{ class: 'form-control', required: true } %>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group required">
+              <%= f.label :category, class: 'control-label' %>
+              <a  href            = "javascript:;" 
+                  data-toggle     = "tooltip"
+                  data-html       = "true"
+                  data-placement  = "bottom"
+                  title           = "
+                    Lorem text...
+                  ">
+                <i class="glyphicon glyphicon-info-sign"></i>
+              </a> 
+              <%= f.select :categories, Category.all.collect {|key, value| [value, key]}, { :include_blank => "Select Category" },{ class: 'form-control', required: true } %>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group required">
+              <%= f.label :bidder_fee, class: 'control-label' %>
+              <a  href            = "javascript:;" 
+                  data-toggle     = "tooltip"
+                  data-html       = "true"
+                  data-placement  = "bottom"
+                  title           = "
+                    Lorem text...
+                  ">
+                <i class="glyphicon glyphicon-info-sign"></i>
+              </a> 
+              <%= f.number_field :bidder_fee, class: 'form-control', step: '.01', min: 0 %>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group required">
+              <%= f.label :bid_bond, class: 'control-label' %>
+              <a  href            = "javascript:;" 
+                  data-toggle     = "tooltip"
+                  data-html       = "true"
+                  data-placement  = "bottom"
+                  title           = "
+                    Lorem text...
+                  ">
+                <i class="glyphicon glyphicon-info-sign"></i>
+              </a> 
+              <%= f.number_field :bid_bond, class: 'form-control', step: '.01', min: 0 %>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <%= f.label :special_remarks, class: 'control-label' %>
+              <a  href            = "javascript:;" 
+                  data-toggle     = "tooltip"
+                  data-html       = "true"
+                  data-placement  = "bottom"
+                  title           = "
+                    Lorem text...
+                  ">
+                <i class="glyphicon glyphicon-info-sign"></i>
+              </a> 
+              <%= f.text_field :special_remarks, class: 'form-control' %>
+            </div>
+          </div>          
         </div>
 
         <hr>
