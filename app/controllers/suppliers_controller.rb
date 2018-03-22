@@ -68,8 +68,9 @@ class SuppliersController < ApplicationController
       return
     end
 
-    begin
-      @request        = Request.find params[:id]
+    @request        = Request.find params[:id]
+    
+    begin      
       @supplier       = Supplier.find crypt.decrypt_and_verify(params[:token])
       @supplier_token = params[:token]
       @reject_params  = { 
@@ -80,8 +81,8 @@ class SuppliersController < ApplicationController
                           }
                         }
     rescue => detail
-      flash[:error] = 'You typed invalid token. Please check link you received.'
-      redirect_to root_path   
+      # flash[:error] = 'You typed invalid token. Please check link you received.'
+      # redirect_to root_path   
     end   
     
   end

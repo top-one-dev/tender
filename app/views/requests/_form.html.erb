@@ -141,7 +141,7 @@
                   ">
                 <i class="glyphicon glyphicon-info-sign"></i>
               </a> 
-              <%= f.select :categories, Category.all.collect {|c| [c.name, c.id] }, { },{ class: 'form-control selectpicker', multiple: true, required: true } %>
+              <%= f.select :categories, Category.all.collect {|c| [c.name, c.id] }, { :selected => request.categories.collect { |c| c.id } },{ class: 'form-control selectpicker', multiple: true, required: true, autocomplete: 'off' } %>
             </div>
           </div>
           <div class="col-md-6">

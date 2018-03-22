@@ -137,8 +137,8 @@ class RequestsController < ApplicationController
           end
 
           unless category_params.empty?
+            @request.categories.clear
             category_params.each do |category_id|
-              puts "----------------#{category_id}"
               unless category_id == ''
                 category = Category.find(category_id)
                 category.requests << @request
@@ -232,6 +232,15 @@ class RequestsController < ApplicationController
           #   end 
 
           # end
+          unless category_params.empty?
+            @request.categories.clear
+            category_params.each do |category_id|
+              unless category_id.empty?
+                category = Category.find(category_id)
+                category.requests << @request
+              end
+            end                    
+          end  
 
           @request.suppliers.each do |supplier|
             TenderBooksNotifierMailer.update_supplier(supplier, @request).deliver_later
@@ -423,7 +432,7 @@ class RequestsController < ApplicationController
     end
 
     def category_params
-      params.require(:request).permit(:categories)
+      params[:request][:categories]
     end
 
     def set_s3_direct_post
