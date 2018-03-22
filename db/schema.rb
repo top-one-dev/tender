@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180322030653) do
+ActiveRecord::Schema.define(version: 20180322192142) do
 
   create_table "bids", force: :cascade do |t|
     t.integer  "request_id"
@@ -230,6 +230,9 @@ ActiveRecord::Schema.define(version: 20180322030653) do
     t.float    "bidder_fee"
     t.float    "bid_bond"
     t.string   "special_remarks"
+    t.text     "clarificatoin"
+    t.text     "extend_reason"
+    t.text     "cancel_reason"
     t.index ["company_id"], name: "index_requests_on_company_id"
     t.index ["folder_id"], name: "index_requests_on_folder_id"
     t.index ["requisition_id"], name: "index_requests_on_requisition_id"
