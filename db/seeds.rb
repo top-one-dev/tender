@@ -12,11 +12,31 @@ folders = [
 	{ name: 'Archived Request', position: 3 },
 	{ name: 'Undergoing Registration', position: 4}
 	]
+
 folders.each do |folder|
 	unless Folder.where(name: folder[:name]).exists?
 		Folder.create(folder)
 		puts "Created #{folder[:name]} folder successfully..."
 	else
-		puts "Some error to create #{folder[:name]} folder."
+		puts "#{folder[:name]} folder already exists..."
+	end
+end
+
+categories = [
+	{ name: 'Hardware' },
+	{ name: 'Software' },
+	{ name: 'CPU', parent_id: 1 },
+	{ name: 'Main Memory', parent_id: 1 },
+	{ name: 'Peripherals', parent_id: 1 },
+	{ name: 'System Software', parent_id: 2 },
+	{ name: 'Application Software', parent_id: 2 }
+]
+
+categories.each do |category|
+	unless Category.where(name: category[:name]).exists?
+		Category.create(category)
+		puts "Created #{category[:name]} category successfully..."
+	else
+		puts "#{category[:name]} category already exists..."
 	end
 end
