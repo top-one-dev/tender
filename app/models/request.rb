@@ -4,6 +4,7 @@ class Request < ApplicationRecord
   belongs_to :requisition
   belongs_to :folder
   has_and_belongs_to_many :suppliers
+  has_and_belongs_to_many :categories
   has_many :items, dependent: :destroy
   has_many :questions, dependent: :destroy
   has_many :messages, dependent: :destroy
