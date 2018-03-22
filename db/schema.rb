@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180321113028) do
+ActiveRecord::Schema.define(version: 20180322030653) do
 
   create_table "bids", force: :cascade do |t|
     t.integer  "request_id"
@@ -24,6 +24,26 @@ ActiveRecord::Schema.define(version: 20180321113028) do
     t.datetime "updated_at",   null: false
     t.index ["request_id"], name: "index_bids_on_request_id"
     t.index ["supplier_id"], name: "index_bids_on_supplier_id"
+  end
+
+  create_table "categories", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "categories_requests", id: false, force: :cascade do |t|
+    t.integer "category_id", null: false
+    t.integer "request_id",  null: false
+    t.index ["category_id", "request_id"], name: "index_categories_requests_on_category_id_and_request_id"
+    t.index ["request_id", "category_id"], name: "index_categories_requests_on_request_id_and_category_id"
+  end
+
+  create_table "categories_suppliers", id: false, force: :cascade do |t|
+    t.integer "category_id", null: false
+    t.integer "supplier_id", null: false
+    t.index ["category_id", "supplier_id"], name: "index_categories_suppliers_on_category_id_and_supplier_id"
+    t.index ["supplier_id", "category_id"], name: "index_categories_suppliers_on_supplier_id_and_category_id"
   end
 
   create_table "companies", force: :cascade do |t|
@@ -204,6 +224,11 @@ ActiveRecord::Schema.define(version: 20180321113028) do
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
     t.integer  "requisition_id"
+    t.string   "procuring_entity"
+    t.string   "submission_type"
+    t.float    "bidder_fee"
+    t.float    "bid_bond"
+    t.string   "special_remarks"
     t.index ["company_id"], name: "index_requests_on_company_id"
     t.index ["folder_id"], name: "index_requests_on_folder_id"
     t.index ["requisition_id"], name: "index_requests_on_requisition_id"
