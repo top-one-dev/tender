@@ -6,6 +6,9 @@ $(document).on 'turbolinks:load', ->
 	if $('#request_end_time').length
 		$('#request-end-time').datetimepicker format: 'YYYY-MM-DD HH:mm'
 
+	if $('.selectpicker').length
+		$('.selectpicker').selectpicker()
+
 	$('#request-end-time').on "dp.change", (e)->
 		val = $('#request_end_time').val()
 		$('#request_end_time').attr( 'value', val )
