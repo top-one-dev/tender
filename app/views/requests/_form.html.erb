@@ -131,7 +131,7 @@
           </div>
           <div class="col-md-6">
             <div class="form-group required">
-              <%= f.label :category, class: 'control-label' %>
+              <%= f.label :categories, class: 'control-label' %>
               <a  href            = "javascript:;" 
                   data-toggle     = "tooltip"
                   data-html       = "true"
@@ -141,7 +141,7 @@
                   ">
                 <i class="glyphicon glyphicon-info-sign"></i>
               </a> 
-              <%= f.select :categories, Category.all.collect {|key, value| [value, key]}, { :include_blank => "Select Category" },{ class: 'form-control', required: true } %>
+              <%= f.select :categories, Category.all.collect {|c| [c.name, c.id] }, { },{ class: 'form-control selectpicker', multiple: true, required: true } %>
             </div>
           </div>
           <div class="col-md-6">

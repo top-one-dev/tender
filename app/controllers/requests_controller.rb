@@ -134,7 +134,17 @@ class RequestsController < ApplicationController
             TenderBooksNotifierMailer.create_request_company(@request).deliver_later
             TenderBooksNotifierMailer.create_request_requisitioner(@request).deliver_later
             @request.requisition.update!( status: 'tendering' )
-          end         
+          end
+
+          unless category_params.empty?
+            category_params.each do |category_id|
+              puts "----------------#{category_id}"
+              unless category_id == ''
+                category = Category.find(category_id)
+                category.requests << @request
+              end
+            end                    
+          end        
           
           format.html { redirect_to requests_path, notice: 'Request was successfully created.' }
           format.json { render :show, status: :created, location: requests_path }
@@ -375,7 +385,12 @@ class RequestsController < ApplicationController
         :company_id, 
         :folder_id, 
         :request_type,
-        :requisition_id
+        :requisition_id,
+        :procuring_entity,
+        :submission_type,
+        :bidder_fee,
+        :bid_bond,
+        :special_remarks
         )
     end
 
@@ -405,6 +420,10 @@ class RequestsController < ApplicationController
 
     def winner_params
       params.require(:winner).permit(:request_id, :winner_id, :subject1, :subject2, :content1, :content2)
+    end
+
+    def category_params
+      params.require(:request).permit(:categories)
     end
 
     def set_s3_direct_post
