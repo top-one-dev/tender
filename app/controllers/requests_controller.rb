@@ -79,6 +79,7 @@ class RequestsController < ApplicationController
       @items = @request.items
     end
     @questions = @request.questions
+    @priority = params[:priority]
   end
 
   # POST /requests
@@ -164,98 +165,119 @@ class RequestsController < ApplicationController
     respond_to do |format|
       if @request.update(request_params)
 
-          unless item_params.empty?
-            
-            JSON.parse(item_params.to_s).each_with_index do |item, index|
-              unless @request.items[index].nil?
-                @request.items[index].update!(item)
-              else
-                @request.items.create!(item)
-              end              
+          if request_params.has_key? 'extend_reason'
+
+            @request.suppliers.each do |supplier|
+              TenderBooksNotifierMailer.update_supplier(supplier, @request).deliver_later
+              @request.messages.create!(
+                from: 'buyer',
+                read: false,
+                user_id: current_user.id, 
+                supplier_id: supplier.id,
+                content: 'Closing time was updated, please review...'
+                )
             end
-            
-            unless JSON.parse(item_params.to_s).count > @request.items.count
-              @request.items.each_with_index do |item, index|
-                if index >= JSON.parse(item_params.to_s).count
-                  item.destroy
+
+            format.html { redirect_to @request, notice: 'Closing time was successfully extended.' }
+            format.json { render :show, status: :ok, location: @request }
+
+          elsif request_params.has_key? 'clarificatoin'
+
+            unless item_params.empty?
+              
+              JSON.parse(item_params.to_s).each_with_index do |item, index|
+                unless @request.items[index].nil?
+                  @request.items[index].update!(item)
+                else
+                  @request.items.create!(item)
+                end              
+              end
+              
+              unless JSON.parse(item_params.to_s).count > @request.items.count
+                @request.items.each_with_index do |item, index|
+                  if index >= JSON.parse(item_params.to_s).count
+                    item.destroy
+                  end
                 end
               end
+
             end
 
-          end
-
-          unless question_params.empty?
-            
-            JSON.parse(question_params.to_s).each_with_index do |question, index|
-              @request.questions.create!(question)
-              unless @request.questions[index].nil?
-                @request.questions.update!(question)
-              else
+            unless question_params.empty?
+              
+              JSON.parse(question_params.to_s).each_with_index do |question, index|
                 @request.questions.create!(question)
-              end
-            end
-            
-            unless JSON.parse(question_params.to_s).count > @request.items.count
-              @request.questions.each_with_index do |question, index|
-                if index >= JSON.parse(question_params.to_s).count
-                  item.destroy
+                unless @request.questions[index].nil?
+                  @request.questions.update!(question)
+                else
+                  @request.questions.create!(question)
                 end
               end
+              
+              unless JSON.parse(question_params.to_s).count > @request.items.count
+                @request.questions.each_with_index do |question, index|
+                  if index >= JSON.parse(question_params.to_s).count
+                    item.destroy
+                  end
+                end
+              end
+
             end
 
-          end
+            # unless participant_params.nil?
 
-          # unless participant_params.nil?
+            #   unless participant_params.empty?
 
-          #   unless participant_params.empty?
+            #     participant_params.each do |participant|
 
-          #     participant_params.each do |participant|
+            #       supplier = Supplier.find_or_create_by(email: participant)
+                  
+            #       unless @request.suppliers.include? supplier
+            #         @request.suppliers << supplier
+            #         if User.where(email: supplier.email).exists?
+            #           supplier.update( user_id: current_user.id )
+            #         end
+            #         TenderBooksNotifierMailer.update_supplier(supplier, @request).deliver_later
+            #         @request.messages.create!(
+            #           from: 'buyer',
+            #           read: false,
+            #           user_id: current_user.id, 
+            #           supplier_id: supplier.id,
+            #           content: 'Request updated, please review and make a bid again...'
+            #           )
+            #       end
 
-          #       supplier = Supplier.find_or_create_by(email: participant)
-                
-          #       unless @request.suppliers.include? supplier
-          #         @request.suppliers << supplier
-          #         if User.where(email: supplier.email).exists?
-          #           supplier.update( user_id: current_user.id )
-          #         end
-          #         TenderBooksNotifierMailer.update_supplier(supplier, @request).deliver_later
-          #         @request.messages.create!(
-          #           from: 'buyer',
-          #           read: false,
-          #           user_id: current_user.id, 
-          #           supplier_id: supplier.id,
-          #           content: 'Request updated, please review and make a bid again...'
-          #           )
-          #       end
+            #     end
+            #   end 
 
-          #     end
-          #   end 
+            # end
+            unless category_params.empty?
+              @request.categories.clear
+              category_params.each do |category_id|
+                unless category_id.empty?
+                  category = Category.find(category_id)
+                  category.requests << @request
+                end
+              end                    
+            end  
 
-          # end
-          unless category_params.empty?
-            @request.categories.clear
-            category_params.each do |category_id|
-              unless category_id.empty?
-                category = Category.find(category_id)
-                category.requests << @request
-              end
-            end                    
-          end  
-
-          @request.suppliers.each do |supplier|
-            TenderBooksNotifierMailer.update_supplier(supplier, @request).deliver_later
-            @request.messages.create!(
-              from: 'buyer',
-              read: false,
-              user_id: current_user.id, 
-              supplier_id: supplier.id,
-              content: 'Request updated, please review and make a bid again...'
-              )
-          end
+            @request.suppliers.each do |supplier|
+              TenderBooksNotifierMailer.update_supplier(supplier, @request).deliver_later
+              @request.messages.create!(
+                from: 'buyer',
+                read: false,
+                user_id: current_user.id, 
+                supplier_id: supplier.id,
+                content: 'Request updated, please review and make a bid again...'
+                )
+            end
 
 
-        format.html { redirect_to @request, notice: 'Request was successfully updated.' }
-        format.json { render :show, status: :ok, location: @request }
+          format.html { redirect_to @request, notice: 'Request was successfully updated.' }
+          format.json { render :show, status: :ok, location: @request }
+
+        end
+
       else
         format.html { render :edit }
         format.json { render json: @request.errors, status: :unprocessable_entity }
@@ -280,6 +302,7 @@ class RequestsController < ApplicationController
       @request.folder = folder
       if @request.save!
         if status == '2'
+          @request.update!(cancel_reason: params[:cancel_reason])
           notice = 'Request was successfully closed. You can\'t open request again anymore.'
           TenderBooksNotifierMailer.close_request_buyer(@request.user, @request).deliver_later
           @request.suppliers.each do |supplier|
@@ -399,7 +422,9 @@ class RequestsController < ApplicationController
         :submission_type,
         :bidder_fee,
         :bid_bond,
-        :special_remarks
+        :special_remarks,
+        :extend_reason,
+        :clarificatoin
         )
     end
 
