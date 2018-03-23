@@ -11,6 +11,15 @@
 <%= f.hidden_field :requisition_id, value: @requisition.id %>
 <% end %>
 
+<% flag = false %>
+<% if defined? priority %>
+  <% if priority == 'major' %>
+    <% flag = true %>
+  <% end %>
+<% else %>
+  <% flag = true %>
+<% end %>
+
 <div class="panel-group" id="accordion">
   <div class="panel panel-info">
     <div class="panel-heading">
@@ -65,6 +74,25 @@
               </small>
             </div>
           </div>
+
+          <% if defined? priority %>
+          <div class="col-md-12">
+            <div class="form-group required">
+              <%= f.label 'Clarification on changes in the request', class: 'control-label' %>
+              <a  href            = "javascript:;" 
+                  data-toggle     = "tooltip"
+                  data-html       = "true"
+                  data-placement  = "bottom"
+                  title           = "
+                    Lorem text...
+                  ">
+                <i class="glyphicon glyphicon-info-sign"></i>
+              </a>  
+              <%= f.text_area :clarificatoin, class: 'form-control', required: true %>              
+            </div>
+          </div>
+          <% end %>
+
           <div class="col-md-12">
             <div class="form-group required">
               <%= f.label :description, class: 'control-label' %>
@@ -78,7 +106,7 @@
                   ">
                 <i class="glyphicon glyphicon-info-sign"></i>
               </a>  
-              <%= f.text_area :description, class: 'form-control', required: true, rows: 8 %>              
+              <%= f.text_area :description, class: 'form-control', required: true, rows: 10 %>              
             </div>
           </div>
         </div>
@@ -192,7 +220,8 @@
         </div>
 
         <hr>
-        <% unless @type == 'RFI' %>
+
+        <% if flag %>
         <div class="row">
           <div class="col-md-5">
             <br>
@@ -239,26 +268,6 @@
             </div>
           </div>
         </div>
-        <% else %>
-        <div>
-          <br>
-          <a class="btn btn-default btn-block" data-toggle="modal" data-target="#itemModal">
-            <b class="text-muted">
-              CLICK HERE TO COMPOSE <br>A LIST OF ITEMS
-              <i class          = "glyphicon glyphicon-info-sign text-info"
-                data-toggle     = "tooltip"
-                data-html       = "true"
-                data-placement  = "bottom"
-                title           = "
-                    Please descibe in detail, what you want to buy.<br>
-                    Include specifications and any special requirements or restrictions you have.
-                  "
-                ></i>
-            </b>
-          </a>
-          <br>
-        </div>
-        <% end %>
         <%= hidden_field_tag :request_items %>
         <table class="table" id="request-items-table">
           <thead>
@@ -282,6 +291,7 @@
             <% end %>
           </tbody>
         </table>
+        <% end %>        
 
         <hr>
         <%= f.hidden_field :attach %>
@@ -358,6 +368,7 @@
     <div id="collapse2" class="panel-collapse collapse in">
       <div class="panel-body">
         <hr>
+        <% if flag %>
         <div class="row">
           <div class="col-md-5">
             <br>
@@ -431,6 +442,7 @@
             </tbody>
         </table>
         <hr>
+        <% end %>
         <div class="row">
           <div class="col-sm-4">
             <a class          = "btn btn-default btn-block request-perm"
@@ -465,40 +477,31 @@
           <%= f.hidden_field :permission %>
         </div>
         <hr>
-        <%= f.check_box :total_price_must, 'data-toggle': 'toggle', 'data-size': 'small', 'data-on': 'Yes', 'data-off': 'No', 'data-onstyle': 'info' %>
-        &nbsp;&nbsp;&nbsp;&nbsp;<label class="text-muted"> Suppliers must enter a total price when making a bid</label>
-        <i class          = "glyphicon glyphicon-info-sign text-info"
-          data-toggle     = "tooltip"
-          data-html       = "true"
-          data-placement  = "bottom"
-          title           = "
-              Turn this off if you want to create an RFI or only qualify your suppliers.
-            "
-          ></i>
-        <hr>
-        <%= f.check_box :allow_alternative_bids, 'data-toggle': 'toggle', 'data-size': 'small', 'data-on': 'Yes', 'data-off': 'No', 'data-onstyle': 'info' %>
-        &nbsp;&nbsp;&nbsp;&nbsp;<label class="text-muted"> Allow alternative bids</label>
-        <i class          = "glyphicon glyphicon-info-sign text-info"
-          data-toggle     = "tooltip"
-          data-html       = "true"
-          data-placement  = "bottom"
-          title           = "
-              Suppliers can enter several alternative bids along with their primary offer to supply prices for different models or brands. If you enable this option, we suggest to add a line in the request description that explains what kind of alternatives do you expect.
-            "
-          ></i>
-        <hr>
-        <%= f.check_box :sealed_bids, 'data-toggle': 'toggle', 'data-size': 'small', 'data-on': 'Yes', 'data-off': 'No', 'data-onstyle': 'info' %>
-        &nbsp;&nbsp;&nbsp;&nbsp;<label class="text-muted"> Sealed bids</label>
-        <i class          = "glyphicon glyphicon-info-sign text-info"
-          data-toggle     = "tooltip"
-          data-html       = "true"
-          data-placement  = "bottom"
-          title           = "
-              Enable sealed bids for this request.<br>
-              All bids with details will be available only after the request has ended.
-            "
-          ></i>
-        <hr>
+        <% if flag %>
+          <%= f.check_box :total_price_must, 'data-toggle': 'toggle', 'data-size': 'small', 'data-on': 'Yes', 'data-off': 'No', 'data-onstyle': 'info' %>
+          &nbsp;&nbsp;&nbsp;&nbsp;<label class="text-muted"> Suppliers must enter a total price when making a bid</label>
+          <i class          = "glyphicon glyphicon-info-sign text-info"
+            data-toggle     = "tooltip"
+            data-html       = "true"
+            data-placement  = "bottom"
+            title           = "
+                Turn this off if you want to create an RFI or only qualify your suppliers.
+              "
+            ></i>
+          <hr>
+          <%= f.check_box :sealed_bids, 'data-toggle': 'toggle', 'data-size': 'small', 'data-on': 'Yes', 'data-off': 'No', 'data-onstyle': 'info' %>
+          &nbsp;&nbsp;&nbsp;&nbsp;<label class="text-muted"> Sealed bids</label>
+          <i class          = "glyphicon glyphicon-info-sign text-info"
+            data-toggle     = "tooltip"
+            data-html       = "true"
+            data-placement  = "bottom"
+            title           = "
+                Enable sealed bids for this request.<br>
+                All bids with details will be available only after the request has ended.
+              "
+            ></i>
+          <hr>
+        <% end %>
         <div class="row">
           <div class="col-sm-6">
             <div class="form-group">
@@ -515,24 +518,26 @@
               <%= f.text_field :expected_budget, class: 'form-control' %>
             </div>
           </div>
-          <div class="col-sm-6">
-            <div class="form-group required">
-              <label class="control-label">Preferred currency</label>
-              <i class          = "glyphicon glyphicon-info-sign text-info"
-                data-toggle     = "tooltip"
-                data-html       = "true"
-                data-placement  = "bottom"
-                title           = "
-                    Set your preferred currency here. Suppliers can change the currency when makeing a bid, but we will handle the conversions so you can compare bids side-by-side.
-                  "
-                ></i>
-              <% if request.preferred_currency.nil? %>
-              <%= f.select(:preferred_currency, currency_list.first.collect {|key, value| [value, key]}, {:include_blank => "Select Currency", :selected => current_geo['currency']['code'] }, {:class => "form-control", placeholder: 'Select Currency' } ) %>
-              <% else %>
-              <%= f.select(:preferred_currency, currency_list.first.collect {|key, value| [value, key]}, {:include_blank => "Select Currency" }, {:class => "form-control", placeholder: 'Select Currency' } ) %>
-              <% end %>
-            </div>    
-          </div>
+          <% if flag %>
+            <div class="col-sm-6">
+              <div class="form-group required">
+                <label class="control-label">Preferred currency</label>
+                <i class          = "glyphicon glyphicon-info-sign text-info"
+                  data-toggle     = "tooltip"
+                  data-html       = "true"
+                  data-placement  = "bottom"
+                  title           = "
+                      Set your preferred currency here. Suppliers can change the currency when makeing a bid, but we will handle the conversions so you can compare bids side-by-side.
+                    "
+                  ></i>
+                <% if request.preferred_currency.nil? %>
+                <%= f.select(:preferred_currency, currency_list.first.collect {|key, value| [value, key]}, {:include_blank => "Select Currency", :selected => current_geo['currency']['code'] }, {:class => "form-control", placeholder: 'Select Currency' } ) %>
+                <% else %>
+                <%= f.select(:preferred_currency, currency_list.first.collect {|key, value| [value, key]}, {:include_blank => "Select Currency" }, {:class => "form-control", placeholder: 'Select Currency' } ) %>
+                <% end %>
+              </div>    
+            </div>
+          <% end %>
         </div>
         <hr>
       </div>

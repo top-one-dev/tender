@@ -18,10 +18,11 @@
         <% if @request.company.owner == current_user %>
           <%= link_to '<b>Assign</b>'.html_safe, 'javascript:;', class: 'btn btn-sm btn-default', 'data-toggle': "modal", 'data-target': "#assignRequestModal" %>
         <% end %>
-        <%= link_to '<b>Extend end time</b>'.html_safe, edit_request_path(@request), class: 'btn btn-sm btn-default' %>
+        <%= link_to '<b>Edit request</b>'.html_safe, 'javascript:;', class: 'btn btn-sm btn-default', 'data-toggle': "modal", 'data-target': "#editRequestModal" %>
+        <%= link_to '<b>Extend closing time</b>'.html_safe, 'javascript:;', class: 'btn btn-sm btn-default', 'data-toggle': "modal", 'data-target': "#extendRequestModal" %>
         <%= link_to '<b>Archive request</b>'.html_safe, change_status_path(@request.id, 3), class: 'btn btn-sm btn-default' %>
         <%= link_to '<b>Compare bids</b>'.html_safe, compare_bids_path(@request.id), class: 'btn btn-sm btn-default' %>
-        <%= link_to '<b>Cancel request</b>'.html_safe, change_status_path(@request.id, 2), class: 'btn btn-sm btn-default', 'data-confirm': 'After cancelling a request you cannot republish it anymore. Are you sure to cancel?' %>
+        <%= link_to '<b>Cancel request</b>'.html_safe, 'javascript:;', class: 'btn btn-sm btn-default', 'data-toggle': "modal", 'data-target': "#cancelRequestModal" %>
         <%= link_to '<b class="text-muted"><i class="glyphicon glyphicon-envelope"></i> View Messages</b>'.html_safe, "#{messages_url}?id=#{@request.id}", class: "btn btn-default btn-sm pull-right" %>
       </div>
       
@@ -291,4 +292,113 @@
     </div>
   </div>
 </div>
+
+
+<div id="editRequestModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Edit Request</h4>
+      </div>
+      <div class="modal-body">
+        <b>Please choose how do you like to make changes:</b><br><br>
+        <%= link_to "#{edit_request_path(@request)}?priority=minor" do %>
+          <div class="well text-center">
+            <h4><b>MINOR ADDITIONS</b></h4>
+            Make small additions to request, add documents or revise description.<br>
+            For changes that will not affect suppliers’ decision to participate on the request or existing bids.<br><br>
+          </div>
+        <% end %>
+        <%= link_to "#{edit_request_path(@request)}?priority=major" do %>
+          <div class="well text-center">
+            <h4><b>MAJOR CHANGE</b></h4>
+            Make major changes in the request, amend item list or questions.<br>
+            All bids and supplier statuses will be deleted.<br>
+            Suppliers have to decide again if they want to participate.<br><br>
+          </div>
+        <% end %>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-default" data-dismiss="modal">Cancel</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="extendRequestModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <%= form_for(@request) do |f| %>
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Extend Closing Date</h4>
+      </div>
+      <div class="modal-body">
+        <p>
+          Extending the end time gives suppliers additional time to make bids or to invite new participants that were forgotten during the listing of the request.<br>
+          Every participant of the request will be informed about the extension of the deadline.
+        </p>
+        
+        <div class="form-group">
+          <label class="control-label">Closing date of request:</label>
+          <h4><b><%= @request.end_time.strftime("%b %d, %Y %H:%M ( %Z%z )") %></b></h4>          
+        </div>
+
+        <div class="form-group required">
+          <label class="control-label">New closing date</label>
+          <div class='input-group date' id='request-end-time'>
+            <%= f.text_field :end_time, class: 'form-control', required: true %>
+            <span class="input-group-addon">
+              <span class="glyphicon glyphicon-calendar"></span>
+            </span>
+          </div>      
+        </div>
+
+        <div class="form-group required">
+          <label class="control-label">Reason</label>
+          <%= f.text_area :extend_reason, class: 'form-control', rows: 5 %>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-default" data-dismiss="modal">Cancel</a>
+        <%= f.submit 'Extend', class: 'btn btn-info' %>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+
+<div id="cancelRequestModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <%= form_tag change_status_path(@request.id, 2), method: :get do %>
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Cancel Request</h4>
+      </div>
+      <div class="modal-body">
+        <p>
+          You are about to cancel the request. After cancelling a request you cannot republish it anymore. If you are sure you want to cancel it, please enter a reason that will be sent to suppliers and click on "Cancel request" button.
+        </p>
+        <br>
+        <div class="form-group required">
+          <label class="control-label">Reason for cancelling</label>
+          <%= text_area_tag('cancel_reason', nil, class: 'form-control', rows: 5) %>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-default" data-dismiss="modal">Close</a>
+        <%= submit_tag 'Cancel request', class: 'btn btn-danger' %>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+
 
