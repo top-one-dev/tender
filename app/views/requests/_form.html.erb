@@ -221,7 +221,7 @@
 
         <hr>
 
-        <% if flag %>
+        <div style='<%= "display: none;" unless flag %>'>
         <div class="row">
           <div class="col-md-5">
             <br>
@@ -291,9 +291,10 @@
             <% end %>
           </tbody>
         </table>
-        <% end %>        
-
+        
         <hr>
+        </div>
+
         <%= f.hidden_field :attach %>
         <div class="well dropzone" id="request-document" data-url="<%= @s3_direct_post.url %>" data-fields="<%= @s3_direct_post.fields.to_json %>">
           <div class="dz-message">
@@ -368,81 +369,81 @@
     <div id="collapse2" class="panel-collapse collapse in">
       <div class="panel-body">
         <hr>
-        <% if flag %>
-        <div class="row">
-          <div class="col-md-5">
-            <br>
-            <a class="btn btn-default btn-block" data-toggle="modal" data-target="#questionModal">
-              <b class="text-muted">
-                CLICK HERE TO COMPOSE <br>A QUESTIONARIES
-                <i class          = "glyphicon glyphicon-info-sign text-info"
+        <div style = '<%= "display: none;" unless flag %>' >
+          <div class="row">
+            <div class="col-md-5">
+              <br>
+              <a class="btn btn-default btn-block" data-toggle="modal" data-target="#questionModal">
+                <b class="text-muted">
+                  CLICK HERE TO COMPOSE <br>A QUESTIONARIES
+                  <i class          = "glyphicon glyphicon-info-sign text-info"
+                    data-toggle     = "tooltip"
+                    data-html       = "true"
+                    data-placement  = "bottom"
+                    title           = "
+                        Questionnaire helps to gather information form suppliers or qualify them. You can define free-text or multiple-choice questions and have suppliers attach files when answering.
+                      "
+                    ></i>
+                </b>
+              </a>
+            </div>
+            <div class="col-md-2 text-center">
+              <br><br><b>OR</b>
+            </div>
+            <div class="col-md-5 text-center">
+              <div class="btn-group">
+                <a href           = "https://s3.amazonaws.com/tenderbooks/tmp/excel/Questionnaire_template.xlsx" 
+                  target          = "_blank" 
+                  class           = "btn btn-success"
                   data-toggle     = "tooltip"
                   data-html       = "true"
                   data-placement  = "bottom"
                   title           = "
-                      Questionnaire helps to gather information form suppliers or qualify them. You can define free-text or multiple-choice questions and have suppliers attach files when answering.
-                    "
-                  ></i>
-              </b>
-            </a>
-          </div>
-          <div class="col-md-2 text-center">
-            <br><br><b>OR</b>
-          </div>
-          <div class="col-md-5 text-center">
-            <div class="btn-group">
-              <a href           = "https://s3.amazonaws.com/tenderbooks/tmp/excel/Questionnaire_template.xlsx" 
-                target          = "_blank" 
-                class           = "btn btn-success"
-                data-toggle     = "tooltip"
-                data-html       = "true"
-                data-placement  = "bottom"
-                title           = "
-                  You can also use Excel if you have more than 10 items.<br>
-                  Download the template and save it to your computer. Open it with Excel, fill it in and upload the file back here.
-                " >
-                <b><i class="glyphicon glyphicon glyphicon-download-alt"></i></b>
-              </a>
-              <a href="https://s3.amazonaws.com/tenderbooks/tmp/excel/Questionnaire_template.xlsx" target="_blank" class="btn btn-default">
-                <b class="text-muted">Download template and use Excel</b>
-              </a>
-            </div>
-            <hr>
-            <div class="well-sm well">
-                <b class="text-muted">Pick your questionaries</b> <br><br>
-                <input type="file" id="questions-document" autocomplete="off">
+                    You can also use Excel if you have more than 10 items.<br>
+                    Download the template and save it to your computer. Open it with Excel, fill it in and upload the file back here.
+                  " >
+                  <b><i class="glyphicon glyphicon glyphicon-download-alt"></i></b>
+                </a>
+                <a href="https://s3.amazonaws.com/tenderbooks/tmp/excel/Questionnaire_template.xlsx" target="_blank" class="btn btn-default">
+                  <b class="text-muted">Download template and use Excel</b>
+                </a>
+              </div>
+              <hr>
+              <div class="well-sm well">
+                  <b class="text-muted">Pick your questionaries</b> <br><br>
+                  <input type="file" id="questions-document" autocomplete="off">
+              </div>
             </div>
           </div>
-        </div>
-        <%= hidden_field_tag :request_questions %>
-        <table class="table" id="request-questions-table">
-          <thead>
-              <tr>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Type</th>
-                <th>Options</th>
-                <th>Enable attach</th>
-                <th>Mandatory</th>
-              </tr>
-            </thead>
-            <tbody>
-            <% unless @questions.nil? %>            
-              <% @questions.each do |question| %>
-              <tr>
-                <td><%= question.title %></td>
-                <td><%= question.description %></td>
-                <td><%= question.question_type %></td>
-                <td><%= question.options %></td>
-                <td><%= question.enable_attatch %></td>
-                <td><%= question.mandatory %></td>
-              </tr>
+          <%= hidden_field_tag :request_questions %>
+          <table class="table" id="request-questions-table">
+            <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Description</th>
+                  <th>Type</th>
+                  <th>Options</th>
+                  <th>Enable attach</th>
+                  <th>Mandatory</th>
+                </tr>
+              </thead>
+              <tbody>
+              <% unless @questions.nil? %>            
+                <% @questions.each do |question| %>
+                <tr>
+                  <td><%= question.title %></td>
+                  <td><%= question.description %></td>
+                  <td><%= question.question_type %></td>
+                  <td><%= question.options %></td>
+                  <td><%= question.enable_attatch %></td>
+                  <td><%= question.mandatory %></td>
+                </tr>
+                <% end %>
               <% end %>
-            <% end %>
-            </tbody>
-        </table>
-        <hr>
-        <% end %>
+              </tbody>
+          </table>
+          <hr>
+        </div>
         <div class="row">
           <div class="col-sm-4">
             <a class          = "btn btn-default btn-block request-perm"
@@ -477,7 +478,7 @@
           <%= f.hidden_field :permission %>
         </div>
         <hr>
-        <% if flag %>
+        <div style = '<%= "display: none;" unless flag %>' >
           <%= f.check_box :total_price_must, 'data-toggle': 'toggle', 'data-size': 'small', 'data-on': 'Yes', 'data-off': 'No', 'data-onstyle': 'info' %>
           &nbsp;&nbsp;&nbsp;&nbsp;<label class="text-muted"> Suppliers must enter a total price when making a bid</label>
           <i class          = "glyphicon glyphicon-info-sign text-info"
@@ -501,7 +502,7 @@
               "
             ></i>
           <hr>
-        <% end %>
+        </div>
         <div class="row">
           <div class="col-sm-6">
             <div class="form-group">
@@ -518,26 +519,24 @@
               <%= f.text_field :expected_budget, class: 'form-control' %>
             </div>
           </div>
-          <% if flag %>
-            <div class="col-sm-6">
-              <div class="form-group required">
-                <label class="control-label">Preferred currency</label>
-                <i class          = "glyphicon glyphicon-info-sign text-info"
-                  data-toggle     = "tooltip"
-                  data-html       = "true"
-                  data-placement  = "bottom"
-                  title           = "
-                      Set your preferred currency here. Suppliers can change the currency when makeing a bid, but we will handle the conversions so you can compare bids side-by-side.
-                    "
-                  ></i>
-                <% if request.preferred_currency.nil? %>
-                <%= f.select(:preferred_currency, currency_list.first.collect {|key, value| [value, key]}, {:include_blank => "Select Currency", :selected => current_geo['currency']['code'] }, {:class => "form-control", placeholder: 'Select Currency' } ) %>
-                <% else %>
-                <%= f.select(:preferred_currency, currency_list.first.collect {|key, value| [value, key]}, {:include_blank => "Select Currency" }, {:class => "form-control", placeholder: 'Select Currency' } ) %>
-                <% end %>
-              </div>    
-            </div>
-          <% end %>
+          <div class="col-sm-6" style = '<%= "display: none;" unless flag %>'>
+            <div class="form-group required">
+              <label class="control-label">Preferred currency</label>
+              <i class          = "glyphicon glyphicon-info-sign text-info"
+                data-toggle     = "tooltip"
+                data-html       = "true"
+                data-placement  = "bottom"
+                title           = "
+                    Set your preferred currency here. Suppliers can change the currency when makeing a bid, but we will handle the conversions so you can compare bids side-by-side.
+                  "
+                ></i>
+              <% if request.preferred_currency.nil? %>
+              <%= f.select(:preferred_currency, currency_list.first.collect {|key, value| [value, key]}, {:include_blank => "Select Currency", :selected => current_geo['currency']['code'] }, {:class => "form-control", placeholder: 'Select Currency' } ) %>
+              <% else %>
+              <%= f.select(:preferred_currency, currency_list.first.collect {|key, value| [value, key]}, {:include_blank => "Select Currency" }, {:class => "form-control", placeholder: 'Select Currency' } ) %>
+              <% end %>
+            </div>    
+          </div>
         </div>
         <hr>
       </div>

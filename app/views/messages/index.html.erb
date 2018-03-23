@@ -113,7 +113,7 @@
                 <small><span class="label label-success">Read</span></small>
                 <% end %>
               </div>
-              <pre><%= message.content %></pre>              
+              <pre><%= message.content.html_safe %></pre>              
               <% unless message.attach.nil? %>
                 <%= link_to 'Attach', '#'  %>
               <% end %>              
