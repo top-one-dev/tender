@@ -5,7 +5,14 @@
   </head>
   <body>
     <h2>Hi, <%= @supplier.email %></h2>
-    <h3><b><%= @request.name %></b> was updated by buyer at <%= @request.updated_at %></h3>
+    <h3><b><%= @subject %></h3>
+    <% if @extend.nil? %>
+      <h4>Clarification on changes in the request:</h4>
+      <p><%= @request.clarificatoin %></p>
+    <% else %>
+      <h4>Reason for extending the request</h4>
+      <p><%= @request.extend_reason %></p>
+    <% end %>
     <pre><%= @request.description %></pre>
     <hr>
     <pre>

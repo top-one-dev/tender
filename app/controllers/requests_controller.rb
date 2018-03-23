@@ -168,13 +168,13 @@ class RequestsController < ApplicationController
           if request_params.has_key? 'extend_reason'
 
             @request.suppliers.each do |supplier|
-              TenderBooksNotifierMailer.update_supplier(supplier, @request).deliver_later
+              TenderBooksNotifierMailer.update_supplier(supplier, @request, true).deliver_later
               @request.messages.create!(
                 from: 'buyer',
                 read: false,
                 user_id: current_user.id, 
                 supplier_id: supplier.id,
-                content: 'Closing time was updated, please review...'
+                content: "Closing time was extended with the reason:<br> <b>#{@request.extend_reason}</b>.<br> please review..."
                 )
             end
 
@@ -262,13 +262,13 @@ class RequestsController < ApplicationController
             end  
 
             @request.suppliers.each do |supplier|
-              TenderBooksNotifierMailer.update_supplier(supplier, @request).deliver_later
+              TenderBooksNotifierMailer.update_supplier(supplier, @request, nil).deliver_later
               @request.messages.create!(
                 from: 'buyer',
                 read: false,
                 user_id: current_user.id, 
                 supplier_id: supplier.id,
-                content: 'Request updated, please review and make a bid again...'
+                content: "Request updated with the clarification:<br> <b>#{@request.clarificatoin}</b>.<br> please review and make a bid again..."
                 )
             end
 
@@ -312,7 +312,7 @@ class RequestsController < ApplicationController
               read: false,
               user_id: current_user.id, 
               supplier_id: supplier.id,
-              content: "Request was closed..."
+              content: "Request was closed with the reason:<br> <b>#{@request.cancel_reason}</b>..."
               )
           end
         else

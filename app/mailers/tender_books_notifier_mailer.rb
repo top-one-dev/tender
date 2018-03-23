@@ -46,11 +46,17 @@ class TenderBooksNotifierMailer < ApplicationMailer
 		mail( :to => @buyer.email,	:subject => 'You sent invite!' )
 	end
 
-	def update_supplier(supplier, request)
+	def update_supplier(supplier, request, extend)
 		@supplier 		= supplier
 		@supplier_token = crypt.encrypt_and_sign @supplier.id
 		@request 		= request
-		mail( :to => @supplier.email,	:subject => "#{@request.name} was updated at #{@request.updated_at}" )
+		@extend 		= extend
+		if @extend.nil?
+			@subject = "#{@request.name} was updated by buyer at #{@request.updated_at}"
+		else
+			@subject = "Closing time of the request #{@request.name} was extended by buyer at #{@request.updated_at}"
+		end
+		mail( :to => @supplier.email,	:subject => @subject )
 	end
 
 	def assign_request_buyer(buyer, request)
