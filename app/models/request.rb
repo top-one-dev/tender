@@ -10,6 +10,8 @@ class Request < ApplicationRecord
   has_many :messages, dependent: :destroy
   has_many :bids, dependent: :destroy
 
+  # validates :clarification, presence: true, :on => :update
+
   def winner
   	winner = nil
   	self.bids.each do |bid|
