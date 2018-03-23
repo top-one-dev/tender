@@ -354,7 +354,8 @@ class RequestsController < ApplicationController
   end
 
   def compare_bids
-    @bids = @request.bids    
+    @total_bids = @request.bids
+    @bids       = @request.bids.group_by(&:supplier)    
   end
 
   def set_winner

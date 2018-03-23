@@ -19,27 +19,13 @@
 							<tr class="sticky-row">
 								<th class="sticky-cell" >
 								</th>
-								<% @bids.each do |bid| %>
-								<th>
-									<% unless bid.supplier.user.nil?%>
-				                      <% if bid.supplier.user.companies.exists? %>
-				                       <big><%= bid.supplier.user.companies.first.name %></big><br>
-				                        <small>
-				                        	<%= "#{bid.supplier.user.companies.first.zip}, #{bid.supplier.user.companies.first.city}, +#{bid.supplier.user.companies.first.phone}" %>
-				                        </small>
-				                      <% else %>
-				                        <big>Unknown Company</big>
-				                      <% end %>
-				                    <% else %>
-				                      <big>Unknown Company</big>
-				                    <% end %><br><br>
-				                    <span class="text-info">
-				                    	<% if bid.supplier.user.nil?%>
-					                      Anonymous <small class="text-muted"><em>( <%= bid.supplier.email %> )</em></small>
-					                    <% else %>
-					                      <%= bid.supplier.user.name %> <small class="text-muted"><em>( <%= bid.supplier.email %> )</em></small>
-					                    <% end %>
-				                    </span>				                    
+								<% @bids.each do |supplier, bids| %>
+								<th colspan="<%= bids.count %>" class="text-center">
+									<big><%= supplier.company.name %></big><br><br>
+									<span class="text-info">
+										<%= supplier.correct_user.name %>
+										<small class="text-muted"><em>( <%= supplier.email %> )</em></small>		
+									</span><br><br>
 								</th>
 								<% end %>
 							</tr>
@@ -49,10 +35,19 @@
 										<b><big>Choose winner <i class="glyphicon glyphicon-chevron-right"></i></big></b>
 									</button>
 								</th>
-								<% @bids.each do |bid| %>
-								<th>
-									<button class="btn btn-sm btn-success text-uppercase set-winner" data-toggle="modal" data-target="#winnerModal" data-winner="<%= bid.winner %>">Set winner</button>
-								</th>
+								<% @bids.each do |supplier, bids| %>
+									<% bids.each_with_index do |bid, index| %>
+										<th class="text-center">
+											<% unless bids.count == 1 %>
+												<% if index == 0 %>
+													<span class="label label-default">Original bid</span><br><br>
+												<% else %>
+													<span class="label label-primary">Alternative bid<%= index %></span><br><br>
+												<% end %>
+											<% end %>
+											<button class="btn btn-sm btn-success text-uppercase set-winner" data-toggle="modal" data-target="#winnerModal" data-winner="<%= bid.winner %>">Set winner</button>
+										</th>
+									<% end %>
 								<% end %>
 							</tr>
 						</thead>
@@ -61,7 +56,8 @@
 								<td class="text-muted sticky-cell">
 									
 								</td>
-								<% @bids.each do |bid| %>
+								<% @bids.each do |supplier, bids| %>
+									<% bids.each do |bid| %>
 									<td>
 										<% unless bid.content == '' %>
 										<div class="well">
@@ -70,6 +66,7 @@
 										</div>
 										<% end %>
 									</td>
+									<% end %>
 								<% end %>
 							</tr>			
 
@@ -94,36 +91,40 @@
 										</tbody>
 									</table>
 								</td>
-								<% @bids.each do |bid| %>
-								<td>
-									<table class="table table-striped">
-										<thead>
-											<tr>
-												<th>Unit price</th>
-												<th>Item total</th>
-											</tr>
-										</thead>
-										<tbody>
-											<% bid.ianswers.each do |ianswer| %>
-											<tr>
-												<td><%= ianswer.unit_price %> <em><%= bid.bid_currency %></em></td>
-												<td><%= ianswer.item_total %> <em><%= bid.bid_currency %></em></td>
-											</tr>
-											<% end %>
-										</tbody>
-									</table>
-								</td>
+								<% @bids.each do |supplier, bids| %>
+									<% bids.each do |bid| %>
+									<td>
+										<table class="table table-striped">
+											<thead>
+												<tr>
+													<th>Unit price</th>
+													<th>Item total</th>
+												</tr>
+											</thead>
+											<tbody>
+												<% bid.ianswers.each do |ianswer| %>
+												<tr>
+													<td><%= ianswer.unit_price %> <em><%= bid.bid_currency %></em></td>
+													<td><%= ianswer.item_total %> <em><%= bid.bid_currency %></em></td>
+												</tr>
+												<% end %>
+											</tbody>
+										</table>
+									</td>
+									<% end %>
 								<% end %>
 							</tr>
 
 							<tr>
 								<td  class="text-muted sticky-cell"><h4>Item total</h4></td>
-								<% @bids.each do |bid| %>
-								<td>
-									<h4>
-										<%= bid.item_total %> <em><%= bid.bid_currency %></em>
-									</h4>
-								</td>
+								<% @bids.each do |supplier, bids| %>
+									<% bids.each do |bid| %>
+									<td>
+										<h4>
+											<%= bid.item_total %> <em><%= bid.bid_currency %></em>
+										</h4>
+									</td>
+									<% end %>
 								<% end %>
 							</tr>
 
@@ -131,10 +132,12 @@
 								<td class="text-muted sticky-cell">
 									<b>Difference</b>
 								</td>
-								<% @bids.each do |bid| %>
-								<td>
-									<%= difference @bids, bid %>
-								</td>
+								<% @bids.each do |supplier, bids| %>
+									<% bids.each do |bid| %>
+									<td>
+										<%= difference @total_bids, bid %>
+									</td>
+									<% end %>
 								<% end %>
 							</tr>
 
@@ -142,10 +145,12 @@
 								<td class="text-muted sticky-cell">
 									<b>Expected budget</b>
 								</td>
-								<% @bids.each do |bid| %>
-								<td>
-									<%= @request.expected_budget %> <%= @request.preferred_currency %>
-								</td>
+								<% @bids.each do |supplier, bids| %>
+									<% bids.each do |bid| %>
+									<td>
+										<%= @request.expected_budget %> <%= @request.preferred_currency %>
+									</td>
+									<% end %>
 								<% end %>
 							</tr>
 
@@ -153,10 +158,12 @@
 								<td class="text-muted sticky-cell">
 									<b>Difference from expected budget</b>
 								</td>
-								<% @bids.each do |bid| %>
-								<td>
-									<%= bid.difference_budget %>
-								</td>
+								<% @bids.each do |supplier, bids| %>
+									<% bids.each do |bid| %>
+									<td>
+										<%= bid.difference_budget %>
+									</td>
+									<% end %>
 								<% end %>
 							</tr>
 
@@ -164,12 +171,14 @@
 								<td class="text-muted sticky-cell">
 									<b>Documents attached to bid</b>
 								</td>
-								<% @bids.each do |bid| %>
-								<td>
-									<% if bid.document %>
-									<%= link_to "<i class='glyphicon glyphicon-file'></i> #{url_decode(bid.document).split('/').last}".html_safe, bid.document  %>
+								<% @bids.each do |supplier, bids| %>
+									<% bids.each do |bid| %>
+									<td>
+										<% if bid.document %>
+										<%= link_to "<i class='glyphicon glyphicon-file'></i> #{url_decode(bid.document).split('/').last}".html_safe, bid.document  %>
+										<% end %>
+									</td>
 									<% end %>
-								</td>
 								<% end %>
 							</tr>
 							
@@ -182,63 +191,60 @@
 					<table class="table table-striped">
 						<thead>
 							<tr class="sticky-row">
-								<% @bids.each do |bid| %>
-								<th>
-									<% unless bid.supplier.user.nil?%>
-				                      <% if bid.supplier.user.companies.exists? %>
-				                       <big><%= bid.supplier.user.companies.first.name %></big><br>
-				                        <small>
-				                        	<%= "#{bid.supplier.user.companies.first.zip}, #{bid.supplier.user.companies.first.city}, +#{bid.supplier.user.companies.first.phone}" %>
-				                        </small>
-				                      <% else %>
-				                        <big>Unknown Company</big>
-				                      <% end %>
-				                    <% else %>
-				                      <big>Unknown Company</big>
-				                    <% end %><br><br>
-				                    <span class="text-info">
-				                    	<% if bid.supplier.user.nil?%>
-					                      Anonymous Supplier <small class="text-muted"><em>( <%= bid.supplier.email %> )</em></small>
-					                    <% else %>
-					                      <%= bid.supplier.user.name %> <small class="text-muted"><em>( <%= bid.supplier.email %> )</em></small>
-					                    <% end %>
-				                    </span>				                    
+								<% @bids.each do |supplier, bids| %>
+								<th colspan="<%= bids.count %>" class="text-center">
+									<big><%= supplier.company.name %></big><br><br>
+									<span class="text-info">
+										<%= supplier.correct_user.name %>
+										<small class="text-muted"><em>( <%= supplier.email %> )</em></small>		
+									</span><br><br>
 								</th>
 								<% end %>
 							</tr>
 							<tr class="bg-success sticky-row">
-								<% @bids.each do |bid| %>
-								<th>
-									<button class="btn btn-sm btn-success text-uppercase set-winner"  data-toggle="modal" data-target="#winnerModal" data-winner="<%= bid.winner %>" >Set winner</button>
-								</th>
+								<% @bids.each do |supplier, bids| %>
+									<% bids.each_with_index do |bid, index| %>
+										<th class="text-center">
+											<% unless bids.count == 1 %>
+												<% if index == 0 %>
+													<span class="label label-default">Original bid</span><br><br>
+												<% else %>
+													<span class="label label-primary">Alternative bid<%= index %></span><br><br>
+												<% end %>
+											<% end %>
+											<button class="btn btn-sm btn-success text-uppercase set-winner" data-toggle="modal" data-target="#winnerModal" data-winner="<%= bid.winner %>">Set winner</button>
+										</th>
+									<% end %>
 								<% end %>
 							</tr>
 						</thead>
 						<tbody>
 							<% @request.questions.each_with_index do |question, index| %>
 								<tr>
-									<td colspan="<%= @bids.count %>" class="well well-sm">
+									<td colspan="<%= @total_bids.count %>" class="well well-sm">
 										<%= "#{index+1}. <b>#{question.title}</b><br><small> ( #{question.description} )</small>".html_safe %>
 									</td>									
 								</tr>
 								<tr>
-									<% @bids.each do |bid| %>
-									<td class="answer-cell" data-url="<%= qanswer_url(bid.qanswers[index].id) %>" >
-										<h5 class="text-success"><b><%= bid.qanswers[index].answer %></b></h5>
-										<% unless bid.qanswers[index].attach.nil? %>
-											<%= link_to "<i class='glyphicon glyphicon-file'></i> #{url_decode(bid.qanswers[index].attach).split('/').last}".html_safe, bid.qanswers[index].attach  %><br><br>
+									<% @bids.each do |supplier, bids| %>
+										<% bids.each do |bid| %>
+										<td class="answer-cell" data-url="<%= qanswer_url(bid.qanswers[index].id) %>" >
+											<h5 class="text-success"><b><%= bid.qanswers[index].answer %></b></h5>
+											<% unless bid.qanswers[index].attach.nil? %>
+												<%= link_to "<i class='glyphicon glyphicon-file'></i> #{url_decode(bid.qanswers[index].attach).split('/').last}".html_safe, bid.qanswers[index].attach  %><br><br>
+											<% end %>
+											<textarea 
+												class 		="form-control" 
+												placeholder ="Type here and hit 'Enter' to add comments..."
+												<% unless bid.qanswers[index].comments.nil? %>
+												disabled
+												<% end %> ><%= bid.qanswers[index].comments %></textarea>
+											<div>
+												<a href="javascript:;" class="btn btn-default btn-sm <%= "btn-success" if bid.qanswers[index].like %>" ><i class="glyphicon glyphicon-thumbs-up"></i></a>
+												<a href="javascript:;" class="btn btn-default btn-sm <%= "btn-danger" if bid.qanswers[index].like == false %>" ><i class="glyphicon glyphicon-thumbs-down"></i></a>
+											</div>
+										</td>
 										<% end %>
-										<textarea 
-											class 		="form-control" 
-											placeholder ="Type here and hit 'Enter' to add comments..."
-											<% unless bid.qanswers[index].comments.nil? %>
-											disabled
-											<% end %> ><%= bid.qanswers[index].comments %></textarea>
-										<div>
-											<a href="javascript:;" class="btn btn-default btn-sm <%= "btn-success" if bid.qanswers[index].like %>" ><i class="glyphicon glyphicon-thumbs-up"></i></a>
-											<a href="javascript:;" class="btn btn-default btn-sm <%= "btn-danger" if bid.qanswers[index].like == false %>" ><i class="glyphicon glyphicon-thumbs-down"></i></a>
-										</div>
-									</td>
 									<% end %>
 								</tr>
 							<% end %>							
