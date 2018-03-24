@@ -86,9 +86,9 @@ class RequestsController < ApplicationController
   # POST /requests.json
   def create
 
-    if participant_params.nil?
+    if participant_params.nil? or item_params.empty? or question_params.empty?
 
-      flash[:error] = 'You need to add at least one participiant.'
+      flash[:error] = 'You need to add at least one participiant, item list and questionaire.'
       redirect_back fallback_location: new_request_url
 
     else

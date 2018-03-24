@@ -109,6 +109,13 @@ $(document).on 'turbolinks:load', ->
 
 	# Create questionaire ....
 
+	$('#load-template').on 'click', ->
+		questions =  JSON.parse $('#question-templates option:selected').attr('data-questions')
+		for question in questions
+			question = JSON.parse question
+			$('#questions-table tbody').append "<tr><td>#{question['title']}</td><td>#{question.description}</td><td>#{question.question_type}</td><td>#{question.options}</td><td>#{question.enable_attatch}</td><td>#{question.mandatory}</td><td><i class='glyphicon glyphicon-trash'></i></td></tr>"
+
+
 	$('#question-type').on 'change', ->
 		if $(this).val() == 'Choose from a list' || $(this).val() == 'Checkboxes'
 			$('#question-options-div').show()

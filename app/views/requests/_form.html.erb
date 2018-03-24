@@ -671,13 +671,27 @@
 
 <!-- questionModal -->
 <div id="questionModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Create questionnarie</h4>
       </div>
       <div class="modal-body">
+        <div class="form-group">
+          <label class="text-muted">Load template:</label>
+          <select class="form-control" id="question-templates">
+            <% current_user.requests.each do |request| %>
+            <option data-questions = '<%= request.questions.collect{ |q| q.attributes.to_json }.to_s.html_safe %>' >
+              Questionnaire of "<%= request.name %>" - <%= request.created_at.strftime("%b %d, %Y %H:%M") %>
+            </option>
+            <% end %>
+          </select>
+        </div>
+        <div class="text-right">
+          <a href="javascript:;" class="btn btn-default btn-sm" id="load-template"><b class="text-muted">Load template</b></a>
+        </div>
+        <hr>
         <div class="form-group">
           <label>Question title</label>
           <input type="text" class="form-control" id="question-title">
