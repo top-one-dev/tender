@@ -327,4 +327,9 @@
 </div>
 
 
+<% unless @request.winner.nil? %>
+<script type="text/javascript">
+	$('button[data-target="#winnerModal"]').prop('disabled', true);
+</script>
+<% end %>
 

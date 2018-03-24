@@ -31,16 +31,31 @@
           <div class="alert alert-warning">
             This request was closed by <b class="text-info"><%= @request.user.name %></b> at <%= @request.updated_at.strftime("%b %d, %Y %H:%M ( %Z%z )") %>
           </div>
-        <% else %>
+        <% else %>          
           <div class="alert alert-success">
             We selected winner (<%= @request.winner.email %>) for this request and closed it. Thanks for your interesting.
           </div>
+
+          <div>
+            <%= link_to '<b>Open report</b>'.html_safe, '#', class: 'btn btn-sm btn-default' %>
+            <%= link_to '<b>Download as zip</b>'.html_safe, '#', class: 'btn btn-sm btn-default' %>
+            <%= link_to '<b>Compare bids</b>'.html_safe, compare_bids_path(@request.id), class: 'btn btn-sm btn-default' %>
+            <%= link_to '<b class="text-muted"><i class="glyphicon glyphicon-envelope"></i> View Messages</b>'.html_safe, "#{messages_url}?id=#{@request.id}", class: "btn btn-default btn-sm pull-right" %>
+          </div>
+          
         <% end %>
 
       <% elsif @request.folder_id == 3 %>
       
       <div class="alert alert-warning">
         This request was archived by <b class="text-info"><%= @request.user.name %></b> at <%= @request.updated_at.strftime("%b %d, %Y %H:%M ( %Z%z )") %>
+      </div>
+
+      <div>
+        <%= link_to '<b>Open report</b>'.html_safe, '#', class: 'btn btn-sm btn-default' %>
+        <%= link_to '<b>Download as zip</b>'.html_safe, '#', class: 'btn btn-sm btn-default' %>
+        <%= link_to '<b>Compare bids</b>'.html_safe, compare_bids_path(@request.id), class: 'btn btn-sm btn-default' %>
+        <%= link_to '<b class="text-muted"><i class="glyphicon glyphicon-envelope"></i> View Messages</b>'.html_safe, "#{messages_url}?id=#{@request.id}", class: "btn btn-default btn-sm pull-right" %>
       </div>
 
       <% end %>
@@ -178,6 +193,31 @@
       <div id="suppliers" class="tab-pane fade">
         <h3>Request is published as: <%= @request.permission %> request</h3>
         <hr>
+        <% unless @request.winner.nil? %>
+          <label class="text-info">Winner</label>
+          <table class="table">
+            <tbody>
+              <tr class="text-success">
+                <td>
+                  <b><%= @request.winner.company.name %></b> :
+                  <%= @request.winner.correct_user.name %><em>( <%= @request.winner.email %> )</em>
+                </td>
+                <td>
+                  <%= @request.winner.bids.where(request_id: @request.id).count %> bid(s)
+                </td>
+                <td>
+                  <%= @request.bids.where(status: 'win').first.bid_budget %> <%= @request.bids.where(status: 'win').first.bid_currency %>
+                </td>
+                <td>
+                  <%= @request.bids.where(status: 'win').first.created_at.strftime("%b %d, %Y %H:%M ( %Z%z )") %>
+                </td>
+                <td>
+                  <%= link_to '<i class="glyphicon glyphicon-envelope text-muted"></i>'.html_safe, "#{messages_url}?id=#{@request.id}", class: "btn btn-default" %>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        <% end %>
         <label class="text-info">Bids Made</label>
         <table class="table">
           <tbody>
@@ -223,13 +263,48 @@
         </div>
         <div id="bids" class="tab-pane fade">
           <br>
+          <% unless @request.winner.nil? %>
+          <label class="text-info">Winner</label>
+            <table class="table">
+              <tbody>
+                <tr class="text-success">
+                  <td>
+                    <b><%= @request.winner.company.name %></b> :
+                    <%= @request.winner.correct_user.name %><em>( <%= @request.winner.email %> )</em>
+                  </td>
+                  <td>
+                    <%= @request.winner.bids.where(request_id: @request.id).count %> bid(s)
+                  </td>
+                  <td>
+                    <%= @request.bids.where(status: 'win').first.bid_budget %> <%= @request.bids.where(status: 'win').first.bid_currency %>
+                  </td>
+                  <td>
+                    <%= @request.bids.where(status: 'win').first.created_at.strftime("%b %d, %Y %H:%M ( %Z%z )") %>
+                  </td>
+                  <td>
+                    <div class="dropdown">
+                      <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Actions
+                      <span class="caret"></span></button>
+                      <ul class="dropdown-menu">
+                        <li><%= link_to 'View bid', @request.bids.where(status: 'win').first %></li>
+                        <li><%= link_to 'Remove bid', '#' %></li>
+                      </ul>
+                    </div>                
+                  </td>
+                  <td>
+                    <%= link_to '<i class="glyphicon glyphicon-envelope text-muted"></i>'.html_safe, "#{messages_url}?id=#{@request.id}", class: "btn btn-default" %>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          <% end %>
           <label class="text-info">Bids</label>
           <table class="table">
             <thead>
               <tr><th>Company</th><th>Total</th><th>Difference</th><th>Bid time</th><th></th></tr>
             </thead>
             <tbody>
-              <% @request.bids.where( status: 'sent' ).each do |bid| %>
+              <% @request.bids.each do |bid| %>
               <tr>                
                 <td>
                   <b>
