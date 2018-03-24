@@ -34,7 +34,7 @@ $(document).on 'turbolinks:load', ->
 		email = $('#participant-email').val()
 		if email != ''
 			if validateEmail(email)
-				$('#participant-table tbody').append("<tr><td>Anonymous Participant<td><td>#{email}</td><td><i class='glyphicon glyphicon-trash'></i></td></tr><input type='hidden' name='participants[]' value='#{email}'>")
+				$('#participant-table tbody').append("<tr><td><i class='glyphicon glyphicon-user text-muted'></i><td><td>#{email}</td><td><i class='glyphicon glyphicon-trash'></i></td></tr><input type='hidden' name='participants[]' value='#{email}'>")
 				$('#participant-email').val('').parent().removeClass('has-error')
 			else
 				$('#participant-email').parent().addClass('has-error')
@@ -47,7 +47,7 @@ $(document).on 'turbolinks:load', ->
 			email = $(this).val()
 			if email != ''
 				if validateEmail(email)
-					$('#participant-table tbody').append("<tr><td>Anonymous Participant<td><td>#{email}</td><td><i class='glyphicon glyphicon-trash'></i></td></tr><input type='hidden' name='participants[]' value='#{email}'>")
+					$('#participant-table tbody').append("<tr><td><i class='glyphicon glyphicon-user text-muted'></i><td><td>#{email}</td><td><i class='glyphicon glyphicon-trash'></i></td></tr><input type='hidden' name='participants[]' value='#{email}'>")
 					$(this).val('').parent().removeClass('has-error')
 				else
 					$(this).parent().addClass('has-error')
@@ -58,7 +58,7 @@ $(document).on 'turbolinks:load', ->
 		name = $(this).find(":selected").attr('data-name')
 		email = $(this).find(":selected").attr('value')
 		if name == ''
-			name = 'Anonymous Supplier'
+			name = "<i class='glyphicon glyphicon-user text-muted'></i>"
 		$('#participant-table tbody').append("<tr><td>#{name}<td><td>#{email}</td><td><i class='glyphicon glyphicon-trash'></i></td></tr><input type='hidden' name='participants[]' value='#{email}'>")
 
 	# Create and edit list items....
