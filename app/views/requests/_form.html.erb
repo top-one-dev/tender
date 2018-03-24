@@ -640,6 +640,8 @@
           <a href="javascript:;" class="btn btn-info" id="item-add">ADD</a>
         </div>
         <hr>
+        <small><em class="text-muted">( You can update existing list items by double clicking field. )</em></small>
+        <hr>
         <table class="table" id="items-table">
           <thead>
             <tr><th>Name</th><th>Unit</th><th>Quantity</th><th>Desciption</th><th></th></tr>
@@ -718,28 +720,32 @@
           <a href="javascript:;" class="btn btn-info" id="question-save" >Save</a>
         </div>
         <hr>
-        <table class="table" id="questions-table">
-          <thead>
-            <tr>
-              <th>Title</th><th>Description</th><th>Type</th><th>Options</th><th>Enable attach</th><th>Mandatory</th><th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <% unless @questions.nil? %>
-              <% @questions.each do |question| %>
+        <small><em class="text-muted">( You can update existing questions by double clicking field. )</em></small>
+        <hr>
+        <div class="table-responsive">
+          <table class="table" id="questions-table">
+            <thead>
               <tr>
-                <td><%= question.title %></td>
-                <td><%= question.description %></td>
-                <td><%= question.question_type %></td>
-                <td><%= question.options %></td>
-                <td><%= question.enable_attatch %></td>
-                <td><%= question.mandatory %></td>
-                <td><i class='glyphicon glyphicon-trash'></i></td>
+                <th>Title</th><th>Description</th><th>Type</th><th>Options</th><th>Enable attach</th><th>Mandatory</th><th></th>
               </tr>
+            </thead>
+            <tbody>
+              <% unless @questions.nil? %>
+                <% @questions.each do |question| %>
+                <tr>
+                  <td><%= question.title %></td>
+                  <td><%= question.description %></td>
+                  <td><%= question.question_type %></td>
+                  <td><%= question.options %></td>
+                  <td><%= question.enable_attatch %></td>
+                  <td><%= question.mandatory %></td>
+                  <td><i class='glyphicon glyphicon-trash'></i></td>
+                </tr>
+                <% end %>
               <% end %>
-            <% end %>
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+        </div>        
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-info" data-dismiss="modal" id="questions-save">Save</button>

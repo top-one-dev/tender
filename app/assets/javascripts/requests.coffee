@@ -61,7 +61,7 @@ $(document).on 'turbolinks:load', ->
 			name = 'Anonymous Supplier'
 		$('#participant-table tbody').append("<tr><td>#{name}<td><td>#{email}</td><td><i class='glyphicon glyphicon-trash'></i></td></tr><input type='hidden' name='participants[]' value='#{email}'>")
 
-
+	# Create and edit list items....
 
 	$('#item-add').on 'click', ->
 		name 		= $('#item-name').val()
@@ -89,10 +89,25 @@ $(document).on 'turbolinks:load', ->
 			$('#request_items').val "[ #{items} ]"
 			$('#request-items-table').html $('#items-table').html()
 			$('#request-items-table i.glyphicon-trash').remove()
-			$('#items-table tbody tr').remove()
+			# $('#items-table tbody tr').remove()
 
-	$('#items-cancel').on 'click', ->
-		$('#items-table tbody tr').remove()
+	# $('#items-cancel').on 'click', ->
+	# 	$('#items-table tbody tr').remove()
+
+	$('body').on 'dblclick', '#items-table>tbody>tr>td', ->
+		val = $(this).html()
+		if val.includes('<input') || val.includes('<i')
+			return
+		$(this).html "<input class='form-control' value='#{val}'>"
+
+	$('body').on 'keydown', '#items-table>tbody>tr>td>input', (e)->
+		if e.keyCode == 13
+			e.preventDefault()
+			val = $(this).val()
+			$(this).parent().html val
+
+
+	# Create questionaire ....
 
 	$('#question-type').on 'change', ->
 		if $(this).val() == 'Choose from a list' || $(this).val() == 'Checkboxes'
@@ -160,8 +175,29 @@ $(document).on 'turbolinks:load', ->
 			$('#request_questions').val "[ #{items} ]"
 			$('#request-questions-table').html $('#questions-table').html()
 			$('#request-questions-table i.glyphicon-trash').remove()
-			$('#questions-table tbody tr').remove()
+			# $('#questions-table tbody tr').remove()
+
+	$('body').on 'dblclick', '#questions-table>tbody>tr>td', ->
+		val = $(this).html()
+		if val.includes('<input') || val.includes('<textarea') || val.includes('<i')
+			return
+		if val.length > 15
+			$(this).html "<textarea class='form-control' style='min-width: 200px;' >#{val}</textarea>"
+		else
+			$(this).html "<input class='form-control' style='min-width: 100px;' value='#{val}'>"
+
+	$('body').on 'keydown', '#questions-table>tbody>tr>td>input', (e)->
+		if e.keyCode == 13
+			e.preventDefault()
+			val = $(this).val()
+			$(this).parent().html val
 	
+	$('body').on 'keydown', '#questions-table>tbody>tr>td>textarea', (e)->
+		if e.keyCode == 13
+			e.preventDefault()
+			val = $(this).val()
+			$(this).parent().html val
+		
 
 	$('body').on 'click', '.table i.glyphicon-trash', (event) ->
 		$(this).parent().parent().remove()
