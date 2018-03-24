@@ -44,6 +44,8 @@ gem 'bootstrap-toggle-rails'
 
 gem 'money'
 gem 'google_currency'
+gem 'eu_central_bank'
+
 
 gem 'chartkick'
 gem 'groupdate'

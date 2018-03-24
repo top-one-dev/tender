@@ -80,6 +80,9 @@ GEM
     dropzonejs-rails (0.8.2)
       rails (> 3.1)
     erubis (2.7.0)
+    eu_central_bank (1.2.0)
+      money (~> 6.10.1)
+      nokogiri (~> 1.8.1)
     execjs (2.7.0)
     ffi (1.9.18)
     globalid (0.4.1)
@@ -216,6 +219,7 @@ DEPENDENCIES
   delayed_job_active_record
   devise
   dropzonejs-rails
+  eu_central_bank
   google_currency
   groupdate
   jbuilder (~> 2.5)
