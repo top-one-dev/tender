@@ -600,7 +600,7 @@
 
 <div class="text-right">
   
-    <%= link_to '<i class="glyphicon glyphicon-eye-open"></i> PREVIEW'.html_safe, '#', class: 'btn btn-default' %>
+    <%= link_to '<i class="glyphicon glyphicon-eye-open"></i> PREVIEW'.html_safe, 'javascript:;', class: 'btn btn-default', 'data-toggle': "modal", 'data-target': "#previewModal" %>
     <%= link_to '<i class="glyphicon glyphicon-floppy-disk"></i> SAVE'.html_safe, '#', class: 'btn btn-default' %>
   
   <%= f.submit 'SUBMIT', class: 'btn btn-info' %>
@@ -765,6 +765,36 @@
         <button type="button" class="btn btn-info" data-dismiss="modal" id="questions-save">Save</button>
         <button type="button" class="btn btn-default" data-dismiss="modal" id="questions-cancel">Close</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- questionModal -->
+<div id="previewModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Preview request before submitting</h4>
+      </div>
+      <div class="modal-body">
+        <p>
+          <b>Open the supplier view </b><br>
+          Preview what the suppliers will see when they open the invitation email. Check that the list of items, documents or questionnaire is exactly like you want.
+        </p>
+        <a href="#" class="btn btn-info">Open Supplier View</a>
+        <hr>
+        <p>
+          <b>Preview the invitation email</b><br>
+          Enter email where the invitation email will be sent. All suppliers will receive a similar email after you publish the request.
+        </p>
+        <div class="form-group">
+          <label class="control-label">Send to email</label>
+          <input type="text" class="form-control" name="">
+        </div>
+        <a href="#" class="btn btn-info">Preview Invitation</a>
+        <br><br>
+      </div>      
     </div>
   </div>
 </div>
