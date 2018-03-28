@@ -211,18 +211,49 @@ $(document).on 'turbolinks:load', ->
 
 
 	if $('div#request-document').length
-		document = new Dropzone 'div#request-document',
+		request_document = new Dropzone 'div#request-document',
             url: $('div#request-document').attr('data-url')
             method: 'post'
-            maxFiles: 1
+            maxFiles: 5
             timeout: 18000000
             sending: (data, xhr, formData)->
             	$.each JSON.parse($('div#request-document').attr('data-fields')), (key, value)->
                     formData.append key, value
             success: (file, result)->
-            	res_data    = $.parseXML result
-            	document_url   = $(res_data).find("Location").text()
-            	$('#request_attach').val document_url
+            	res_data    	= $.parseXML result
+            	document_url   	= $(res_data).find("Location").text()
+            	delete_url 		= $('div#request-document').attr 'data-url1'
+            	if $('#request_attach').val() == ''
+            		$('#request_attach').val document_url
+            	else
+            		val = $('#request_attach').val()
+            		$('#request_attach').val "#{val}[!!!]#{document_url}"
+
+            	$('#documents-table>tbody').append "<tr><td>#{file.name}</td><td><i class='glyphicon glyphicon-remove text-danger' data-key='#{document_url}' data-url='#{delete_url}'></i></td></tr>"
+            	# request_document.removeAllFiles()
+
+
+	$('body').on 'click', '#documents-table i.glyphicon-remove', (event) ->
+		if confirm('Are you sure to delete this document?')
+			url 	= $(this).attr 'data-url'
+			key 	= $(this).attr 'data-key'
+			_this 	= this
+			$.ajax
+				type: 'POST'
+				url: url
+				dataType: 'json'
+				data: { 'key': key }
+				success: (res) ->
+					if res.status == 'ok'
+						$(_this).parent().parent().remove()
+						val = $('#request_attach').val()
+						val = val.replace("#{key}[!!!]", "")
+						val = val.replace("[!!!]#{key}", "")
+						val = val.replace(key, "")
+						$('#request_attach').val val
+					else
+						alert res.message
+		
 
 	$('.answer-cell textarea').keydown (event) ->
 		if event.keyCode == 13
