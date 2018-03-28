@@ -6,6 +6,10 @@
 			<h5><span class="text-muted">Name:</span> <%= @request.name %></h5>
 		</div>
 
+		<div class="text-right">
+			<%= link_to '<i class="glyphicon glyphicon-download-alt"></i> Export to Excel'.html_safe, '', class: 'btn btn-default btn-success' %>
+		</div>
+
 		<ul class="nav nav-tabs">
 			<li class="active"><a data-toggle="tab" href="#comparebid"><h4>Compare financial bids</h4></a></li>
 			<li><a data-toggle="tab" href="#comparequestion"><h4>Compare questionnaire answers</h4></a></li>
