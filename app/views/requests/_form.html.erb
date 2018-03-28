@@ -218,10 +218,19 @@
             </div>
           </div>          
         </div>
+      </div>
+    </div>
+  </div>
 
-        <hr>
-
-        <div style='<%= "display: none;" unless flag %>'>
+  <div class="panel panel-info" style='<%= "display: none;" unless flag %>'>
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
+        ADD A LIST OF ITEMS</a>
+      </h4>
+    </div>
+    <div id="collapse2" class="panel-collapse collapse in">
+      <div class="panel-body">          
         <div class="row">
           <div class="col-md-5">
             <br>
@@ -291,10 +300,19 @@
             <% end %>
           </tbody>
         </table>
-        
-        <hr>
-        </div>
+      </div>
+    </div>
+  </div>
 
+  <div class="panel panel-info" >
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
+        ATTACH DOCUMENTS & ENTER EMAILS OF THE PARTICIPANTS</a>
+      </h4>
+    </div>
+    <div id="collapse3" class="panel-collapse collapse in">
+      <div class="panel-body"> 
         <%= f.hidden_field :attach %>
         <div class="well dropzone" id="request-document" data-url="<%= @s3_direct_post.url %>" data-fields="<%= @s3_direct_post.fields.to_json %>">
           <div class="dz-message">
@@ -362,11 +380,11 @@
   <div class="panel panel-info">
     <div class="panel-heading">
       <h4 class="panel-title">
-        <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapse4">
         QUESTIONARIES AND ADDITIONAL OPTIONS</a>
       </h4>
     </div>
-    <div id="collapse2" class="panel-collapse collapse in">
+    <div id="collapse4" class="panel-collapse collapse in">
       <div class="panel-body">
         <hr>
         <div style = '<%= "display: none;" unless flag %>' >
