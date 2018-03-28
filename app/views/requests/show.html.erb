@@ -180,7 +180,9 @@
             <div id="collapse3" class="panel-collapse collapse in">
               <div class="panel-body">
                 <% unless @request.attach.empty? %>
-                <%= link_to "<i class='glyphicon glyphicon-file'></i> #{url_decode(@request.attach).split('/').last}".html_safe, @request.attach  %>
+                <% @request.attach.split("[!!!]").each do |document| %>
+                  <%= link_to "<i class='glyphicon glyphicon-file'></i> #{url_decode(document).split('/').last}".html_safe, document.html_safe %><hr>
+                <% end %>
                 <% else %>
                 No added document
                 <% end %>
