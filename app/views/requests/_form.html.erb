@@ -333,12 +333,14 @@
         </div>
         <table id="documents-table" class="table">
           <tbody>
-            <% @request.attach.split("[!!!]").each do |document| %>
-              <tr>
-              <td><%= url_decode(document).split('/').last.html_safe %></td>
-              <td><i class='glyphicon glyphicon-remove text-danger' data-key='<%= document %>' data-url='<%= delete_document_path %>'></i></td>
-              </tr>
-            <% end %>    
+            <% unless @request.attach.nil? %>
+              <% @request.attach.split("[!!!]").each do |document| %>
+                <tr>
+                <td><%= url_decode(document).split('/').last.html_safe %></td>
+                <td><i class='glyphicon glyphicon-remove text-danger' data-key='<%= document %>' data-url='<%= delete_document_path %>'></i></td>
+                </tr>
+              <% end %>
+            <% end %>
           </tbody>
         </table>
 
