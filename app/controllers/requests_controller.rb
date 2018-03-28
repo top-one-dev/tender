@@ -395,6 +395,20 @@ class RequestsController < ApplicationController
     
   end
 
+  def delete_document
+    begin      
+      key = url_decode params[:key]
+      key = key.split('amazonaws.com/').last.gsub '+', ' '   
+      if S3_BUCKET.object(key).delete
+        render json: { status: 'ok' }
+      else
+        render json: { status: 'error', message: 'Error to delete document...' }
+      end
+    rescue Exception => e
+      render json: { status: 'error', message: e.join(',') }
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_request
@@ -463,6 +477,12 @@ class RequestsController < ApplicationController
 
     def set_s3_direct_post
       @s3_direct_post = S3_BUCKET.presigned_post(key: "requests/#{current_user.id}/#{Time.now.strftime("%Y%m%d%H%M")}/${filename}", success_action_status: '201', acl: 'public-read')
+    end
+
+    def url_decode(s)
+       s.gsub(/((?:%[0-9a-fA-F]{2})+)/n) do
+         [$1.delete('%')].pack('H*')
+       end
     end
 
   end
