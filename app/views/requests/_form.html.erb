@@ -313,8 +313,8 @@
     </div>
     <div id="collapse3" class="panel-collapse collapse in">
       <div class="panel-body"> 
-        <%= f.hidden_field :attach %>
-        <div class="well dropzone" id="request-document" data-url="<%= @s3_direct_post.url %>" data-fields="<%= @s3_direct_post.fields.to_json %>">
+        <%= f.hidden_field :attach, autocomplete: 'off' %>
+        <div class="well dropzone" id="request-document" data-url="<%= @s3_direct_post.url %>" data-fields="<%= @s3_direct_post.fields.to_json %>" data-url1="<%= delete_document_path %>">
           <div class="dz-message">
             <span>
               Drag documents here
@@ -331,6 +331,17 @@
             </span>
           </div>          
         </div>
+        <table id="documents-table" class="table">
+          <tbody>
+            <% @request.attach.split("[!!!]").each do |document| %>
+              <tr>
+              <td><%= url_decode(document).split('/').last.html_safe %></td>
+              <td><i class='glyphicon glyphicon-remove text-danger' data-key='<%= document %>' data-url='<%= delete_document_path %>'></i></td>
+              </tr>
+            <% end %>    
+          </tbody>
+        </table>
+
         <hr>
         <label>Participants</label>
         <i class          = "glyphicon glyphicon-info-sign text-info"
