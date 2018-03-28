@@ -15,7 +15,8 @@ Rails.application.routes.draw do
   get   'request/:id/status/:status', to: 'requests#change_status',   as: 'change_status'
   post  'assign/request',             to: 'requests#assign_request',  as: 'assign_request'
   get   'request/:id/bids',           to: 'requests#compare_bids',    as: 'compare_bids'
-  post  'request/set/winner',         to: 'requests#set_winner',       as: 'set_winner'
+  post  'request/set/winner',         to: 'requests#set_winner',      as: 'set_winner'
+  post  'request/delete/document',    to: 'requests#delete_document', as: 'delete_document'
   
   resources :suppliers
   get   'request/:id/view/:token',    to: 'suppliers#view_request',   as: 'view_request'
