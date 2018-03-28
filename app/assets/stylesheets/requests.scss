@@ -16,7 +16,7 @@
 #add-participant{
     cursor: pointer;
 }
-.table i.glyphicon-trash{
+.table i.glyphicon-trash, .table i.glyphicon-remove{
     cursor: pointer;
     &:hover{
         color: #a94442;
