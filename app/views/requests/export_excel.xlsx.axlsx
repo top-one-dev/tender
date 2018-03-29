@@ -106,6 +106,69 @@ wb.styles do |s|
 	end
 
 	wb.add_worksheet(name: "Answers to questionnaire") do |sheet|
-		sheet.add_row ["Ghost", "Ghost", "Ghost"]
+		# Sheet protection
+	  sheet.sheet_protection do |protection|
+	  	protection.password = 'coolplum'
+	  end
+
+	  # Request Details 
+	  (0..2).each do |i|
+	  	sheet.merge_cells Axlsx::cell_r(0, i) + ':' + Axlsx::cell_r(1, i)
+	  end
+	   
+	  sheet.add_row [ " Buyer: #{@request.user.name}, #{@request.company.name}" ], :height => 30
+	  sheet.add_row [ " Request: ##{@request.id} #{@request.name}" ], :height => 30
+	  sheet.add_row [ " Bid due date: #{@request.end_time.strftime("%b %d, %Y %H:%M ( %Z%z )")}" ], :height => 30
+
+	  rows 		= []
+	  rows[0] 	= ['Bidder:']
+	  rows[1] 	= ['Comments']
+	  rows[2] 	= ['']	
+
+	  # Bidder, Comments, Origianl/Alternative
+	  @bids.each do |supplier, bids|
+	  	start_point = rows[0].count
+		end_point 	= rows[0].count + bids.count - 1
+		sheet.merge_cells Axlsx::cell_r(start_point, 3) + ':' + Axlsx::cell_r(end_point, 3)
+		bids.each_with_index do |bid, index|			  	
+		  	rows[0] << "#{bid.supplier.company.name} - #{bid.supplier.correct_user.name} (#{bid.supplier.email})"
+			rows[1] << bid.content
+	  		if index == 0
+	  			rows[2] << 'Original'
+	  		else
+	  			rows[2] << "Alternative bid#{index}"
+	  		end
+	  	end	  	
+	  end
+
+	  # Questions and answers
+	  @request.questions.each_with_index do |question, index|
+	  	rows[3+index*2] = [" #{index+1}. #{question.title} ( #{question.description} ) "]
+	  	sheet.merge_cells Axlsx::cell_r(0, 6+index*2) + ':' + Axlsx::cell_r(@total_bids.count, 6+index*2)
+		rows[4+index*2] = [""]
+	  	@bids.each do |supplier, bids|
+		  	bids.each do |bid|			  	
+		  		rows[4+index*2] << "#{bid.qanswers[index].answer}  #{bid.qanswers[index].attach}"
+		  	end	  	
+		end
+	  end
+
+	  # Add some styles to cells
+	  rows.each do |row|
+	  	sheet.add_row row, :height => 40
+	  end
+
+	  sheet.rows.each_with_index do |row, index|
+	  	row.cells.each do |cell|
+	  		cell.style = default
+	  		cell.style = gray_cell if (0..2).include? index
+	  		cell.style = script if index == 4
+	  		cell.style = bidder if index == 3
+	  		cell.style = gray_cell if index > 5 and (index%2) == 0
+	  	end
+	  end
+
+	  sheet.column_widths 30
+
 	end
 end
