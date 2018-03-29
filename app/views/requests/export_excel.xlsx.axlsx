@@ -1,16 +1,21 @@
 wb = xlsx_package.workbook
 
 wb.styles do |s|
-	gray_cell = s.add_style  :bg_color => "DFDFDF", :b => true, :alignment => { :vertical => :center, :wrap_text => true } 
-	dark_cell = s.add_style  :bg_color => "DDDDDD", :b => true, :alignment => { :horizontal=> :center, :vertical => :center, :wrap_text => true }
-	script    = s.add_style  :fg_color => "686868", :i => true, :alignment => { :horizontal=> :center, :vertical => :center, :wrap_text => true }
-	bidder 	  = s.add_style  :b => true, :alignment => { :horizontal=> :center, :vertical => :center, :wrap_text => true }
-	locked 	  = s.add_style  :locked => true
-	default   = s.add_style  :alignment => { :horizontal=> :center, :vertical => :center, :wrap_text => true }
+	gray_cell = s.add_style  :bg_color => "DFDFDF", :b => true, :alignment => { :vertical => :center, :wrap_text => true }, :locked => true 
+	dark_cell = s.add_style  :bg_color => "DDDDDD", :b => true, :alignment => { :horizontal=> :center, :vertical => :center, :wrap_text => true }, :locked => true
+	script    = s.add_style  :fg_color => "686868", :i => true, :alignment => { :horizontal=> :center, :vertical => :center, :wrap_text => true }, :locked => true
+	bidder 	  = s.add_style  :b => true, :alignment => { :horizontal=> :center, :vertical => :center, :wrap_text => true }, :locked => true
+	percent   = s.add_style  :fg_color => "218100", :bg_color => "DDDDDD", :format_code => "0.00%", :alignment => { :horizontal=> :center, :vertical => :center, :wrap_text => true }, :locked => true
+	default   = s.add_style  :alignment => { :horizontal=> :center, :vertical => :center, :wrap_text => true }, :locked => false
 	
 	wb.add_worksheet(name: "Compare financial bids") do |sheet|
-	  # this is the head row of your spreadsheet
-	  
+
+	  # Sheet protection
+	  sheet.sheet_protection do |protection|
+	  	protection.password = 'coolplum'
+	  end
+
+	  # Request Details 
 	  (0..2).each do |i|
 	  	sheet.merge_cells Axlsx::cell_r(0, i) + ':' + Axlsx::cell_r(1, i)
 	  end
@@ -18,13 +23,14 @@ wb.styles do |s|
 	  sheet.add_row [ " Buyer: #{@request.user.name}, #{@request.company.name}" ], :height => 30
 	  sheet.add_row [ " Request: ##{@request.id} #{@request.name}" ], :height => 30
 	  sheet.add_row [ " Bid due date: #{@request.end_time.strftime("%b %d, %Y %H:%M ( %Z%z )")}" ], :height => 30
-	  # each user is a row on your spreadsheet
+	  
 	  rows 	  = []
 	  rows[0] = ['', '', '', 'Bidder']
 	  rows[1] = ['', '', '', 'Bidder comments']
 	  rows[2] = ['', '', '', '']
 	  rows[3] = ['Item', 'Description', 'Quantity', 'Unit']
 	  
+	  # Bidder, Comments, Origianl/Alternative, Items,
 	  @bids.each do |supplier, bids|
 	  	
 	  	start_point = rows[0].count
@@ -51,16 +57,18 @@ wb.styles do |s|
 	  	end	  	
 	  end
 
+	  # Items and Item answers
 	  @request.items.each_with_index do |item, index|
 	  	rows[4+index] = [ item.name, item.description, item.quantity, item.unit ]
 	  	@bids.each do |supplier, bids|
 		  	bids.each_with_index do |bid, i|
-		  		rows[4+index] << bid.ianswers[i].unit_price
+		  		rows[4+index] << Money.new(bid.ianswers[index].unit_price*100, bid.bid_currency).exchange_to(@request.preferred_currency)
 		  		rows[4+index] << "=#{Axlsx::cell_r(2, 7 + index )}*#{Axlsx::cell_r(rows[4+index].count - 1, 7 + index)}"
 		  	end
 		end
 	  end
 
+	  # Item total, Difference, Difference percentage
 	  rows[rows.count] = ["Item Total #{@request.preferred_currency}", '', '', '']
 	  rows[rows.count] = ["Difference", '', '', '']
 	  rows[rows.count] = ["Difference %", '', '', '']
@@ -70,12 +78,13 @@ wb.styles do |s|
 	  		rows[rows.count-3] << ''
 	  		rows[rows.count-3] << "=SUM(#{Axlsx::cell_r(rows[rows.count-3].count, 7 )}:#{Axlsx::cell_r(rows[rows.count-3].count, 6 + @request.items.count)})"
 	  		rows[rows.count-2] << ''
-	  		rows[rows.count-2] << "=SUM(#{Axlsx::cell_r(rows[rows.count-2].count, 7 )}:#{Axlsx::cell_r(rows[rows.count-2].count, 6 + @request.items.count)})"
+	  		rows[rows.count-2] << "=#{Axlsx::cell_r(rows[rows.count-2].count, rows.count)}-MIN(#{Axlsx::cell_r(5, rows.count)}:#{Axlsx::cell_r(3 + @total_bids.count*2, rows.count)})"
 	  		rows[rows.count-1] << ''
-	  		rows[rows.count-1] << "=SUM(#{Axlsx::cell_r(rows[rows.count-1].count, 7 )}:#{Axlsx::cell_r(rows[rows.count-1].count, 6 + @request.items.count)})"	  			  		
+	  		rows[rows.count-1] << "=((#{Axlsx::cell_r(rows[rows.count-1].count, rows.count)}-MIN(#{Axlsx::cell_r(5, rows.count)}:#{Axlsx::cell_r(3 + @total_bids.count*2, rows.count)}))/#{Axlsx::cell_r(rows[rows.count-1].count, rows.count)})"	  			  		
 	  	end
 	  end
 
+	  # Add some styles to cells
 	  rows.each do |row|
 	  	sheet.add_row row, :height => 40
 	  end
@@ -87,6 +96,8 @@ wb.styles do |s|
 	  		cell.style = dark_cell if index == 6
 	  		cell.style = script if index == 4
 	  		cell.style = bidder if index == 3
+	  		cell.style = percent if row == sheet.rows.last
+	  		cell.style = dark_cell if ((sheet.rows.count-3)..(sheet.rows.count-2)).include? index
 	  	end
 	  end
 
