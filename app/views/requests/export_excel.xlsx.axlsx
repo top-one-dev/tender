@@ -1,0 +1,100 @@
+wb = xlsx_package.workbook
+
+wb.styles do |s|
+	gray_cell = s.add_style  :bg_color => "DFDFDF", :b => true, :alignment => { :vertical => :center, :wrap_text => true } 
+	dark_cell = s.add_style  :bg_color => "DDDDDD", :b => true, :alignment => { :horizontal=> :center, :vertical => :center, :wrap_text => true }
+	script    = s.add_style  :fg_color => "686868", :i => true, :alignment => { :horizontal=> :center, :vertical => :center, :wrap_text => true }
+	bidder 	  = s.add_style  :b => true, :alignment => { :horizontal=> :center, :vertical => :center, :wrap_text => true }
+	locked 	  = s.add_style  :locked => true
+	default   = s.add_style  :alignment => { :horizontal=> :center, :vertical => :center, :wrap_text => true }
+	
+	wb.add_worksheet(name: "Compare financial bids") do |sheet|
+	  # this is the head row of your spreadsheet
+	  
+	  (0..2).each do |i|
+	  	sheet.merge_cells Axlsx::cell_r(0, i) + ':' + Axlsx::cell_r(1, i)
+	  end
+	   
+	  sheet.add_row [ " Buyer: #{@request.user.name}, #{@request.company.name}" ], :height => 30
+	  sheet.add_row [ " Request: ##{@request.id} #{@request.name}" ], :height => 30
+	  sheet.add_row [ " Bid due date: #{@request.end_time.strftime("%b %d, %Y %H:%M ( %Z%z )")}" ], :height => 30
+	  # each user is a row on your spreadsheet
+	  rows 	  = []
+	  rows[0] = ['', '', '', 'Bidder']
+	  rows[1] = ['', '', '', 'Bidder comments']
+	  rows[2] = ['', '', '', '']
+	  rows[3] = ['Item', 'Description', 'Quantity', 'Unit']
+	  
+	  @bids.each do |supplier, bids|
+	  	
+	  	start_point = rows[0].count
+	  	end_point 	= rows[0].count + 2*bids.count - 1
+	  	sheet.merge_cells Axlsx::cell_r(start_point, 3) + ':' + Axlsx::cell_r(end_point, 3)
+
+	  	bids.each_with_index do |bid, index|
+		  	sheet.merge_cells Axlsx::cell_r(rows[1].count, 4) + ':' + Axlsx::cell_r(rows[1].count + 1, 4)
+		  	sheet.merge_cells Axlsx::cell_r(rows[2].count, 5) + ':' + Axlsx::cell_r(rows[2].count + 1, 5)
+
+	  		rows[0] << "#{bid.supplier.company.name} - #{bid.supplier.correct_user.name} (#{bid.supplier.email})"
+	  		rows[0] << ''
+	  		rows[1] << bid.content
+	  		rows[1] << ''
+	  		rows[3] << 'Unit Price'
+	  		rows[3] << 'Item Total'
+	  		if index == 0
+	  			rows[2] << 'Original'
+	  			rows[2] << ''
+	  		else
+	  			rows[2] << "Alternative bid#{index}"
+	  			rows[2] << ''
+	  		end
+	  	end	  	
+	  end
+
+	  @request.items.each_with_index do |item, index|
+	  	rows[4+index] = [ item.name, item.description, item.quantity, item.unit ]
+	  	@bids.each do |supplier, bids|
+		  	bids.each_with_index do |bid, i|
+		  		rows[4+index] << bid.ianswers[i].unit_price
+		  		rows[4+index] << "=#{Axlsx::cell_r(2, 7 + index )}*#{Axlsx::cell_r(rows[4+index].count - 1, 7 + index)}"
+		  	end
+		end
+	  end
+
+	  rows[rows.count] = ["Item Total #{@request.preferred_currency}", '', '', '']
+	  rows[rows.count] = ["Difference", '', '', '']
+	  rows[rows.count] = ["Difference %", '', '', '']
+
+	  @bids.each do |supplier, bids|
+	  	bids.each_with_index do |bid, i|
+	  		rows[rows.count-3] << ''
+	  		rows[rows.count-3] << "=SUM(#{Axlsx::cell_r(rows[rows.count-3].count, 7 )}:#{Axlsx::cell_r(rows[rows.count-3].count, 6 + @request.items.count)})"
+	  		rows[rows.count-2] << ''
+	  		rows[rows.count-2] << "=SUM(#{Axlsx::cell_r(rows[rows.count-2].count, 7 )}:#{Axlsx::cell_r(rows[rows.count-2].count, 6 + @request.items.count)})"
+	  		rows[rows.count-1] << ''
+	  		rows[rows.count-1] << "=SUM(#{Axlsx::cell_r(rows[rows.count-1].count, 7 )}:#{Axlsx::cell_r(rows[rows.count-1].count, 6 + @request.items.count)})"	  			  		
+	  	end
+	  end
+
+	  rows.each do |row|
+	  	sheet.add_row row, :height => 40
+	  end
+
+	  sheet.rows.each_with_index do |row, index|
+	  	row.cells.each do |cell|
+	  		cell.style = default
+	  		cell.style = gray_cell if (0..2).include? index
+	  		cell.style = dark_cell if index == 6
+	  		cell.style = script if index == 4
+	  		cell.style = bidder if index == 3
+	  	end
+	  end
+
+	  sheet.column_widths nil, 50, nil
+
+	end
+
+	wb.add_worksheet(name: "Answers to questionnaire") do |sheet|
+		sheet.add_row ["Ghost", "Ghost", "Ghost"]
+	end
+end
