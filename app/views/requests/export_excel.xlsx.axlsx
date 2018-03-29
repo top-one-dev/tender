@@ -2,10 +2,10 @@ wb = xlsx_package.workbook
 
 wb.styles do |s|
 	gray_cell = s.add_style  :bg_color => "DFDFDF", :b => true, :alignment => { :vertical => :center, :wrap_text => true }, :locked => true 
-	dark_cell = s.add_style  :bg_color => "DDDDDD", :b => true, :alignment => { :horizontal=> :center, :vertical => :center, :wrap_text => true }, :locked => true
+	dark_cell = s.add_style  :bg_color => "AAAAAA", :b => true, :alignment => { :horizontal=> :center, :vertical => :center, :wrap_text => true }, :locked => true
 	script    = s.add_style  :fg_color => "686868", :i => true, :alignment => { :horizontal=> :center, :vertical => :center, :wrap_text => true }, :locked => true
 	bidder 	  = s.add_style  :b => true, :alignment => { :horizontal=> :center, :vertical => :center, :wrap_text => true }, :locked => true
-	percent   = s.add_style  :fg_color => "218100", :bg_color => "DDDDDD", :format_code => "0.00%", :alignment => { :horizontal=> :center, :vertical => :center, :wrap_text => true }, :locked => true
+	percent   = s.add_style  :fg_color => "218100", :bg_color => "AAAAAA", :format_code => "0.00%", :alignment => { :horizontal=> :center, :vertical => :center, :wrap_text => true }, :locked => true
 	default   = s.add_style  :alignment => { :horizontal=> :center, :vertical => :center, :wrap_text => true }, :locked => false
 	
 	wb.add_worksheet(name: "Compare financial bids") do |sheet|
@@ -101,7 +101,7 @@ wb.styles do |s|
 	  	end
 	  end
 
-	  sheet.column_widths nil, 50, nil
+	  sheet.column_widths 30, 50, nil
 
 	end
 
@@ -169,6 +169,70 @@ wb.styles do |s|
 	  end
 
 	  sheet.column_widths 30
+
+	end
+
+	wb.add_worksheet(name: "Invited participants") do |sheet|
+	
+	  # Request Details 
+	  (0..2).each do |i|
+	  	sheet.merge_cells Axlsx::cell_r(0, i) + ':' + Axlsx::cell_r(1, i)
+	  end
+	   
+	  sheet.add_row [ " Buyer: #{@request.user.name}, #{@request.company.name}" ], :height => 30
+	  sheet.add_row [ " Request: ##{@request.id} #{@request.name}" ], :height => 30
+	  sheet.add_row [ " Bid due date: #{@request.end_time.strftime("%b %d, %Y %H:%M ( %Z%z )")}" ], :height => 30
+
+	  	
+	  unless @request.winner.nil?
+	  	sheet.add_row [ 'WINNER', '', '', '', '' ], :height => 40
+	  	sheet.rows.last.cells.first.style = dark_cell
+	  	sheet.merge_cells sheet.rows.last.cells[(0..4)]
+	  	sheet.add_row [ 
+          	@request.winner.company.name, 
+          	@request.winner.correct_user.name, 
+          	@request.winner.email,
+          	"#{@request.winner.bids.where(request_id: @request.id).count} bids",
+          	"#{@request.bids.where(status: 'win').first.bid_budget} #{@request.bids.where(status: 'win').first.bid_currency}",
+          	@request.bids.where(status: 'win').first.created_at.strftime("%b %d, %Y %H:%M ( %Z%z )") 
+          ], :height => 30
+      end
+
+      sheet.add_row [ 'Bids Made', '', '', '', '' ], :height => 40
+      sheet.rows.last.cells.first.style = dark_cell
+      sheet.merge_cells sheet.rows.last.cells[(0..4)]
+      @suppliers.each do |supplier|
+      	if supplier.bids.where(request_id: @request.id).exists?
+	      	sheet.add_row [ 
+	          	supplier.company.name, 
+	          	supplier.correct_user.name, 
+	          	supplier.email,
+	          	"#{supplier.bids.where(request_id: @request.id).count} bid(s)",
+	          	supplier.bids.where(request_id: @request.id).first.created_at.strftime("%b %d, %Y %H:%M ( %Z%z )") 
+	          ], :height => 30
+	    end
+      end
+
+      sheet.add_row [ 'Wants To Bid', '', '', '', '' ], :height => 40
+      sheet.rows.last.cells.first.style = dark_cell
+      sheet.merge_cells sheet.rows.last.cells[(0..4)]
+      @suppliers.each do |supplier|
+      	sheet.add_row [ 
+          	supplier.company.name, 
+          	supplier.correct_user.name, 
+          	supplier.email,
+          	supplier.created_at.strftime("%b %d, %Y %H:%M ( %Z%z )") 
+          ], :height => 30
+      end
+
+	  sheet.rows.each_with_index do |row, index|
+	  	row.cells.each do |cell|
+	  		cell.style = default if cell.style != dark_cell
+	  		cell.style = gray_cell if (0..2).include? index
+	  	end
+	  end
+
+	  sheet.column_widths 30, 30, 30, 30, 30
 
 	end
 end
