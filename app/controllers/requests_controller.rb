@@ -412,6 +412,7 @@ class RequestsController < ApplicationController
   def export_excel
     @total_bids = @request.bids
     @bids       = @request.bids.group_by(&:supplier)
+    @suppliers  = @request.suppliers
     respond_to do |format|
       format.xlsx 
     end
