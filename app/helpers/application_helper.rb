@@ -1911,11 +1911,14 @@ module ApplicationHelper
         b_item_total = Money.new(b.item_total*100, b.request.preferred_currency)
       end
       
-      b_difference = ( b_item_total - expected_budget ).abs
-      if b_difference < min_difference
-        min_difference  = b_difference
-        nearest_total   = b_item_total
+      unless b.item_total == 0
+        b_difference = b_item_total - expected_budget
+        if b_difference < min_difference
+          min_difference  = b_difference
+          nearest_total   = b_item_total
+        end
       end
+
     end
     
     difference      = item_total - nearest_total
