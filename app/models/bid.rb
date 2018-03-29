@@ -25,7 +25,7 @@ class Bid < ApplicationRecord
         difference      = Money.new(self.bid_budget*100, self.request.preferred_currency) - expected_budget
       end
 
-      percent         = number_to_percentage( (difference/self.request.expected_budget) , precision: 2).to_s 
+      percent         = number_to_percentage( (difference/self.request.expected_budget)*100 , precision: 2).to_s 
       sprintf("%+.2f #{self.request.preferred_currency} <br>&nbsp;&nbsp;&nbsp;#{percent}", difference).html_safe
 
     else
