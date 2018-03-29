@@ -413,8 +413,12 @@ class RequestsController < ApplicationController
     @total_bids = @request.bids
     @bids       = @request.bids.group_by(&:supplier)
     @suppliers  = @request.suppliers
+    filename    = "Bid_comparison_table_##{@request.id}_#{@request.name.tr(" ", "_")}.xlsx"
+
     respond_to do |format|
-      format.xlsx 
+      format.xlsx{
+                    response.headers['Content-Disposition'] = "attachment; filename=#{filename}"
+                  } 
     end
   end
 
