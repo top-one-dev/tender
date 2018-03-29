@@ -1922,7 +1922,7 @@ module ApplicationHelper
     end
     
     difference      = item_total - nearest_total
-    percent         = number_to_percentage( (difference/item_total), precision: 2).to_s
+    percent         = number_to_percentage( (difference/item_total)*100, precision: 2).to_s
     unless difference == 0
       if item_total == 0
         "No quote"
