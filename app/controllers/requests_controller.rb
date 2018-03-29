@@ -1,6 +1,6 @@
 class RequestsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_request, only: [:show, :edit, :update, :destroy, :change_status, :compare_bids]
+  before_action :set_request, only: [:show, :edit, :update, :destroy, :change_status, :compare_bids, :export_excel]
   before_action :set_company
   before_action :set_s3_direct_post, only: [:new, :create, :edit, :update]
 
@@ -406,6 +406,14 @@ class RequestsController < ApplicationController
       end
     rescue Exception => e
       render json: { status: 'error', message: e.join(',') }
+    end
+  end
+
+  def export_excel
+    @total_bids = @request.bids
+    @bids       = @request.bids.group_by(&:supplier)
+    respond_to do |format|
+      format.xlsx 
     end
   end
 
