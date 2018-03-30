@@ -4,13 +4,11 @@
 		
 		<div class="bg-info bid-nav">
 		<% unless @request.end_time < Time.now %>
-			<%= link_to 'Make a bid', '#', class: 'btn btn-lg btn-info' %>
+			<button class="btn btn-lg btn-info" disabled>Make a bid</button>
 		<% end %>
-
-		<%= link_to "Don't want to participate", '#' method: 'post', class: 'btn btn-lg btn-default', 'data-confirm': 'Are you sure to reject invite on this request?' %>
-		<% end %>
-		
-		<%= link_to 'Ask a question', 'javascript:;', class: 'btn btn-lg btn-default ask-question' %>
+		<button class="btn btn-lg btn-default" disabled>Don't want to participate</button>
+		<button class="btn btn-lg btn-default" disabled>Ask a question</button>
+		<%= link_to '<b class="text-info">Back</b>'.html_safe, :back, class: 'btn btn-default pull-right' %>
 		</div>
 		
 		<br>
@@ -27,7 +25,7 @@
 								<% end %>		  			
 							</div>
 							<div class="col-sm-9">
-								<h2><small class="text-muted">#<%= @request.id %></small> <%= @request.name %></h2>
+								<h2><small class="text-muted">#<%= Request.all.count %></small> <%= @request.name %></h2>
 								<hr>
 								<h5><%= @request.company.name %></h5>
 								<p class="text-muted">Contact person: <%= @request.user.name %> ( <%= @request.user.id %> )</p>
@@ -81,7 +79,7 @@
 
 								<h4 class="text-info text-uppercase"><b>Documents</b></h4>
 								<hr>
-								<pre>
+								<p>
 									<% unless @request.attach.empty? %>
 						                <% @request.attach.split("[!!!]").each do |document| %>
 						                  <%= link_to "<i class='glyphicon glyphicon-file'></i> #{url_decode(document).split('/').last}".html_safe, document.html_safe %><hr>
@@ -89,7 +87,7 @@
 					                <% else %>
 					                No added document
 					                <% end %>                	
-								</pre>
+								</p>
 								<% unless @request.items.nil? %>
 
 								<h4 class="text-info text-uppercase"><b>List of items</b></h4>
@@ -160,9 +158,7 @@
 					</div>
 					<div class="form-group">
 						<div class="text-right">
-							<a  href="#" 
-								class="btn btn-info text-uppercase"
-								>send</a>
+							<button class="btn btn-info text-uppercase"	disabled >send</button>
 						</div>
 					</div>			
 				</div>
