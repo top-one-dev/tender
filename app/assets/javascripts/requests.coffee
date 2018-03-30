@@ -314,7 +314,8 @@ $(document).on 'turbolinks:load', ->
 		url = $(this).attr 'data-url'
 		console.log url
 		$('#new_request').attr 'action', url
-		$('#new_request').submit()
+		$('#new_request').attr 'method', 'get'
+		$('#submit-request').click()
 
 
 validateEmail = (email) ->
