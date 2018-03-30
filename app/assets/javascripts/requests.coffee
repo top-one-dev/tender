@@ -229,7 +229,7 @@ $(document).on 'turbolinks:load', ->
             		val = $('#request_attach').val()
             		$('#request_attach').val "#{val}[!!!]#{document_url}"
 
-            	$('#documents-table>tbody').append "<tr><td>#{file.name}</td><td><i class='glyphicon glyphicon-remove text-danger' data-key='#{document_url}' data-url='#{delete_url}'></i></td></tr>"
+            	$('#documents-table>tbody').append "<tr><td><a href='#{document_url}'><i class='glyphicon glyphicon-file'></i> #{file.name}</a></td><td><i class='glyphicon glyphicon-remove text-danger' data-key='#{document_url}' data-url='#{delete_url}'></i></td></tr>"
             	# request_document.removeAllFiles()
 
 
@@ -308,6 +308,13 @@ $(document).on 'turbolinks:load', ->
 	$('#questions-document').on 'change', ->
 		console.log $(this)
 		parseExcel this.files[0], 'question'
+
+
+	$('#preview-request').on 'click', ->
+		url = $(this).attr 'data-url'
+		console.log url
+		$('#new_request').attr 'action', url
+		$('#new_request').submit()
 
 
 validateEmail = (email) ->

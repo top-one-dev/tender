@@ -336,7 +336,9 @@
             <% unless @request.attach.nil? %>
               <% @request.attach.split("[!!!]").each do |document| %>
                 <tr>
-                <td><%= url_decode(document).split('/').last.html_safe %></td>
+                <td>
+                  <%= link_to "<i class='glyphicon glyphicon-file'></i> #{url_decode(document).split('/').last}".html_safe, document.html_safe %>
+                </td>
                 <td><i class='glyphicon glyphicon-remove text-danger' data-key='<%= document %>' data-url='<%= delete_document_path %>'></i></td>
                 </tr>
               <% end %>
@@ -813,7 +815,7 @@
           <b>Open the supplier view </b><br>
           Preview what the suppliers will see when they open the invitation email. Check that the list of items, documents or questionnaire is exactly like you want.
         </p>
-        <a href="#" class="btn btn-info">Open Supplier View</a>
+        <a href="javascript:;" data-url="<%= preview_request_url %>" id="preview-request" class="btn btn-info">Open Supplier View</a>
         <hr>
         <p>
           <b>Preview the invitation email</b><br>
