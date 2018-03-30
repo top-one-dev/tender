@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   post  'request/set/winner',         to: 'requests#set_winner',      as: 'set_winner'
   post  'request/delete/document',    to: 'requests#delete_document', as: 'delete_document'
   get   'request/:id/export',         to: 'requests#export_excel',    as: 'export_excel'
+  post  'request/preview',            to: 'requests#preview',         as: 'preview_request'          
   
   resources :suppliers
   get   'request/:id/view/:token',    to: 'suppliers#view_request',   as: 'view_request'
