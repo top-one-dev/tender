@@ -422,6 +422,33 @@ class RequestsController < ApplicationController
     end
   end
 
+  def preview_request
+
+    if participant_params.nil? or item_params.empty? or question_params.empty?
+
+      flash[:error] = 'You need to add at least one participiant, item list and questionaire.'
+      redirect_back fallback_location: new_request_url
+
+    else
+      @request = Request.new(request_params)
+      unless item_params.empty?
+        JSON.parse(item_params.to_s).each do |item|
+          @request.items.build(item)
+        end
+      end
+
+      unless question_params.empty?
+        JSON.parse(question_params.to_s).each do |question|
+          @request.questions.build(question)
+        end
+      end
+    end
+
+  end
+
+  def preview_invitation
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_request
