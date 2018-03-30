@@ -424,9 +424,14 @@ class RequestsController < ApplicationController
 
   def preview_request
 
-    if participant_params.nil? or item_params.empty? or question_params.empty?
+    if item_params.nil? or question_params.nil?
 
-      flash[:error] = 'You need to add at least one participiant, item list and questionaire.'
+      flash[:error] = 'You need to add at least one item list and questionaire.'
+      redirect_back fallback_location: new_request_url
+
+    elsif item_params.empty? or question_params.empty?
+
+      flash[:error] = 'You need to add at least one item list and questionaire.'
       redirect_back fallback_location: new_request_url
 
     else
