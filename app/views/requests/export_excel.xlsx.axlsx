@@ -63,7 +63,11 @@ wb.styles do |s|
 	  	@bids.each do |supplier, bids|
 		  	bids.each_with_index do |bid, i|
 		  		unit_price = bid.ianswers[index].nil? ? 0 : bid.ianswers[index].unit_price
-		  		rows[4+index] << Money.new(unit_price*100, bid.bid_currency).exchange_to(@request.preferred_currency)
+		  		begin
+		  			rows[4+index] << Money.new(unit_price*100, bid.bid_currency).exchange_to(@request.preferred_currency)	
+		  		rescue Exception => e
+		  			rows[4+index] << Money.new(unit_price*100, @request.preferred_currency)
+		  		end
 		  		rows[4+index] << "=#{Axlsx::cell_r(2, 7 + index )}*#{Axlsx::cell_r(rows[4+index].count - 1, 7 + index)}"
 		  	end
 		end
