@@ -56,8 +56,29 @@ class RequestsController < ApplicationController
   # GET /requests/new
   def new
     if current_company.nil?
+
       flash[:notice] = 'You need to set company before creating request.'
       redirect_to new_company_path
+
+    elsif !session[:request_params].nil?
+
+      @request = Request.new(session[:request_params])
+      unless session[:item_params].empty?
+        JSON.parse(session[:item_params].to_s).each do |item|
+          @request.items.build(item)
+        end
+      end
+
+      unless session[:question_params].empty?
+        JSON.parse(session[:question_params].to_s).each do |question|
+          @request.questions.build(question)
+        end
+      end
+
+      session[:request_params]  = nil
+      session[:item_params]     = nil
+      session[:question_params] = nil
+
     else
       @request = Request.new
       unless params[:requisition_id].nil?
@@ -424,25 +445,23 @@ class RequestsController < ApplicationController
 
   def preview_request
 
-    if item_params.nil? or question_params.nil?
+    session[:request_params]   = request_params
+    session[:item_params]      = item_params
+    session[:question_params]  = question_params
+    session[:category_params]  = category_params
 
-      flash[:error] = 'You need to add at least one item list and questionaire.'
-      redirect_back fallback_location: new_request_url
+    @request = Request.new(request_params)
 
-    elsif item_params.empty? or question_params.empty?
-
-      flash[:error] = 'You need to add at least one item list and questionaire.'
-      redirect_back fallback_location: new_request_url
-
-    else
-      @request = Request.new(request_params)
+    unless item_params.nil?
       unless item_params.empty?
         JSON.parse(item_params.to_s).each do |item|
           @request.items.build(item)
         end
       end
+    end
 
-      unless question_params.empty?
+    unless question_params.nil?
+      unless item_params.empty?
         JSON.parse(question_params.to_s).each do |question|
           @request.questions.build(question)
         end
