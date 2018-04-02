@@ -8,6 +8,7 @@ wb.styles do |s|
 	percent   = s.add_style  :fg_color => "218100", :bg_color => "AAAAAA", :format_code => "0.00%", :alignment => { :horizontal=> :center, :vertical => :center, :wrap_text => true }, :locked => true
 	default   = s.add_style  :alignment => { :horizontal=> :center, :vertical => :center, :wrap_text => true }, :locked => false
 	
+	# Add Compare finantical bids sheet...
 	wb.add_worksheet(name: "Compare financial bids") do |sheet|
 
 	  # Sheet protection
@@ -110,6 +111,7 @@ wb.styles do |s|
 
 	end
 
+	# Add answers to questionnaire sheet...
 	wb.add_worksheet(name: "Answers to questionnaire") do |sheet|
 		# Sheet protection
 	  sheet.sheet_protection do |protection|
@@ -177,6 +179,7 @@ wb.styles do |s|
 
 	end
 
+	# Add Invited participants sheet...
 	wb.add_worksheet(name: "Invited participants") do |sheet|
 	
 	  # Request Details 
