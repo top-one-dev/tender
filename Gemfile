@@ -63,6 +63,8 @@ gem 'axlsx', '2.1.0.pre'
 gem 'axlsx_rails'
 
 
+gem 'activerecord-session_store'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'sqlite3'
