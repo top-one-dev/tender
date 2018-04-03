@@ -124,7 +124,7 @@
                   ">
                 <i class="glyphicon glyphicon-info-sign"></i>
               </a>  
-              <%= f.select(:request_type, request_types.collect {|key, value| [value, key]}, {:include_blank => "Select Type", :selected => @type }, {:class => "form-control", placeholder: 'Select Type', disabled: @type } ) %>
+              <%= f.select(:request_type, request_types.collect {|key, value| [value, key]}, {:include_blank => "Select Type", :selected => @type }, {:class => "form-control", placeholder: 'Select Type' } ) %>
             </div>
           </div>
           <div class="col-md-6">

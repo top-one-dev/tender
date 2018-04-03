@@ -75,6 +75,10 @@ class RequestsController < ApplicationController
         end
       end
 
+      @items      = @request.items
+      @questions  = @request.questions
+      @type       = @request.request_type
+
       session[:request_params]  = nil
       session[:item_params]     = nil
       session[:question_params] = nil
