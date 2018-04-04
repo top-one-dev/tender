@@ -278,7 +278,7 @@
           </div>
         </div>
         <% unless @item_params.nil? %>
-          <input name="request_items" id="request_items" value="<%= @item_params %>" type="hidden">
+          <%= hidden_field_tag :request_items, @item_params %>
         <% else %>
           <%= hidden_field_tag :request_items %>
         <% end %>
@@ -453,7 +453,7 @@
             </div>
           </div>
           <% unless @question_params.nil? %>           
-            <input name="request_questions" id="request_questions" value="<%= @question_params %>" type="hidden">            
+            <%= hidden_field_tag :request_questions, @question_params %>
           <% else %>
             <%= hidden_field_tag :request_questions %>
           <% end %>
