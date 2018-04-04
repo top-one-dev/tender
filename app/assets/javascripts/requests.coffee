@@ -300,11 +300,11 @@ $(document).on 'turbolinks:load', ->
 		$('#winnerModal #winner_content2').val "Hello,\nThank you for your bid on request: #{data.request}!\nUnfortunately your bid was not selected. We have decided to award this request.\nWe are looking forward to working with you in the future and hope you will participate on our upcoming requests.\n\nKind regards,\n[your name]\n[your company]\n[contact number]"
 		$('#winnerModal #winner_winner_id').val data.id
 
-	$('#request_items').val ''
+	# $('#request_items').val ''
 	$('#list-items-document').on 'change', ->
 		parseExcel this.files[0], 'list'
 
-	$('#request_questions').val ''
+	# $('#request_questions').val ''
 	$('#questions-document').on 'change', ->
 		console.log $(this)
 		parseExcel this.files[0], 'question'
