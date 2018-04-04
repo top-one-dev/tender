@@ -75,9 +75,11 @@ class RequestsController < ApplicationController
         end
       end
 
-      @items      = @request.items
-      @questions  = @request.questions
-      @type       = @request.request_type
+      @items            = @request.items
+      @questions        = @request.questions
+      @type             = @request.request_type
+      @item_params      = session[:item_params]
+      @question_params  = session[:question_params]
 
       session[:request_params]  = nil
       session[:item_params]     = nil
@@ -100,10 +102,22 @@ class RequestsController < ApplicationController
   # GET /requests/1/edit
   def edit
     @type = @request.request_type
-    if @type == 'RFQ'
-      @items = @request.items
+    if @type != 'RFI'
+      @items        = @request.items
+      @item_params  = @items.collect{|i| {  'name':         i.name, 
+                                            'unit':         i.unit, 
+                                            'quantity':     i.quantity, 
+                                            'description':  i.description} }
+      @item_params  = @item_params.to_json
     end
-    @questions = @request.questions
+    @questions        = @request.questions
+    @question_params  = @questions.collect{|q| {  'title':          q.title, 
+                                                  'description':    q.description, 
+                                                  'question_type':  q.question_type, 
+                                                  'options':        q.options,
+                                                  'enable_attatch': q.enable_attatch,
+                                                  'mandatory':      q.mandatory} }
+    @question_params = @question_params.to_json
     @priority = params[:priority]
   end
 
