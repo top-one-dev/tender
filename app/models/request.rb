@@ -1,4 +1,7 @@
+require "render_anywhere"
 class Request < ApplicationRecord
+  include RenderAnywhere
+
   belongs_to :user
   belongs_to :company
   belongs_to :requisition
@@ -20,6 +23,18 @@ class Request < ApplicationRecord
   		end
   	end
 	winner
+  end
+
+  def to_pdf
+    dir = File.dirname("#{Rails.root}/public/download/#{self.created_at.strftime("%Y-%m-%d")}-#{self.name}-##{self.id}/#{self.name}.pdf")
+    FileUtils.mkdir_p(dir) unless File.directory?(dir)
+    kit = PDFKit.new(as_html, page_size: 'A4')
+    kit.to_file("#{Rails.root}/public/download/#{self.created_at.strftime("%Y-%m-%d")}-#{self.name}-##{self.id}/#{self.name}.pdf")
+  end
+
+  private
+  def as_html
+    render template: "requests/pdf", layout: "pdf", locals: { request: self }   
   end
   
 end
