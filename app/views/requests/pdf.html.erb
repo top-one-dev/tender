@@ -1,0 +1,56 @@
+<section>
+	<div class="container">
+	<h5><b><%= request.company.name %></b></h5>
+	<h5><%= request.company.country %></h5>
+	<h5><%= request.created_at.strftime("%b %d, %Y %H:%M") %></h5>
+	<br><br>
+	<h2 class="text-center"><b><%= "##{request.id} #{request.name}" %></b></h2>
+	<br><br><br>
+	<table class="table">		
+		<tr>
+			<td>Purchase type</td>
+			<td><%= request.request_type %></td>
+		</tr>
+		<tr>
+			<td>Published as</td>
+			<td><%= request.permission %> request</td>
+		</tr>
+		<tr>
+			<td>Responsible</td>
+			<td><%= request.user.name %></td>
+		</tr>
+		<tr>
+			<td>Status</td>
+			<td><%= request.folder.name %></td>
+		</tr>
+		<tr>
+			<td>Created</td>
+			<td><%= request.created_at.strftime("%b %d, %Y %H:%M") %></td>
+		</tr>
+		<tr>
+			<td>Published</td>
+			<td><%= request.created_at.strftime("%b %d, %Y %H:%M") %></td>
+		</tr>
+		<tr>
+			<td>Bid due date</td>
+			<td><%= request.end_time.strftime("%b %d, %Y %H:%M") %></td>
+		</tr>
+		<tr>
+			<td>Invited suppliers</td>
+			<td><%= request.suppliers.count %></td>
+		</tr>
+		<tr>
+			<td>Lowest bid</td>
+			<td><%= request.bids.minimum(:bid_budget) %></td>
+		</tr>
+		<tr>
+			<td>Highest bid</td>
+			<td><%= request.bids.maximum(:bid_budget) %></td>
+		</tr>
+		<tr>
+			<td>Difference</td>
+			<td><%= request.bids.maximum(:bid_budget) - request.bids.minimum(:bid_budget) %></td>
+		</tr>
+	</table>
+	</div>
+</section>
