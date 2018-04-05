@@ -1,56 +1,221 @@
 <section>
 	<div class="container">
-	<h5><b><%= request.company.name %></b></h5>
-	<h5><%= request.company.country %></h5>
-	<h5><%= request.created_at.strftime("%b %d, %Y %H:%M") %></h5>
-	<br><br>
-	<h2 class="text-center"><b><%= "##{request.id} #{request.name}" %></b></h2>
-	<br><br><br>
-	<table class="table">		
-		<tr>
-			<td>Purchase type</td>
-			<td><%= request.request_type %></td>
-		</tr>
-		<tr>
-			<td>Published as</td>
-			<td><%= request.permission %> request</td>
-		</tr>
-		<tr>
-			<td>Responsible</td>
-			<td><%= request.user.name %></td>
-		</tr>
-		<tr>
-			<td>Status</td>
-			<td><%= request.folder.name %></td>
-		</tr>
-		<tr>
-			<td>Created</td>
-			<td><%= request.created_at.strftime("%b %d, %Y %H:%M") %></td>
-		</tr>
-		<tr>
-			<td>Published</td>
-			<td><%= request.created_at.strftime("%b %d, %Y %H:%M") %></td>
-		</tr>
-		<tr>
-			<td>Bid due date</td>
-			<td><%= request.end_time.strftime("%b %d, %Y %H:%M") %></td>
-		</tr>
-		<tr>
-			<td>Invited suppliers</td>
-			<td><%= request.suppliers.count %></td>
-		</tr>
-		<tr>
-			<td>Lowest bid</td>
-			<td><%= request.bids.minimum(:bid_budget) %></td>
-		</tr>
-		<tr>
-			<td>Highest bid</td>
-			<td><%= request.bids.maximum(:bid_budget) %></td>
-		</tr>
-		<tr>
-			<td>Difference</td>
-			<td><%= request.bids.maximum(:bid_budget) - request.bids.minimum(:bid_budget) %></td>
-		</tr>
-	</table>
+		<h5><b><%= request.company.name %></b></h5>
+		<h5><%= request.company.country %></h5>
+		<h5><%= request.created_at.strftime("%b %d, %Y %H:%M") %></h5>
+		<br><br>
+		<h2 class="text-center"><b><%= "##{request.id} #{request.name}" %></b></h2>
+		<br><br><br><br>
+		<table class="table">		
+			<tr>
+				<td>Purchase type</td>
+				<td><%= request.request_type %></td>
+			</tr>
+			<tr>
+				<td>Published as</td>
+				<td><%= request.permission %> request</td>
+			</tr>
+			<tr>
+				<td>Responsible</td>
+				<td><%= request.user.name %></td>
+			</tr>
+			<tr>
+				<td>Status</td>
+				<td><%= request.folder.name %></td>
+			</tr>
+			<tr>
+				<td>Created</td>
+				<td><%= request.created_at.strftime("%b %d, %Y %H:%M") %></td>
+			</tr>
+			<tr>
+				<td>Published</td>
+				<td><%= request.created_at.strftime("%b %d, %Y %H:%M") %></td>
+			</tr>
+			<tr>
+				<td>Bid due date</td>
+				<td><%= request.end_time.strftime("%b %d, %Y %H:%M") %></td>
+			</tr>
+			<tr>
+				<td>Invited suppliers</td>
+				<td><%= request.suppliers.count %></td>
+			</tr>
+			<tr>
+				<td>Lowest bid</td>
+				<td><%= request.bids.minimum(:bid_budget) %> <%= request.preferred_currency %></td>
+			</tr>
+			<tr>
+				<td>Highest bid</td>
+				<td><%= request.bids.maximum(:bid_budget) %> <%= request.preferred_currency %></td>
+			</tr>
+			<tr>
+				<td>Difference</td>
+				<td><%= request.bids.maximum(:bid_budget) - request.bids.minimum(:bid_budget) %></td>
+			</tr>
+		</table>
+		<br><br>
+		<h4><b>Bids</b></h4>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Company</th>
+					<th>Bids made</th>
+					<th>Total</th>
+					<th>Diff. from first</th>
+					<th>Bid made</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% bids.each do |supplier, sbids| %>
+				<tr>
+					<td><%= "#{supplier.company.name}<br>#{supplier.correct_user.name}<br>#{supplier.email}".html_safe %></td>
+					<td><%= sbids.count %></td>
+					<td><%= sbids.last.bid_budget %> <%= request.preferred_currency %></td>
+					<td><%= sprintf("%+.2f #{request.preferred_currency} <br>&nbsp;&nbsp;&nbsp;#{(number_to_percentage( ((sbids.last.bid_budget - sbids.first.bid_budget)/sbids.last.bid_budget)*100, precision: 2).to_s)}", (sbids.last.bid_budget - sbids.first.bid_budget)).html_safe %></td>
+					<td><%= sbids.last.created_at.strftime("%b %d, %Y %H:%M") %></td>
+				</tr>
+				<% end %>
+			</tbody>
+		</table>
+		<br><br>
+		<h4><b>Suppliers</b></h4>
+		<% unless request.winner.nil? %>
+		<label class="text-info">Winner</label>
+		<table class="table">
+			<tbody>
+				<tr class="text-success">
+					<td>
+						<b><%= request.winner.company.name %></b><br>
+						<%= request.winner.correct_user.name %><br><em>( <%= request.winner.email %> )</em>
+					</td>
+					<td>
+						<%= request.winner.bids.where(request_id: request.id).count %> bid(s)
+					</td>
+					<td>
+						<%= request.bids.where(status: 'win').first.bid_budget %> <%= request.bids.where(status: 'win').first.bid_currency %>
+					</td>
+					<td>
+						<%= request.bids.where(status: 'win').first.created_at.strftime("%b %d, %Y %H:%M") %>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<% end %>
+		<label class="text-info">Bids Made</label>
+		<table class="table">
+			<tbody>
+				<% request.suppliers.each do |supplier| %>
+				<% if supplier.bids.where(request_id: request.id).exists? %>
+				<tr>
+					<td>
+						<b><%= supplier.company.name %></b><br> 
+						<%= supplier.correct_user.name %><br>
+						( <%= supplier.email %> )
+					</td>
+					<td><%= supplier.bids.where(request_id: request.id).count %> bid(s)</td>
+					<td><%= supplier.bids.where(request_id: request.id).first.created_at.strftime("%b %d, %Y %H:%M") %></td>
+				</tr>
+				<% end %>
+				<% end %>
+			</tbody>
+		</table>
+		<label class="text-info">Wants To Bid</label>
+		<table class="table">
+			<tbody>
+				<% request.suppliers.each do |supplier| %>
+				<tr>
+					<td>
+						<b><%= supplier.company.name %></b><br> 
+						<%= supplier.correct_user.name %><br>
+						( <%= supplier.email %> )
+					</td>
+					<td><%= supplier.created_at.strftime("%b %d, %Y %H:%M ( %Z%z )") %></td>
+				</tr>
+				<% end %>
+			</tbody>
+		</table>
+		<br><br>
+
+		<h4><b>Request Details</b></h4>
+		<pre><%= request.description.html_safe %></pre>
+		<br><br>
+
+		<h4><b>Documents</b></h4><hr>
+		<% unless request.attach.empty? %>
+        <% request.attach.split("[!!!]").each do |document| %>
+          <%= link_to "<i class='glyphicon glyphicon-file'></i> #{url_decode(document).split('/').last}".html_safe, document.html_safe %><hr>
+        <% end %>
+        <% else %>
+        No added document
+        <% end %>
+        <br><br>
+
+        <h4><b>List of Items</b></h4>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Quantity</th>
+              <th>Unit</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% request.items.each_with_index do |item,index| %>
+            <tr>
+              <td><%= index + 1 %></td>
+              <td><%= item.name %></td>
+              <td><%= item.quantity %></td>
+              <td><%= item.unit %></td>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+        <br><br>
+
+        <h4><b>Questionnaire</b></h4>
+        <ul style="list-style: numeric;">
+	      <% request.questions.each_with_index do |question,index| %>
+	      <li><%= "<b>#{question.title}</b><br><p class='text-muted'>#{question.description}</p>".html_safe %></li>
+	      <% end %>
+	    </ul>
+        <br><br>
+
+        <h4><b>Message board</b></h4>
+        <% request.messages.reverse_each do |message| %>
+            <div class="well">
+              <small class="text-muted pull-right">
+                <i class="glyphicon glyphicon-time"></i> <%= distance_of_time_in_words(Time.now, message.created_at) %> ago
+              </small>
+              <% if message.from == 'buyer' %>
+              <h5><%= message.user.name %> : <em><%= request.company.name %></em></h5>
+                <% unless message.supplier.nil? %>
+                <b>To:</b> <span class="text-muted"><%= message.supplier.email %></span>
+                <% end %>
+              <% else %>
+                <h5>
+                  <% unless message.supplier.user.nil? %>
+                    <%= message.supplier.user.name %>
+                    <% if message.supplier.user.companies.exists? %>
+                      : <em><%= message.supplier.user.companies.first.name %></em>
+                    <% end %>
+                  <% else %>
+                    <%= message.supplier.email %>
+                  <% end %>
+                </h5>
+              <% end %>              
+              <div>                
+                <% unless message.read %>
+                  <small><span class="label label-warning">Unread</span></small>
+                <% else %>
+                <small><span class="label label-success">Read</span></small>
+                <% end %>
+              </div>
+              <br>
+              <pre><%= message.content.html_safe %></pre>              
+              <% unless message.attach.nil? %>
+                <%= link_to 'Attach', '#'  %>
+              <% end %>              
+            </div>
+          <% end %>
 	</div>
 </section>
