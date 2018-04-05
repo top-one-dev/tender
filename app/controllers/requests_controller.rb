@@ -1,6 +1,6 @@
 class RequestsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_request, only: [:show, :edit, :update, :destroy, :change_status, :compare_bids, :export_excel]
+  before_action :set_request, only: [:show, :edit, :update, :destroy, :change_status, :compare_bids, :export_excel, :pdf]
   before_action :set_company
   before_action :set_s3_direct_post, only: [:new, :create, :edit, :update]
 
@@ -489,6 +489,11 @@ class RequestsController < ApplicationController
   end
 
   def preview_invitation
+  end
+
+  def pdf
+    @request.to_pdf
+    send_file "#{Rails.root}/public/download/#{@request.created_at.strftime("%Y-%m-%d")}-#{@request.name}-##{@request.id}/#{@request.name}.pdf"
   end
 
   private
