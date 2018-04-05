@@ -18,6 +18,7 @@
         <% if @request.company.owner == current_user %>
           <%= link_to '<b>Assign</b>'.html_safe, 'javascript:;', class: 'btn btn-sm btn-default', 'data-toggle': "modal", 'data-target': "#assignRequestModal" %>
         <% end %>
+        <%= link_to '<b>Open report</b>'.html_safe, open_report_path(@request), target: '_blank', class: 'btn btn-sm btn-default' %>
         <%= link_to '<b>Edit request</b>'.html_safe, 'javascript:;', class: 'btn btn-sm btn-default', 'data-toggle': "modal", 'data-target': "#editRequestModal" %>
         <%= link_to '<b>Extend closing time</b>'.html_safe, 'javascript:;', class: 'btn btn-sm btn-default', 'data-toggle': "modal", 'data-target': "#extendRequestModal" %>
         <%= link_to '<b>Archive request</b>'.html_safe, change_status_path(@request.id, 3), class: 'btn btn-sm btn-default' %>
