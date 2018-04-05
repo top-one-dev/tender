@@ -38,7 +38,7 @@
           </div>
 
           <div>
-            <%= link_to '<b>Open report</b>'.html_safe, '#', class: 'btn btn-sm btn-default' %>
+            <%= link_to '<b>Open report</b>'.html_safe, open_report_path(@request), target: '_blank', class: 'btn btn-sm btn-default' %>
             <%= link_to '<b>Download as zip</b>'.html_safe, '#', class: 'btn btn-sm btn-default' %>
             <%= link_to '<b>Compare bids</b>'.html_safe, compare_bids_path(@request.id), class: 'btn btn-sm btn-default' %>
             <%= link_to '<b class="text-muted"><i class="glyphicon glyphicon-envelope"></i> View Messages</b>'.html_safe, "#{messages_url}?id=#{@request.id}", class: "btn btn-default btn-sm pull-right" %>
@@ -53,7 +53,7 @@
       </div>
 
       <div>
-        <%= link_to '<b>Open report</b>'.html_safe, '#', class: 'btn btn-sm btn-default' %>
+        <%= link_to '<b>Open report</b>'.html_safe, open_report_path(@request), target: '_blank', class: 'btn btn-sm btn-default' %>
         <%= link_to '<b>Download as zip</b>'.html_safe, '#', class: 'btn btn-sm btn-default' %>
         <%= link_to '<b>Compare bids</b>'.html_safe, compare_bids_path(@request.id), class: 'btn btn-sm btn-default' %>
         <%= link_to '<b class="text-muted"><i class="glyphicon glyphicon-envelope"></i> View Messages</b>'.html_safe, "#{messages_url}?id=#{@request.id}", class: "btn btn-default btn-sm pull-right" %>
