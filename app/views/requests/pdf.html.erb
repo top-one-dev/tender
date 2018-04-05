@@ -39,18 +39,20 @@
 				<td>Invited suppliers</td>
 				<td><%= request.suppliers.count %></td>
 			</tr>
-			<tr>
-				<td>Lowest bid</td>
-				<td><%= request.bids.minimum(:bid_budget) %> <%= request.preferred_currency %></td>
-			</tr>
-			<tr>
-				<td>Highest bid</td>
-				<td><%= request.bids.maximum(:bid_budget) %> <%= request.preferred_currency %></td>
-			</tr>
-			<tr>
-				<td>Difference</td>
-				<td><%= request.bids.maximum(:bid_budget) - request.bids.minimum(:bid_budget) %></td>
-			</tr>
+			<% unless request.bids.empty? %>
+				<tr>
+					<td>Lowest bid</td>
+					<td><%= request.bids.minimum(:bid_budget) %> <%= request.preferred_currency %></td>
+				</tr>
+				<tr>
+					<td>Highest bid</td>
+					<td><%= request.bids.maximum(:bid_budget) %> <%= request.preferred_currency %></td>
+				</tr>
+				<tr>
+					<td>Difference</td>
+					<td><%= request.bids.maximum(:bid_budget) - request.bids.minimum(:bid_budget) %></td>
+				</tr>
+			<% end %>
 		</table>
 		<br><br>
 		<h4><b>Bids</b></h4>
