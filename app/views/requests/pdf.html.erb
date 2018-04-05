@@ -186,7 +186,7 @@
         <% request.messages.reverse_each do |message| %>
             <div class="well">
               <small class="text-muted pull-right">
-                <i class="glyphicon glyphicon-time"></i> <%= distance_of_time_in_words(Time.now, message.created_at) %> ago
+                <i class="glyphicon glyphicon-time"></i> <%= message.created_at.strftime("%b %d, %Y %H:%M") %>
               </small>
               <% if message.from == 'buyer' %>
               <h5><%= message.user.name %> : <em><%= request.company.name %></em></h5>
