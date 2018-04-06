@@ -45,7 +45,7 @@
   <li class="active">
     <a data-toggle="tab" href="#question-anwers"><h4>Fill in questonarie</h4></a>
   </li>
-  <% if @request.request_type == 'RFQ' %>
+  <% unless @request.request_type == 'RFI' %>
     <li><a data-toggle="tab" href="#item-anwers"><h4>Enter quotation</h4></a></li>
   <% end %>
   <li><a href="#document-comment" data-toggle="tab"><h4>Document & Comment</h4></a></li>
@@ -76,7 +76,7 @@
       </div>
     <% end %>
   </div>
-  <% if @request.request_type == 'RFQ' %>
+  <% unless @request.request_type == 'RFI' %>
   <div id="item-anwers" class="tab-pane fade">
     <table class="table table-striped">
       <thead>
