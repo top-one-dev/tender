@@ -85,7 +85,15 @@
           <th>Name</th>
           <th>Quantity</th>
           <th>Unit</th>
-          <th class="bg-success">Unit Price <span id="currency"><%= current_geo['currency']['code'] %></span> <span class="text-danger">*</span></th>
+          <th class="bg-success">
+            Unit Price <span id="currency">
+              <% unless current_geo.nil? %>
+                <%= current_geo['currency']['code'] %>
+              <% else %>
+                <%= @request.preferred_currency %>
+              <% end %>              
+            </span> <span class="text-danger">*</span>
+          </th>
           <th class="text-center" >Item total</th>
         </tr>
       </thead>
@@ -112,7 +120,11 @@
       </div>
       <div class="col-xs-5">
         <h5 class="text-muted">Bid currency: </h5>
-        <%= f.select(:bid_currency, currency_list.first.collect {|key, value| [value, key]}, {:include_blank => "Select Currency", :selected => current_geo['currency']['code'] }, {:class => "form-control", placeholder: 'Select Currency' } ) %>
+        <% unless current_geo.nil? %>
+          <%= f.select(:bid_currency, currency_list.first.collect {|key, value| [value, key]}, {:include_blank => "Select Currency", :selected => current_geo['currency']['code'] }, {:class => "form-control", placeholder: 'Select Currency' } ) %>
+        <% else %>
+          <%= f.select(:bid_currency, currency_list.first.collect {|key, value| [value, key]}, {:include_blank => "Select Currency", :selected => @request.preferred_currency }, {:class => "form-control", placeholder: 'Select Currency' } ) %>
+        <% end %>
       </div>
     </div>
   </div>
