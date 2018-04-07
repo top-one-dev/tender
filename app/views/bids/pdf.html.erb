@@ -1,0 +1,135 @@
+<section>
+	<div class="container">
+		<h2 class="text-center"><b><%= request.name %><br>(#<%= request.id %>)</b></h2>
+		<hr>
+		<br>
+		<br>
+		<div class="row">
+			<div class="col-xs-6">
+				<div class="row">
+					<div class="col-xs-5">
+						Buyer:
+					</div>
+					<div class="col-xs-7">
+						<b><%= request.company.name %></b>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-5">
+						Contact:
+					</div>
+					<div class="col-xs-7">
+						<b><%= request.user.name %><br><%= request.user.phone %><br>(<%= request.user.email %>)</b>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-5">
+						End Date:
+					</div>
+					<div class="col-xs-7">
+						<b><%= request.end_time.strftime("%b %d, %Y %H:%M") %></b>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-5">
+						Supplier status:
+					</div>
+					<div class="col-xs-7">
+						<b>Bidded</b>
+					</div>					
+				</div>
+			</div>
+			<div class="col-xs-6">
+				<div class="row">
+					<div class="col-xs-5">
+						Supplier:
+					</div>
+					<div class="col-xs-7">
+						<b><%= bid.supplier.company.name %></b>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-5">
+						Contact:
+					</div>
+					<div class="col-xs-7">
+						<b><%= bid.supplier.correct_user.name %><br><%= bid.supplier.correct_user.phone %><br>(<%= bid.supplier.email %>)</b>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-5">
+						Bid made:
+					</div>
+					<div class="col-xs-7">
+						<b><%= bid.created_at.strftime("%b %d, %Y %H:%M") %></b>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-5">
+						Grand total:
+					</div>
+					<div class="col-xs-7">
+						<b><%= bid.item_total %> <%= bid.bid_currency %></b>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-5">
+						Bid ID:
+					</div>
+					<div class="col-xs-7">
+						<b><%= bid.id %></b>
+					</div>					
+				</div>
+			</div>
+		</div>
+		<br><br><br>
+		<h4><b>List of Items</b></h4>
+		<hr>
+		<table class="table">
+			<thead class="bg-info">
+				<tr>
+					<th>#</th>
+					<th>Name</th>
+					<th>Description</th>
+					<th>Unit</th>
+					<th>Quantity</th>
+					<th class="text-success">Unit Price</th>
+					<th>Item total</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% request.items.each_with_index do |item, index| %>
+					<tr>
+						<td><%= index+1 %></td>
+						<td><%= item.name %></td>
+						<td><%= item.description%></td>
+						<td><%= item.unit %></td>
+						<td><%= item.quantity %></td>						
+						<td class="text-success"><%= bid.ianswers[index].unit_price %> <%= bid.bid_currency %></td>
+						<td><%= bid.ianswers[index].item_total %> <%= bid.bid_currency %></td>
+					</tr>
+				<% end %>
+			</tbody>
+		</table>
+		<br><br><br>
+		<h4><b>Questionnaire</b></h4>
+		<hr>
+		<ul>
+			<% request.questions.each_with_index do |question, index| %>
+			<li>
+				<b><%= question.title %></b><br>
+				<span class="text-muted"><%= question.description %></span><br>
+				<b class="text-success"><%= bid.qanswers[index].answer %></b>
+				<% unless bid.qanswers[index].attach.nil? %>
+					<%= link_to "<i class='glyphicon glyphicon-file'></i> #{url_decode(bid.qanswers[index].attach).split('/').last}".html_safe, bid.qanswers[index].attach.html_safe %>
+				<% end %>
+				<hr>
+			</li>
+			<% end %>
+		</ul>
+
+		<hr>
+
+		<h4>Submitted on: <%= bid.created_at.strftime("%b %d, %Y %H:%M") %>, request id: <%= request.id %>, bid id: <%= bid.id %></h4>
+	</div>
+</section>
