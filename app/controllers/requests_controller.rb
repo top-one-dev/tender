@@ -1,6 +1,6 @@
 class RequestsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_request, only: [:show, :edit, :update, :destroy, :change_status, :compare_bids, :export_excel, :pdf]
+  before_action :set_request, only: [:show, :edit, :update, :destroy, :change_status, :compare_bids, :export_excel, :pdf, :download]
   before_action :set_company
   before_action :set_s3_direct_post, only: [:new, :create, :edit, :update]
 
@@ -494,6 +494,19 @@ class RequestsController < ApplicationController
   def pdf
     @request.to_pdf
     send_file "#{Rails.root}/public/download/#{@request.created_at.strftime("%Y-%m-%d")}-#{@request.name}-##{@request.id}/#{@request.name}.pdf"
+  end
+
+  def download
+    @request.to_pdf
+    @request.bids.each do |bid|
+      bid.to_pdf
+    end
+    inputs  = "#{Rails.root}/public/download/#{@request.created_at.strftime("%Y-%m-%d")}-#{@request.name}-##{@request.id}"
+    outputs = "#{Rails.root}/public/download/#{@request.created_at.strftime("%Y-%m-%d")}-#{@request.name}-##{@request.id}.zip"
+    zip   = ZipFileGenerator.new(inputs, outputs)
+    if zip.write
+      send_file outputs
+    end
   end
 
   private
