@@ -19,7 +19,8 @@ Rails.application.routes.draw do
   post  'request/delete/document',    to: 'requests#delete_document', as: 'delete_document'
   get   'request/:id/export',         to: 'requests#export_excel',    as: 'export_excel'
   post  'request/preview',            to: 'requests#preview_request', as: 'preview_request'      
-  get   'requests/:id/report',        to: 'requests#pdf',             as: 'open_report'    
+  get   'request/:id/report',         to: 'requests#pdf',             as: 'open_report'
+  get   'request/:id/download',       to: 'requests#download',        as: 'download'
   
   resources :suppliers
   get   'request/:id/view/:token',    to: 'suppliers#view_request',   as: 'view_request'
