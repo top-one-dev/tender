@@ -1,4 +1,6 @@
+require "render_anywhere"
 class Bid < ApplicationRecord
+  include RenderAnywhere
   include ActionView::Helpers::NumberHelper
 
   belongs_to :request
@@ -52,4 +54,17 @@ class Bid < ApplicationRecord
       company:    company, 
       bid_budget: "#{self.item_total} #{self.bid_currency}" }.to_json
   end
+
+  def to_pdf
+    dir = File.dirname("#{Rails.root}/public/download/#{self.request.created_at.strftime("%Y-%m-%d")}-#{self.request.name}-##{self.request.id}/Bids/#{self.supplier.company.name}_#{self.supplier.id}/#{self.id}/#{self.supplier.company.name}_#{self.request.id}_#{self.id}.pdf")
+    FileUtils.mkdir_p(dir) unless File.directory?(dir)
+    kit = PDFKit.new(as_html, page_size: 'A3')
+    kit.to_file("#{Rails.root}/public/download/#{self.request.created_at.strftime("%Y-%m-%d")}-#{self.request.name}-##{self.request.id}/Bids/#{self.supplier.company.name}_#{self.supplier.id}/#{self.id}/#{self.supplier.company.name}_#{self.request.id}_#{self.id}.pdf")
+  end
+
+  private
+  def as_html
+    render template: "bids/pdf", layout: "pdf", locals: { request: self.request, bid: self }   
+  end
+
 end
