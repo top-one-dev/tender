@@ -230,9 +230,9 @@
                 <tr>
                   <td>
                     <b>
-                    <%= supplier.company.name %>
+                    <%= supplier.company %>
                     </b> : 
-                    <%= supplier.correct_user.name %> ( <%= supplier.email %> )
+                    <%= supplier.name %> ( <%= supplier.email %> )
                   </td>
                   <td><%= supplier.bids.where(request_id: @request.id).count %> bid(s)</td>
                   <td><%= supplier.bids.where(request_id: @request.id).first.created_at.strftime("%b %d, %Y %H:%M ( %Z%z )") %></td>
@@ -251,9 +251,9 @@
             <tr>
               <td>
                 <b>
-                <%= supplier.company.name %>
+                <%= supplier.company %>
                 </b> : 
-                <%= supplier.correct_user.name %> ( <%= supplier.email %> )
+                <%= supplier.name %> ( <%= supplier.email %> )
               </td>
               <!-- <td><%= supplier.bids.where(request_id: @request.id).where(status: 'sent').count %> bid(s)</td> -->
               <td><%= supplier.created_at.strftime("%b %d, %Y %H:%M ( %Z%z )") %></td>
@@ -312,10 +312,10 @@
               <tr>                
                 <td>
                   <b>
-                  <%= bid.supplier.company.name %>
+                  <%= bid.supplier.company %>
                   </b>
                    : 
-                  <%= bid.supplier.correct_user.name %>
+                  <%= bid.supplier.name %>
 
                   ( <%= bid.supplier.email %> )
                 </td>
