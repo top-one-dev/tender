@@ -33,16 +33,16 @@
                 <% @suppliers.each do |supplier| %>
                 <tr>
                   <td>
-                   <b><%= supplier.company.name %></b>
+                   <b><%= supplier.company %></b>
                   </td>
                   <td>
-                    <%= supplier.company.phone %>
+                    <%= supplier.phone %>
                   </td>
                   <td>
-                    <%= supplier.company.introduction %>
+                    <%= supplier.categories.collect{|c| c.name }.inject(',') %>
                   </td>
                   <td>
-                    <%= supplier.correct_user.name %>
+                    <%= supplier.name %>
                   </td>
                   <td>
                     <span class="label label-info">2</span>
@@ -73,19 +73,19 @@
                 <% @suppliers.each do |supplier| %>
                 <tr>
                   <td>
-                    <b><%= supplier.correct_user.name %></b>
+                    <b><%= supplier.name %></b>
                   </td>
                   <td>
                     <%= supplier.email %>
                   </td>
                   <td>
-                    <%= supplier.correct_user.phone %>
+                    <%= supplier.phone %>
                   </td>
                   <td>
-                    <%= supplier.correct_user.job_title %>
+                    
                   </td>
                   <td>
-                    <%= supplier.company.name %>
+                    <%= supplier.company %>
                   </td>
                 </tr>
                 <% end %>
