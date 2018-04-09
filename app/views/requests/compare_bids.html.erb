@@ -25,9 +25,9 @@
 								</th>
 								<% @bids.each do |supplier, bids| %>
 								<th colspan="<%= bids.count %>" class="text-center">
-									<big><%= supplier.company.name %></big><br><br>
+									<big><%= supplier.company %></big><br><br>
 									<span class="text-info">
-										<%= supplier.correct_user.name %>
+										<%= supplier.name %>
 										<small class="text-muted"><em>( <%= supplier.email %> )</em></small>		
 									</span><br><br>
 								</th>
@@ -197,9 +197,9 @@
 							<tr class="sticky-row">
 								<% @bids.each do |supplier, bids| %>
 								<th colspan="<%= bids.count %>" class="text-center">
-									<big><%= supplier.company.name %></big><br><br>
+									<big><%= supplier.company %></big><br><br>
 									<span class="text-info">
-										<%= supplier.correct_user.name %>
+										<%= supplier.name %>
 										<small class="text-muted"><em>( <%= supplier.email %> )</em></small>		
 									</span><br><br>
 								</th>
