@@ -20,12 +20,8 @@ class Bid < ApplicationRecord
     unless self.bid_budget.nil?
     	bid_budget 		  = Money.new(self.bid_budget*100, self.bid_currency)
       expected_budget = Money.new(self.request.expected_budget*100, self.request.preferred_currency)
-      
-      begin
-        difference      = bid_budget.exchange_to(self.request.preferred_currency) - expected_budget        
-      rescue Exception => e
-        difference      = Money.new(self.bid_budget*100, self.request.preferred_currency) - expected_budget
-      end
+            
+      difference      = bid_budget.exchange_to(self.request.preferred_currency) - expected_budget 
 
       percent         = number_to_percentage( (difference/self.request.expected_budget)*100 , precision: 2).to_s 
       sprintf("%+.2f #{self.request.preferred_currency} <br>&nbsp;&nbsp;&nbsp;#{percent}", difference).html_safe
@@ -56,10 +52,10 @@ class Bid < ApplicationRecord
   end
 
   def to_pdf
-    dir = File.dirname("#{Rails.root}/public/download/#{self.request.created_at.strftime("%Y-%m-%d")}-#{self.request.name}-##{self.request.id}/Bids/#{self.supplier.company.name}_#{self.supplier.id}/#{self.id}/#{self.supplier.company.name}_#{self.request.id}_#{self.id}.pdf")
+    dir = File.dirname("#{Rails.root}/public/download/#{self.request.created_at.strftime("%Y-%m-%d")}-#{self.request.name}-##{self.request.id}/Bids/#{self.supplier.company}_#{self.supplier.id}/#{self.id}/#{self.supplier.company}_#{self.request.id}_#{self.id}.pdf")
     FileUtils.mkdir_p(dir) unless File.directory?(dir)
     kit = PDFKit.new(as_html, page_size: 'A3')
-    kit.to_file("#{Rails.root}/public/download/#{self.request.created_at.strftime("%Y-%m-%d")}-#{self.request.name}-##{self.request.id}/Bids/#{self.supplier.company.name}_#{self.supplier.id}/#{self.id}/#{self.supplier.company.name}_#{self.request.id}_#{self.id}.pdf")
+    kit.to_file("#{Rails.root}/public/download/#{self.request.created_at.strftime("%Y-%m-%d")}-#{self.request.name}-##{self.request.id}/Bids/#{self.supplier.company}_#{self.supplier.id}/#{self.id}/#{self.supplier.company}_#{self.request.id}_#{self.id}.pdf")
   end
 
   private
