@@ -69,7 +69,7 @@
 			<tbody>
 				<% bids.each do |supplier, sbids| %>
 				<tr>
-					<td><%= "#{supplier.company.name}<br>#{supplier.correct_user.name}<br>#{supplier.email}".html_safe %></td>
+					<td><%= "#{supplier.company}<br>#{supplier.phone}<br>#{supplier.email}".html_safe %></td>
 					<td><%= sbids.count %></td>
 					<td><%= sbids.last.bid_budget %> <%= request.preferred_currency %></td>
 					<td><%= sprintf("%+.2f #{request.preferred_currency} <br>&nbsp;&nbsp;&nbsp;#{(number_to_percentage( ((sbids.last.bid_budget - sbids.first.bid_budget)/sbids.last.bid_budget)*100, precision: 2).to_s)}", (sbids.last.bid_budget - sbids.first.bid_budget)).html_safe %></td>
@@ -87,7 +87,7 @@
 				<tr class="text-success">
 					<td>
 						<b><%= request.winner.company.name %></b><br>
-						<%= request.winner.correct_user.name %><br><em>( <%= request.winner.email %> )</em>
+						<%= request.winner.name %><br><em>( <%= request.winner.email %> )</em>
 					</td>
 					<td>
 						<%= request.winner.bids.where(request_id: request.id).count %> bid(s)
@@ -109,8 +109,8 @@
 				<% if supplier.bids.where(request_id: request.id).exists? %>
 				<tr>
 					<td>
-						<b><%= supplier.company.name %></b><br> 
-						<%= supplier.correct_user.name %><br>
+						<b><%= supplier.company %></b><br> 
+						<%= supplier.phone %><br>
 						( <%= supplier.email %> )
 					</td>
 					<td><%= supplier.bids.where(request_id: request.id).count %> bid(s)</td>
@@ -126,8 +126,8 @@
 				<% request.suppliers.each do |supplier| %>
 				<tr>
 					<td>
-						<b><%= supplier.company.name %></b><br> 
-						<%= supplier.correct_user.name %><br>
+						<b><%= supplier.company %></b><br> 
+						<%= supplier.phone %><br>
 						( <%= supplier.email %> )
 					</td>
 					<td><%= supplier.created_at.strftime("%b %d, %Y %H:%M ( %Z%z )") %></td>
