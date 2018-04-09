@@ -1894,22 +1894,15 @@ module ApplicationHelper
   end
 
   def difference bids, bid
-    begin
-      item_total      = Money.new(bid.item_total*100, bid.bid_currency).exchange_to(bid.request.preferred_currency)  
-    rescue Exception => e
-      item_total      = Money.new(bid.item_total*100, bid.request.preferred_currency)
-    end
+    
+    item_total      = Money.new(bid.item_total*100, bid.bid_currency).exchange_to(bid.request.preferred_currency)
     
     expected_budget = Money.new(bid.request.expected_budget*100, bid.request.preferred_currency)
     min_difference  = Money.new(1000000000000000000000000000, bid.request.preferred_currency)
     nearest_total   = Money.new(0, bid.request.preferred_currency)
 
     bids.each do |b|
-      begin
-        b_item_total = Money.new(b.item_total*100, b.bid_currency).exchange_to(b.request.preferred_currency)  
-      rescue Exception => e
-        b_item_total = Money.new(b.item_total*100, b.request.preferred_currency)
-      end
+      b_item_total = Money.new(b.item_total*100, b.bid_currency).exchange_to(b.request.preferred_currency)  
       
       unless b.item_total == 0
         b_difference = b_item_total - expected_budget
