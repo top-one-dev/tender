@@ -138,9 +138,34 @@
 
 <hr>
 
+<div>
+  <h4><b>Contacts</b></h4>
+  <p>Please enter your contacts, so buyer can contact you when there's need.</p>
+  <div class="form-group required">
+    <label class="control-label">Email</label>
+    <input type="text" name="supplier[email]" value="<%= supplier.email %>">
+  </div>
+  <div class="form-group required">
+    <label class="control-label">Name</label>
+    <input type="text" name="supplier[name]" value="">
+  </div>
+  <div class="form-group requried">
+    <label class="control-label">Company</label>
+    <input type="text" name="supplier[company]" value="">
+  </div>
+  <div class="form-group">
+    <label>Phone</label>
+    <input type="text" name="supplier[phone]" value="">
+  </div>
+  <div class="form-group">
+    <label>Mobile</label>
+    <input type="text" name="supplier[mobile]" value="">
+  </div>
+</div>
+
 <div class="text-right">
   <%= f.submit 'Submit', class: 'btn btn-info btn-lg' %>
 </div>
 <% end %>
 
- 
+
