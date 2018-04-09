@@ -572,13 +572,9 @@
                   "
                 ></i>
               <% if request.preferred_currency.nil? %>
-                <% if current_geo.nil? %>
-                  <%= f.select(:preferred_currency, currency_list.first.collect {|key, value| [value, key]}, {:include_blank => "Select Currency", :selected => current_geo['currency']['code'] }, {:class => "form-control", placeholder: 'Select Currency' } ) %>
-                <% else %>
-                  <%= f.select(:preferred_currency, currency_list.first.collect {|key, value| [value, key]}, {:include_blank => "Select Currency" }, {:class => "form-control", placeholder: 'Select Currency' } ) %>
-                <% end %>
+                <%= f.select(:preferred_currency, currency_list.first.collect {|key, value| [value, key]}, {:include_blank => "Select Currency", :selected => current_geo['currency']['code'] }, {:class => "form-control", placeholder: 'Select Currency' } ) %>
               <% else %>
-              <%= f.select(:preferred_currency, currency_list.first.collect {|key, value| [value, key]}, {:include_blank => "Select Currency" }, {:class => "form-control", placeholder: 'Select Currency' } ) %>
+                <%= f.select(:preferred_currency, currency_list.first.collect {|key, value| [value, key]}, {:include_blank => "Select Currency" }, {:class => "form-control", placeholder: 'Select Currency' } ) %>
               <% end %>
             </div>    
           </div>

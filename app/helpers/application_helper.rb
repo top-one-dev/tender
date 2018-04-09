@@ -1862,7 +1862,7 @@ module ApplicationHelper
   end
 
   def current_geo
-    url = "http://usercountry.com/v1.0/json/#{remote_ip}?token=#{ENV['COUNTRY_TOKEN']}"
+    url = "http://api.ipstack.com/#{remote_ip}?access_key=#{ENV['COUNTRY_TOKEN']}"
     uri = URI(url)
     response = Net::HTTP.get(uri)
     return JSON.parse(response)  
