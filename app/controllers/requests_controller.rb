@@ -325,19 +325,32 @@ class RequestsController < ApplicationController
               end                    
             end  
 
-            if request_params.has_key? 'clarificatoin'
-              @request.suppliers.each do |supplier|
-                TenderBooksNotifierMailer.update_supplier(supplier, @request, nil).deliver_later
-                @request.messages.create!(
-                  from: 'buyer',
-                  read: false,
-                  user_id: current_user.id, 
-                  supplier_id: supplier.id,
-                  content: "Request updated with the clarification:<br> <b>#{@request.clarificatoin}</b>.<br> please review and make a bid again..."
-                  )
+            if request.folder_id == 1
+              if request_params.has_key? 'clarificatoin'              
+                @request.suppliers.each do |supplier|
+                  TenderBooksNotifierMailer.update_supplier(supplier, @request, nil).deliver_later
+                  @request.messages.create!(
+                    from: 'buyer',
+                    read: false,
+                    user_id: current_user.id, 
+                    supplier_id: supplier.id,
+                    content: "Request updated with the clarification:<br> <b>#{@request.clarificatoin}</b>.<br> please review and make a bid again..."
+                    )
+                end
+              else
+                @request.suppliers.each do |supplier|
+                  TenderBooksNotifierMailer.invite_supplier(supplier, @request).deliver_later
+                  TenderBooksNotifierMailer.invite_notifier(current_user, supplier, @request).deliver_later
+                  @request.messages.create!(
+                    from: 'buyer',
+                    read: false,
+                    user_id: current_user.id,
+                    supplier_id: supplier.id,
+                    content: 'Please apply...'
+                    )
+                end
               end
             end
-
 
           format.html { redirect_to @request, notice: 'Request was successfully updated.' }
           format.json { render :show, status: :ok, location: @request }
@@ -516,7 +529,16 @@ class RequestsController < ApplicationController
 
   end
 
-  def preview_invitation
+  def preview_invite
+    supplier = Supplier.create!(email: params[:email])
+    request  = Request.create!(name: params[:name], end_time: params[:end_time], description: params[:description] )
+    if TenderBooksNotifierMailer.invite_supplier(supplier, request).deliver_later
+      render json: { status: 'ok' }
+    else
+      render json: { status: 'error' }
+    end
+    supplier.destroy
+    request.destroy
   end
 
   def pdf
