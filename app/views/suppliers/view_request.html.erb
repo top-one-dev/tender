@@ -2,14 +2,26 @@
 <section>
 	<div class="container">
 		<% if @supplier.nil? %>
-			<% unless user_signed_in? %>
-				<div class="bg-info bid-nav">
-					<%= link_to 'Login to view Details', new_user_session_path, class: 'btn btn-lg btn-info ask-question' %>
+			<% if @request.permission == 'private' %>
+				<div class="alert alert-danger">
+					This request is published as <b>private request</b>, so you can't make a bid unless you are invited by buyer.
 				</div>
 			<% else %>
-				<div class="bg-info bid-nav">
-					<%= link_to 'Request access to information', '#', class: 'btn btn-lg btn-info ask-question' %>
-				</div>
+				<% unless user_signed_in? %>
+					<div class="bg-info bid-nav">
+						<%= link_to 'Login to view Details', new_user_session_path, class: 'btn btn-lg btn-info ask-question' %>
+					</div>
+				<% else %>
+					<% if @request.permission == 'public' %>
+						<div class="bg-info bid-nav">
+							<%= link_to 'Make a bid', '#', class: 'btn btn-lg btn-info ask-question' %>
+						</div>
+					<% else %>
+						<div class="bg-info bid-nav">
+							<%= link_to 'Request access to information', '#', class: 'btn btn-lg btn-info ask-question' %>
+						</div>
+					<% end %>
+				<% end %>
 			<% end %>
 		<% else %>
 
@@ -21,12 +33,12 @@
 				<div class="bg-info bid-nav">
 				<% unless @request.end_time < Time.now %>
 					<%= link_to 'Make a bid', new_bid_path( id: @request.id, token: @supplier_token ), class: 'btn btn-lg btn-info' %>
-				<% end %>
 
-				<% if @supplier.bids.where( :request_id => @request.id ).where( :status => 'reject' ).exists? %>
-					<a href="#" class="btn btn-lg btn-default" disabled disabled data-toggle="tooltip" data-placement="bottom" title="You already informed buyer your mind. No need to reject again." >Don't want to participate</a>
-				<% else %>
-					<%= link_to "Don't want to participate", bids_path(@reject_params), method: 'post', class: 'btn btn-lg btn-default', 'data-confirm': 'Are you sure to reject invite on this request?' %>
+					<% if @supplier.bids.where( :request_id => @request.id ).where( :status => 'reject' ).exists? %>
+						<a href="#" class="btn btn-lg btn-default" disabled disabled data-toggle="tooltip" data-placement="bottom" title="You already informed buyer your mind. No need to reject again." >Don't want to participate</a>
+					<% else %>
+						<%= link_to "Don't want to participate", bids_path(@reject_params), method: 'post', class: 'btn btn-lg btn-default', 'data-confirm': 'Are you sure to reject invite on this request?' %>
+					<% end %>
 				<% end %>
 				
 				<%= link_to 'Ask a question', 'javascript:;', class: 'btn btn-lg btn-default ask-question' %>
