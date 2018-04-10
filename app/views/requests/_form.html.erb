@@ -849,11 +849,12 @@
           <b>Preview the invitation email</b><br>
           Enter email where the invitation email will be sent. All suppliers will receive a similar email after you publish the request.
         </p>
+        <div class="alert alert-danger" id="preview-invite-alert"></div>
         <div class="form-group">
           <label class="control-label">Send to email</label>
-          <input type="text" class="form-control" name="">
+          <input type="text" class="form-control" id="invite-email">
         </div>
-        <a href="#" class="btn btn-info">Preview Invitation</a>
+        <a href="javascript:;" class="btn btn-info" id="preview-invite" data-url="<%= preview_invitation_url %>">Preview Invitation</a>
         <br><br>
       </div>      
     </div>
