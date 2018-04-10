@@ -326,6 +326,27 @@ $(document).on 'turbolinks:load', ->
 		$('#request_folder_id').val 1
 		# $('form').submit()
 
+	$('#preview-invite').on 'click', (e)->
+		email 		= $('#invite-email').val()
+		name 		= $('#request_name').val()
+		end_time 	= $('#request_end_time').val()
+		description = $('#request_description').val()
+		url 		= $(this).attr 'data-url'
+		if validateEmail(email)
+			# console.log "url=#{url}, email=#{email}, name=#{name}"
+			$.ajax
+				type: 'POST'
+				url: url
+				dataType: 'json'
+				data: { 'email': email, 'name': name, 'end_time': end_time, 'description': description }
+				success: (res) ->
+					if res.status == 'ok'
+						$('#previewModal').modal("hide")
+					else
+						$('#preview-invite-alert').html('There are some errors...').show()
+		else
+			$('#preview-invite-alert').html('Invalid email...').show()
+
 
 
 validateEmail = (email) ->
