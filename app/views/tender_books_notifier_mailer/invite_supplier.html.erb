@@ -12,7 +12,9 @@
     	The bids need to be submitted by <%= @request.end_time %> via the link in this email.
 
   		The documentation of the request can be accessed by the link below.<br>
-      <%= link_to 'View Request and make bid', view_request_url(@request.id, @supplier_token ), target: '_blank' %>
+      <% unless @request.request_type.nil? %>
+        <%= link_to 'View Request and make bid', view_request_url(@request.id, @supplier_token ), target: '_blank' %>
+      <% end %>
 	   </pre>
   </body>
 </html>
