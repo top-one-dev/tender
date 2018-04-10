@@ -203,8 +203,8 @@
             <tbody>
               <tr class="text-success">
                 <td>
-                  <b><%= @request.winner.company.name %></b> :
-                  <%= @request.winner.correct_user.name %><em>( <%= @request.winner.email %> )</em>
+                  <b><%= @request.winner.company %></b> :
+                  <%= @request.winner.name %><em>( <%= @request.winner.email %> )</em>
                 </td>
                 <td>
                   <%= @request.winner.bids.where(request_id: @request.id).count %> bid(s)
@@ -273,8 +273,8 @@
               <tbody>
                 <tr class="text-success">
                   <td>
-                    <b><%= @request.winner.company.name %></b> :
-                    <%= @request.winner.correct_user.name %><em>( <%= @request.winner.email %> )</em>
+                    <b><%= @request.winner.company %></b> :
+                    <%= @request.winner.name %><em>( <%= @request.winner.email %> )</em>
                   </td>
                   <td>
                     <%= @request.winner.bids.where(request_id: @request.id).count %> bid(s)
