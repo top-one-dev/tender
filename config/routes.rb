@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   get   'request/:id/download',       to: 'requests#download',        as: 'download'
   post  'request/delete/document',    to: 'requests#delete_document', as: 'delete_document'
   get   'request/:id/status/:status', to: 'requests#change_status',   as: 'change_status'
+  post  'request/preview/invitation', to: 'requests#preview_invite',  as: 'preview_invitation'
   
   resources :suppliers
   get   'request/:id/view/:token',    to: 'suppliers#view_request',   as: 'view_request'
