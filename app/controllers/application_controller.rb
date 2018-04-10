@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_geo
-    url = "http://usercountry.com/v1.0/json/#{remote_ip}"
+    url = "http://api.ipstack.com/#{remote_ip}?access_key=#{ENV['COUNTRY_TOKEN']}"
     uri = URI(url)
     response = Net::HTTP.get(uri)
     return JSON.parse(response)  
