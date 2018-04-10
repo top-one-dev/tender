@@ -12,8 +12,8 @@
 <% end %>
 
 <% flag = false %>
-<% if defined? priority %>
-  <% if priority == 'major' %>
+<% if defined? @priority %>
+  <% if @priority == 'major' %>
     <% flag = true %>
   <% end %>
 <% else %>
@@ -75,7 +75,7 @@
             </div>
           </div>
 
-          <% if defined? priority %>
+          <% if defined? @priority %>
           <div class="col-md-12">
             <div class="form-group required">
               <%= f.label 'Clarification on changes in the request', class: 'control-label' %>
@@ -169,7 +169,7 @@
                   ">
                 <i class="glyphicon glyphicon-info-sign"></i>
               </a> 
-              <%= f.select :categories, Category.all.collect {|c| [c.name, c.id] }, { :selected => request.categories.collect { |c| c.id } },{ class: 'form-control selectpicker', multiple: true, required: true, autocomplete: 'off' } %>
+              <%= f.select :categories, Category.all.collect {|c| [c.name, c.id] }, { :selected => @categories },{ class: 'form-control selectpicker', multiple: true, required: true, autocomplete: 'off' } %>
             </div>
           </div>
           <div class="col-md-6">
@@ -387,7 +387,24 @@
           </div>
         </div>
         <br>
-        <table id="participant-table" class="table"><tbody></tbody></table>
+        <table id="participant-table" class="table">
+          <tbody>
+            <% unless @participants.nil? %>
+              <% @participants.each do |supplier| %>
+              <tr>
+                <td>
+                  <%= supplier.name unless supplier.name.nil? %>
+                  <%= "<i class='glyphicon glyphicon-user'></i>".html_safe if supplier.name.nil? %>  
+                </td>
+                <td></td>
+                <td><%= supplier.email %></td>
+                <td><i class="glyphicon glyphicon-trash"></i></td>
+              </tr>
+              <input type="hidden" name="participants[]" value="<%= supplier.email %>">
+              <% end %>
+            <% end %>
+          </tbody>
+        </table>
         <hr> 
 
       </div>
@@ -641,10 +658,13 @@
 
 <div class="text-right">
   
-    <%= link_to '<i class="glyphicon glyphicon-eye-open"></i> PREVIEW'.html_safe, 'javascript:;', class: 'btn btn-default', 'data-toggle': "modal", 'data-target': "#previewModal" %>
-    <%= link_to '<i class="glyphicon glyphicon-floppy-disk"></i> SAVE'.html_safe, '#', class: 'btn btn-default' %>
-  
-  <%= f.submit 'SUBMIT', class: 'btn btn-info', id: 'submit-request' %>
+    <% if request.id.nil? %>
+      <%= link_to '<i class="glyphicon glyphicon-eye-open"></i> PREVIEW'.html_safe, 'javascript:;', class: 'btn btn-default', 'data-toggle': "modal", 'data-target': "#previewModal" %>
+    <% end %>
+    <% unless request.folder_id == 1 %>
+      <%= f.button '<i class="glyphicon glyphicon-floppy-disk"></i> SAVE'.html_safe, id: 'save-request', class: 'btn btn-default' %>
+    <% end %>
+    <%= f.submit 'SUBMIT', class: 'btn btn-info', id: 'submit-request' %>
 </div>
 
 <hr>
