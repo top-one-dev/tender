@@ -132,6 +132,7 @@ class RequestsController < ApplicationController
                                                   'enable_attatch': q.enable_attatch,
                                                   'mandatory':      q.mandatory} }
     @categories       = @request.categories.collect{ |c| c.id }
+    @participants     = @request.suppliers
     @question_params  = @question_params.to_json
     if params.has_key? 'priority'
       @priority         = params[:priority]
@@ -325,7 +326,7 @@ class RequestsController < ApplicationController
               end                    
             end  
 
-            if request.folder_id == 1
+            if @request.folder_id == 1
               if request_params.has_key? 'clarificatoin'              
                 @request.suppliers.each do |supplier|
                   TenderBooksNotifierMailer.update_supplier(supplier, @request, nil).deliver_later

@@ -660,9 +660,12 @@
   
     <% if request.id.nil? %>
       <%= link_to '<i class="glyphicon glyphicon-eye-open"></i> PREVIEW'.html_safe, 'javascript:;', class: 'btn btn-default', 'data-toggle': "modal", 'data-target': "#previewModal" %>
-    <% end %>
-    <% unless request.folder_id == 1 %>
       <%= f.button '<i class="glyphicon glyphicon-floppy-disk"></i> SAVE'.html_safe, id: 'save-request', class: 'btn btn-default' %>
+    <% end %>
+    <% unless request.id.nil? %>
+      <% if request.folder_id == 4 %>
+        <%= f.button '<i class="glyphicon glyphicon-floppy-disk"></i> SAVE'.html_safe, id: 'save-request', class: 'btn btn-default' %>
+      <% end %>
     <% end %>
     <%= f.submit 'SUBMIT', class: 'btn btn-info', id: 'submit-request' %>
 </div>
