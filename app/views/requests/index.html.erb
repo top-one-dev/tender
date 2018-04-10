@@ -301,6 +301,51 @@
                 </div>
               </div>
             </div>
+            <div class="panel panel-info">
+              <div class="panel-heading">
+                <h4 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#accordion" href="#collapse4">
+                    Under registeration <%= "<span class='badge'>#{@under_reg_requests.count}</span>".html_safe if @under_reg_requests.count > 0 %>
+                    <small class="pull-right">
+                      <i class="glyphicon glyphicon-triangle-bottom"></i>
+                    </small>
+                  </a>
+                </h4>
+              </div>
+              <div id="collapse4" class="panel-collapse collapse">
+                <div class="panel-body table-responsive">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Buyer</th>
+                        <th>Due date</th>
+                        <th></th>
+                      </tr>
+                      <tbody>
+                        <% @under_reg_requests.each do |request| %>
+                        <tr>
+                          <td><%= "##{request.id} #{request.name}" %></td>
+                          <td>
+                            <i class="glyphicon glyphicon-folder-close"></i>&nbsp;&nbsp;<%= request.user.name %>
+                          </td>
+                          <td>
+                            <i class="glyphicon glyphicon-time"></i>&nbsp;
+                            <%= request.end_time.strftime("%b %d, %Y %H:%M") %>
+                          </td>
+                          <td>
+                            <%= link_to 'Delete', request, class: "btn btn-default btn-sm", method: :delete, data: { confirm: 'Are you sure?' } %>&nbsp;
+                            <%= link_to 'Edit', edit_request_path(request), class: "btn btn-default btn-sm" %>&nbsp;
+                            <%= link_to 'View', request, class: "btn btn-default btn-sm" %>
+                          </td>
+                        </tr>
+                        <% end %>
+                      </tbody>
+                    </thead>
+                  </table>
+                </div>
+              </div>
+            </div>
           </div>          
         </div>
         <div id="requestsArchivedRequests" class="tab-pane fade">
