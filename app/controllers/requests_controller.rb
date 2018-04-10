@@ -19,13 +19,15 @@ class RequestsController < ApplicationController
       @active_requests = []
       
       if current_company.owner == current_user
-        @requests = current_company.requests.where(folder_id: 1)
-        @closed_requests  =  current_company.requests.where(folder_id: 2)
-        @archived_requests  =  current_company.requests.where(folder_id: 3)
+        @requests           = current_company.requests.where(folder_id: 1)
+        @closed_requests    = current_company.requests.where(folder_id: 2)
+        @under_reg_requests = current_company.requests.where(folder_id: 4)
+        @archived_requests  = current_company.requests.where(folder_id: 3)
       else 
-        @requests = current_company.requests.where(:user_id => current_user.id).where(folder_id: 1)
-        @closed_requests    =  current_company.requests.where(:user_id => current_user.id).where(folder_id: 2)
-        @archived_requests  =  current_company.requests.where(:user_id => current_user.id).where(folder_id: 3)
+        @requests           = current_company.requests.where(:user_id => current_user.id).where(folder_id: 1)
+        @closed_requests    = current_company.requests.where(:user_id => current_user.id).where(folder_id: 2)
+        @under_reg_requests = current_company.requests.where(:user_id => current_user.id).where(folder_id: 4)
+        @archived_requests  = current_company.requests.where(:user_id => current_user.id).where(folder_id: 3)
       end 
 
       @requests.each do |request|
@@ -80,10 +82,22 @@ class RequestsController < ApplicationController
       @type             = @request.request_type
       @item_params      = session[:item_params]
       @question_params  = session[:question_params]
+      @categories       = session[:category_params]
+      @participants     = []
+      unless session[:participants].nil?
+        session[:participants].each do |participant|
+          if Supplier.where(email: participant).exists?
+            @participants << Supplier.where(email: participant).first
+          else
+            @participants << Supplier.new(email: participant)
+          end
+        end
+      end      
 
       session[:request_params]  = nil
       session[:item_params]     = nil
       session[:question_params] = nil
+      session[:participants]    = nil
 
     else
       @request = Request.new
@@ -103,12 +117,12 @@ class RequestsController < ApplicationController
   def edit
     @type = @request.request_type
     if @type != 'RFI'
-      @items        = @request.items
-      @item_params  = @items.collect{|i| {  'name':         i.name, 
-                                            'unit':         i.unit, 
-                                            'quantity':     i.quantity, 
-                                            'description':  i.description} }
-      @item_params  = @item_params.to_json
+      @items          = @request.items
+      @item_params    = @items.collect{|i| {  'name':         i.name, 
+                                              'unit':         i.unit, 
+                                              'quantity':     i.quantity, 
+                                              'description':  i.description} }
+      @item_params    = @item_params.to_json
     end
     @questions        = @request.questions
     @question_params  = @questions.collect{|q| {  'title':          q.title, 
@@ -117,15 +131,18 @@ class RequestsController < ApplicationController
                                                   'options':        q.options,
                                                   'enable_attatch': q.enable_attatch,
                                                   'mandatory':      q.mandatory} }
-    @question_params = @question_params.to_json
-    @priority = params[:priority]
+    @categories       = @request.categories.collect{ |c| c.id }
+    @question_params  = @question_params.to_json
+    if params.has_key? 'priority'
+      @priority         = params[:priority]
+    end
   end
 
   # POST /requests
   # POST /requests.json
   def create
 
-    if participant_params.nil? or item_params.empty? or question_params.empty?
+    if ( request_params['folder_id'] == 1 ) and ( participant_params.nil? or item_params.empty? or question_params.empty? )
 
       flash[:error] = 'You need to add at least one participiant, item list and questionaire.'
       redirect_back fallback_location: new_request_url
@@ -149,31 +166,39 @@ class RequestsController < ApplicationController
             end
           end
 
-          unless participant_params.empty?
+          unless participant_params.nil?
 
-            participant_params.each do |participant|
-              supplier = Supplier.find_or_create_by(email: participant)
-              @request.suppliers << supplier
-              if User.where(email: supplier.email).exists?
-                supplier.update( user_id: User.where(email: supplier.email).first.id )
+            unless participant_params.empty?
+
+              participant_params.each do |participant|
+                supplier = Supplier.find_or_create_by(email: participant)
+                @request.suppliers << supplier
+                if User.where(email: supplier.email).exists?
+                  supplier.update( user_id: User.where(email: supplier.email).first.id )
+                end
+                if request_params['folder_id'] == 1
+                  TenderBooksNotifierMailer.invite_supplier(supplier, @request).deliver_later
+                  TenderBooksNotifierMailer.invite_notifier(current_user, supplier, @request).deliver_later
+                  @request.messages.create!(
+                    from: 'buyer',
+                    read: false,
+                    user_id: current_user.id,
+                    supplier_id: supplier.id,
+                    content: 'Please apply...'
+                    )
+                end
               end
-              TenderBooksNotifierMailer.invite_supplier(supplier, @request).deliver_later
-              TenderBooksNotifierMailer.invite_notifier(current_user, supplier, @request).deliver_later
-              @request.messages.create!(
-                from: 'buyer',
-                read: false,
-                user_id: current_user.id, 
-                supplier_id: supplier.id,
-                content: 'Please apply...'
-                )
+
             end
 
           end
 
-          unless request_params[:requisition_id].nil?
-            TenderBooksNotifierMailer.create_request_company(@request).deliver_later
-            TenderBooksNotifierMailer.create_request_requisitioner(@request).deliver_later
-            @request.requisition.update!( status: 'tendering' )
+          unless request_params[:requisition_id].nil? 
+            if request_params['folder_id'] == 1
+              TenderBooksNotifierMailer.create_request_company(@request).deliver_later
+              TenderBooksNotifierMailer.create_request_requisitioner(@request).deliver_later
+              @request.requisition.update!( status: 'tendering' )
+            end
           end
 
           unless category_params.empty?
@@ -220,18 +245,11 @@ class RequestsController < ApplicationController
             format.html { redirect_to @request, notice: 'Closing time was successfully extended.' }
             format.json { render :show, status: :ok, location: @request }
 
-          elsif request_params.has_key? 'clarificatoin'
+          else
 
             unless item_params.empty?
-              
-              JSON.parse(item_params.to_s).each_with_index do |item, index|
-                unless @request.items[index].nil?
-                  @request.items[index].update!(item)
-                else
-                  @request.items.create!(item)
-                end              
-              end
-              
+
+
               unless JSON.parse(item_params.to_s).count > @request.items.count
                 @request.items.each_with_index do |item, index|
                   if index >= JSON.parse(item_params.to_s).count
@@ -239,25 +257,32 @@ class RequestsController < ApplicationController
                   end
                 end
               end
+              
+              JSON.parse(item_params.to_s).each_with_index do |item, index|
+                unless @request.items[index].nil?
+                  @request.items[index].update!(item)
+                else
+                  @request.items.create!(item)
+                end              
+              end             
 
             end
 
             unless question_params.empty?
-              
-              JSON.parse(question_params.to_s).each_with_index do |question, index|
-                @request.questions.create!(question)
-                unless @request.questions[index].nil?
-                  @request.questions.update!(question)
-                else
-                  @request.questions.create!(question)
+
+              unless JSON.parse(question_params.to_s).count > @request.questions.count
+                @request.questions.each_with_index do |question, index|
+                  if index >= JSON.parse(question_params.to_s).count
+                    question.destroy
+                  end
                 end
               end
               
-              unless JSON.parse(question_params.to_s).count > @request.items.count
-                @request.questions.each_with_index do |question, index|
-                  if index >= JSON.parse(question_params.to_s).count
-                    item.destroy
-                  end
+              JSON.parse(question_params.to_s).each_with_index do |question, index|
+                unless @request.questions[index].nil?
+                  @request.questions[index].update!(question)
+                else
+                  @request.questions.create!(question)
                 end
               end
 
@@ -300,15 +325,17 @@ class RequestsController < ApplicationController
               end                    
             end  
 
-            @request.suppliers.each do |supplier|
-              TenderBooksNotifierMailer.update_supplier(supplier, @request, nil).deliver_later
-              @request.messages.create!(
-                from: 'buyer',
-                read: false,
-                user_id: current_user.id, 
-                supplier_id: supplier.id,
-                content: "Request updated with the clarification:<br> <b>#{@request.clarificatoin}</b>.<br> please review and make a bid again..."
-                )
+            if request_params.has_key? 'clarificatoin'
+              @request.suppliers.each do |supplier|
+                TenderBooksNotifierMailer.update_supplier(supplier, @request, nil).deliver_later
+                @request.messages.create!(
+                  from: 'buyer',
+                  read: false,
+                  user_id: current_user.id, 
+                  supplier_id: supplier.id,
+                  content: "Request updated with the clarification:<br> <b>#{@request.clarificatoin}</b>.<br> please review and make a bid again..."
+                  )
+              end
             end
 
 
@@ -467,6 +494,7 @@ class RequestsController < ApplicationController
     session[:item_params]      = item_params
     session[:question_params]  = question_params
     session[:category_params]  = category_params
+    session[:participants]     = participant_params
 
     @request = Request.new(request_params)
 
