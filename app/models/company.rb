@@ -16,19 +16,7 @@ class Company < ApplicationRecord
 
 	def suppliers
 		company_suppliers = []
-		Supplier.all.each do |supplier|
-			supplier.requests.each do |request|
-				if request.company == self
-					company_suppliers << supplier
-					unless supplier.user.nil?
-						company_suppliers.last[:name] = supplier.user.name
-						unless supplier.user.companies.exists?
-							company_suppliers.last[:company] = supplier.user.companies.first.name
-						end
-					end
-				end
-			end
-		end
+		self.requests.collect {|r| r.suppliers.each {|s| company_suppliers << s } }
 
 		unless company_suppliers.empty?
 			company_suppliers.uniq!
