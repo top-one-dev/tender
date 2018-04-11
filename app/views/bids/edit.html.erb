@@ -1,6 +1,8 @@
-<h1>Editing Bid</h1>
-
-<%= render 'form', bid: @bid %>
-
-<%= link_to 'Show', @bid %> |
-<%= link_to 'Back', bids_path %>
+<% provide(:title, "Edit a bid") %>
+<section>
+	<div class="container">
+		<%= render 'form', bid: @bid %>
+		<hr>
+		<!-- <%= link_to 'Back', bids_path %> -->
+	</div>
+</section>
