@@ -236,7 +236,7 @@
 
 	</div>
 </section>
-
+<% unless @supplier.nil? %>
 <% if @supplier.bids.where(:request_id => @request.id ).where(:status => 'sent').exists? %>
 <% bid = @supplier.bids.where(:request_id => @request.id ).where(:status => 'sent').first %>
 <!-- showBidModal -->
@@ -318,6 +318,8 @@
     </div>
   </div>
 </div>
+<% end %>
+
 <% end %>
 
 
