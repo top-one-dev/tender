@@ -59,14 +59,22 @@
         <span class="text-muted"> <%= question.description %> </span>
         <hr>
         <% unless question.enable_attatch %>
-          <%= render 'inputs', question: question %>          
+          <% if bid.qanswers.nil? %>
+            <%= render 'inputs', question: question %>
+          <% else %>
+            <%= render 'inputs', question: question, qanswer: bid.qanswers[index] %>
+          <% end %>          
         <% else %>
           <div class="row">
             <div class="col-sm-8">
-              <%= render 'inputs', question: question %>
+              <% if bid.qanswers.nil? %>
+                <%= render 'inputs', question: question %>
+              <% else %>
+                <%= render 'inputs', question: question, qanswer: bid.qanswers[index] %>
+              <% end %>
             </div>
             <div class="col-sm-4">
-              <input type="hidden" name="qanswers[attach][]" id="qanswer<%= index %>_document_value">
+              <input type="hidden" name="qanswers[attach][]" id="qanswer<%= index %>_document_value" value="<% unless bid.qanswers[index].nil? %><%= bid.qanswers[index].attach %><% end%>">
               <div class="well dropzone dropzone-small qanswer_document" id="qanswer<%= index %>_document" data-url="<%= @qanswer_s3_direct_post.url %>" data-fields="<%= @qanswer_s3_direct_post.fields.to_json %>">
                 <div class="dz-message"><b class="text-muted">Drag & drop file here</b></div> 
               </div>
@@ -74,7 +82,15 @@
           </div>
         <% end %>
       </div>
-    <% end %>
+    <% end %>    
+    <hr>
+    <div class="text-right">
+      <% unless @request.request_type == 'RFI' %>
+        <a data-toggle="tab" href="#item-anwers" class="btn btn-info btn-sm" > Next >></a>
+      <% else %>
+        <a data-toggle="tab" href="#document-comment" class="btn btn-info btn-sm" > Next >></a>
+      <% end %>
+    </div>
   </div>
   <% unless @request.request_type == 'RFI' %>
   <div id="item-anwers" class="tab-pane fade">
@@ -101,9 +117,9 @@
           <td><%= item.quantity %></td>
           <td><%= item.unit %></td>
           <td class="bg-success">
-            <input type="number" data-quantity="<%= item.quantity %>" step="0.01" min="0" class="form-control price-input" name="ianswers[]" value="0" id="price-<%= index %>" autocomplete="off" >
+            <input type="number" data-quantity="<%= item.quantity %>" step="0.01" min="0" class="form-control price-input" name="ianswers[]" id="price-<%= index %>" autocomplete="off" value="<% unless bid.ianswers[index].nil? %><%= bid.ianswers[index].unit_price %><% end %>">
           </td>
-          <td class="text-center"><span class="item-price" id="price<%= index %>">00.00</span></td>
+          <td class="text-center"><span class="item-price" id="price<%= index %>"><% unless bid.ianswers[index].nil? %><%= bid.ianswers[index].unit_price*item.quantity %><% else %>00.00<% end %></span></td>
         </tr>
         <% end %>
       </tbody>
@@ -111,13 +127,17 @@
     <hr>    
     <div class="row">
       <div class="col-xs-7">
-        <h4 class="text-info">Total of all items: <big class="text-success" id="total-price"><big>00.00</big></big></h4>
+        <h4 class="text-info">Total of all items: <big class="text-success" id="total-price"><big><% unless bid.ianswers.nil? %><%= bid.item_total %><% end %></big></big></h4>
         <%= f.hidden_field :bid_budget %>
       </div>
       <div class="col-xs-5">
         <h5 class="text-muted">Bid currency: </h5>
         <%= f.select(:bid_currency, currency_list.first.collect {|key, value| [value, key]}, {:include_blank => "Select Currency", :selected => @request.preferred_currency }, {:class => "form-control", placeholder: 'Select Currency' } ) %>
       </div>
+    </div>
+    <hr>
+    <div class="text-right">
+      <a data-toggle="tab" href="#document-comment" class="btn btn-info btn-sm" > Next >></a>
     </div>
   </div>
   <% end %>
@@ -138,34 +158,43 @@
 
 <hr>
 
-<div>
-  <h4><b>Contacts</b></h4>
-  <p>Please enter your contacts, so buyer can contact you when there's need.</p>
-  <div class="form-group required">
-    <label class="control-label">Email</label>
-    <input type="text" name="supplier[email]" value="<%= supplier.email %>">
-  </div>
-  <div class="form-group required">
-    <label class="control-label">Name</label>
-    <input type="text" name="supplier[name]" value="">
-  </div>
-  <div class="form-group requried">
-    <label class="control-label">Company</label>
-    <input type="text" name="supplier[company]" value="">
-  </div>
-  <div class="form-group">
-    <label>Phone</label>
-    <input type="text" name="supplier[phone]" value="">
-  </div>
-  <div class="form-group">
-    <label>Mobile</label>
-    <input type="text" name="supplier[mobile]" value="">
+<% if bid.id.nil? %>
+<div class="row">
+  <div class="col-sm-8 col-sm-offset-2">
+    <h4><b>Contacts</b></h4>
+    <p>Please enter your contacts, so buyer can contact you when there's need.</p>
+    <div class="form-group required">
+      <label class="control-label">Email</label>
+      <input type="text" name="supplier[email]" value="<%= @supplier.email %>" class="form-control">
+    </div>
+    <div class="form-group required">
+      <label class="control-label">Name</label>
+      <input type="text" name="supplier[name]" value="<%= @supplier.name %>" class="form-control">
+    </div>
+    <div class="form-group requried">
+      <label class="control-label">Company</label>
+      <input type="text" name="supplier[company]" value="<%= @supplier.company %>" class="form-control">
+    </div>
+    <div class="form-group">
+      <label>Phone</label>
+      <input type="text" name="supplier[phone]" value="<%= @supplier.phone %>" class="form-control">
+    </div>
+    <div class="form-group">
+      <label>Mobile</label>
+      <input type="text" name="supplier[mobile]" value="<%= @supplier.mobile %>" class="form-control">
+    </div>
+    <hr>
+    <div class="text-right">
+      <%= f.submit 'Submit', class: 'btn btn-info' %>
+    </div>
   </div>
 </div>
-
+<% else %>
 <div class="text-right">
-  <%= f.submit 'Submit', class: 'btn btn-info btn-lg' %>
+  <%= f.submit 'Submit', class: 'btn btn-info' %>
 </div>
+<% end %>
+
 <% end %>
 
 
