@@ -80,6 +80,14 @@ class SuppliersController < ApplicationController
                             :status       => 'reject'
                           }
                         }
+      if @supplier.nil? and @request.permission == 'public' and user_signed_in?
+        @supplier       = current_user.supplier.create!(  name:     current_user.name, 
+                                                          company:  current_user.companies.first.name, 
+                                                          phone:    current_user.phone, 
+                                                          email:    current_user.email,
+                                                          mobile:   current_user.mobile )
+        @supplier_token = crypt.encrypt_and_sign @supplier.id
+      end
     rescue => detail
       # flash[:error] = 'You typed invalid token. Please check link you received.'
       # redirect_to root_path   
