@@ -68,12 +68,14 @@
 					<li>
 						<span class="text-muted">
 							<%= qanswer.question.title %><br>
-							( <%= qanswer.question.description %> )
+							<em>( <%= qanswer.question.description %> )</em>
 						</span><br><br>
-						<b><%= qanswer.answer %></b>						
+						<b class="text-success"><%= qanswer.answer %></b>						
 						<% unless qanswer.attach.nil? %>
-							<br><br>
-							<%= link_to "<i class='glyphicon glyphicon-file'></i> #{url_decode(qanswer.attach).split('/').last}".html_safe, qanswer.attach  %>
+							<% unless qanswer.attach.empty? %>
+								<br><br>
+								<%= link_to "<i class='glyphicon glyphicon-file'></i> #{url_decode(qanswer.attach).split('/').last}".html_safe, qanswer.attach  %>
+							<% end %>
 						<% end %>
 					</li>
 					<hr>
@@ -91,7 +93,7 @@
 							<th>Description</th>
 							<th>Unit</th>
 							<th>Quantity</th>
-							<th>Unit price</th>
+							<th class="bg-success text-success">Unit price</th>
 							<th>Item total</th>
 						</tr>
 					</thead>
@@ -103,7 +105,7 @@
 							<td><%= ianswer.item.description %></td>
 							<td><%= ianswer.item.unit %></td>
 							<td><%= ianswer.item.quantity %></td>
-							<td><%= ianswer.unit_price %></td>
+							<td class="bg-success text-success"><b><%= ianswer.unit_price %></b></td>
 							<td><%= ianswer.item.quantity*ianswer.unit_price %></td>
 						</tr>
 						<% end %>
