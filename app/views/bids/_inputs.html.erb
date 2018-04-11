@@ -1,21 +1,21 @@
 <% if question.question_type == 'Text' %>
-	<textarea name="qanswers[answer][]" class="form-control" placeholder="Enter your answer here..." ></textarea>
+	<textarea name="qanswers[answer][]" class="form-control" placeholder="Enter your answer here..." ><% unless qanswer.nil? %><%= qanswer.answer %><% end %></textarea>
 <% elsif question.question_type == 'Yes/No' %>
-	<select name="qanswers[answer][]" class="form-control" >
+	<select name="qanswers[answer][]" class="form-control" <% unless qanswer.nil? %> value="<%= qanswer.answer %>"<% end %> >
 		<option>Yes</option>
 		<option>No</option>
 	</select>
 <% elsif question.question_type == 'Choose from a list' %>
 	<select name="qanswers[answer][]" class="form-control" >
 		<% question.options.split(',').each do |option| %>
-		<option><%= option %></option>
+		<option <% unless qanswer.nil? %> <% if qanswer.answer.strip == option.strip %> selected <% end %> <% end %> ><%= option %></option>
 		<% end %>
 	</select>
 <% elsif question.question_type == 'Checkboxes' %>
 	<input type="hidden" name="qanswers[answer][]" id="qanswers-checkbox">
 	<% question.options.split(',').each do |option| %>
 		<div class="checkbox">
-			<label><input type="checkbox" name="" class="qanswer-checkbox" data-value="<%= option %>"><%= option %></label>	
+			<label><input type="checkbox" name="" class="qanswer-checkbox" data-value="<%= option %>" <% unless qanswer.nil? %> <% if qanswer.answer.include? option %> checked <% end %><% end %>><%= option %></label>	
 		</div>		
 	<% end %>	
 <% end %>
