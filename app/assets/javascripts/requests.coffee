@@ -34,7 +34,7 @@ $(document).on 'turbolinks:load', ->
 		email = $('#participant-email').val()
 		if email != ''
 			if validateEmail(email)
-				$('#participant-table tbody').append("<tr><td><i class='glyphicon glyphicon-user text-muted'></i><td><td>#{email}</td><td><i class='glyphicon glyphicon-trash'></i></td></tr><input type='hidden' name='participants[]' value='#{email}'>")
+				$('#participant-table tbody').append("<tr><td><i class='glyphicon glyphicon-user text-muted'></i><td><td>#{email}</td><td><i class='glyphicon glyphicon-trash'></i></td><input type='hidden' name='participants[]' value='#{email}'></tr>")
 				$('#participant-email').val('').parent().removeClass('has-error')
 			else
 				$('#participant-email').parent().addClass('has-error')
@@ -47,7 +47,7 @@ $(document).on 'turbolinks:load', ->
 			email = $(this).val()
 			if email != ''
 				if validateEmail(email)
-					$('#participant-table tbody').append("<tr><td><i class='glyphicon glyphicon-user text-muted'></i><td><td>#{email}</td><td><i class='glyphicon glyphicon-trash'></i></td></tr><input type='hidden' name='participants[]' value='#{email}'>")
+					$('#participant-table tbody').append("<tr><td><i class='glyphicon glyphicon-user text-muted'></i><td><td>#{email}</td><td><i class='glyphicon glyphicon-trash'></i></td><input type='hidden' name='participants[]' value='#{email}'></tr>")
 					$(this).val('').parent().removeClass('has-error')
 				else
 					$(this).parent().addClass('has-error')
@@ -59,7 +59,7 @@ $(document).on 'turbolinks:load', ->
 		email = $(this).find(":selected").attr('value')
 		if name == ''
 			name = "<i class='glyphicon glyphicon-user text-muted'></i>"
-		$('#participant-table tbody').append("<tr><td>#{name}<td><td>#{email}</td><td><i class='glyphicon glyphicon-trash'></i></td></tr><input type='hidden' name='participants[]' value='#{email}'>")
+		$('#participant-table tbody').append("<tr><td>#{name}<td><td>#{email}</td><td><i class='glyphicon glyphicon-trash'></i></td><input type='hidden' name='participants[]' value='#{email}'></tr>")
 
 	# Create and edit list items....
 
