@@ -1,6 +1,6 @@
 class RequestsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_request, only: [:show, :edit, :update, :destroy, :change_status, :compare_bids, :export_excel, :pdf, :download]
+  before_action :set_request, only: [:show, :edit, :update, :destroy, :change_status, :compare_bids, :export_excel, :pdf, :download, :invite_supplier]
   before_action :set_company
   before_action :set_s3_direct_post, only: [:new, :create, :edit, :update]
 
@@ -119,25 +119,25 @@ class RequestsController < ApplicationController
     if @type != 'RFI'
       @items          = @request.items
       @item_params    = @items.collect{|i| {  'name':         i.name, 
-                                              'unit':         i.unit, 
-                                              'quantity':     i.quantity, 
-                                              'description':  i.description} }
-      @item_params    = @item_params.to_json
-    end
-    @questions        = @request.questions
-    @question_params  = @questions.collect{|q| {  'title':          q.title, 
-                                                  'description':    q.description, 
-                                                  'question_type':  q.question_type, 
-                                                  'options':        q.options,
-                                                  'enable_attatch': q.enable_attatch,
-                                                  'mandatory':      q.mandatory} }
-    @categories       = @request.categories.collect{ |c| c.id }
-    @participants     = @request.suppliers
-    @question_params  = @question_params.to_json
-    if params.has_key? 'priority'
-      @priority         = params[:priority]
-    end
-  end
+        'unit':         i.unit, 
+        'quantity':     i.quantity, 
+        'description':  i.description} }
+        @item_params    = @item_params.to_json
+      end
+      @questions        = @request.questions
+      @question_params  = @questions.collect{|q| {  'title':          q.title, 
+        'description':    q.description, 
+        'question_type':  q.question_type, 
+        'options':        q.options,
+        'enable_attatch': q.enable_attatch,
+        'mandatory':      q.mandatory} }
+        @categories       = @request.categories.collect{ |c| c.id }
+        @participants     = @request.suppliers
+        @question_params  = @question_params.to_json
+        if params.has_key? 'priority'
+          @priority         = params[:priority]
+        end
+      end
 
   # POST /requests
   # POST /requests.json
@@ -231,64 +231,64 @@ class RequestsController < ApplicationController
     respond_to do |format|
       if @request.update(request_params)
 
-          if request_params.has_key? 'extend_reason'
+        if request_params.has_key? 'extend_reason'
 
-            @request.suppliers.each do |supplier|
-              TenderBooksNotifierMailer.update_supplier(supplier, @request, true).deliver_later
-              @request.messages.create!(
-                from: 'buyer',
-                read: false,
-                user_id: current_user.id, 
-                supplier_id: supplier.id,
-                content: "Closing time was extended with the reason:<br> <b>#{@request.extend_reason}</b>.<br> please review..."
-                )
-            end
+          @request.suppliers.each do |supplier|
+            TenderBooksNotifierMailer.update_supplier(supplier, @request, true).deliver_later
+            @request.messages.create!(
+              from: 'buyer',
+              read: false,
+              user_id: current_user.id, 
+              supplier_id: supplier.id,
+              content: "Closing time was extended with the reason:<br> <b>#{@request.extend_reason}</b>.<br> please review..."
+              )
+          end
 
-            format.html { redirect_to @request, notice: 'Closing time was successfully extended.' }
-            format.json { render :show, status: :ok, location: @request }
+          format.html { redirect_to @request, notice: 'Closing time was successfully extended.' }
+          format.json { render :show, status: :ok, location: @request }
 
-          else
+        else
 
-            unless item_params.empty?
+          unless item_params.empty?
 
 
-              unless JSON.parse(item_params.to_s).count > @request.items.count
-                @request.items.each_with_index do |item, index|
-                  if index >= JSON.parse(item_params.to_s).count
-                    item.destroy
-                  end
+            unless JSON.parse(item_params.to_s).count > @request.items.count
+              @request.items.each_with_index do |item, index|
+                if index >= JSON.parse(item_params.to_s).count
+                  item.destroy
                 end
               end
-              
-              JSON.parse(item_params.to_s).each_with_index do |item, index|
-                unless @request.items[index].nil?
-                  @request.items[index].update!(item)
-                else
-                  @request.items.create!(item)
-                end              
-              end             
-
             end
 
-            unless question_params.empty?
+            JSON.parse(item_params.to_s).each_with_index do |item, index|
+              unless @request.items[index].nil?
+                @request.items[index].update!(item)
+              else
+                @request.items.create!(item)
+              end              
+            end             
 
-              unless JSON.parse(question_params.to_s).count > @request.questions.count
-                @request.questions.each_with_index do |question, index|
-                  if index >= JSON.parse(question_params.to_s).count
-                    question.destroy
-                  end
+          end
+
+          unless question_params.empty?
+
+            unless JSON.parse(question_params.to_s).count > @request.questions.count
+              @request.questions.each_with_index do |question, index|
+                if index >= JSON.parse(question_params.to_s).count
+                  question.destroy
                 end
               end
-              
-              JSON.parse(question_params.to_s).each_with_index do |question, index|
-                unless @request.questions[index].nil?
-                  @request.questions[index].update!(question)
-                else
-                  @request.questions.create!(question)
-                end
-              end
-
             end
+
+            JSON.parse(question_params.to_s).each_with_index do |question, index|
+              unless @request.questions[index].nil?
+                @request.questions[index].update!(question)
+              else
+                @request.questions.create!(question)
+              end
+            end
+
+          end
 
             # unless participant_params.nil?
 
@@ -297,7 +297,7 @@ class RequestsController < ApplicationController
             #     participant_params.each do |participant|
 
             #       supplier = Supplier.find_or_create_by(email: participant)
-                  
+
             #       unless @request.suppliers.include? supplier
             #         @request.suppliers << supplier
             #         if User.where(email: supplier.email).exists?
@@ -354,17 +354,17 @@ class RequestsController < ApplicationController
               end
             end
 
-          format.html { redirect_to @request, notice: 'Request was successfully updated.' }
-          format.json { render :show, status: :ok, location: @request }
+            format.html { redirect_to @request, notice: 'Request was successfully updated.' }
+            format.json { render :show, status: :ok, location: @request }
 
+          end
+
+        else
+          format.html { render :edit }
+          format.json { render json: @request.errors, status: :unprocessable_entity }
         end
-
-      else
-        format.html { render :edit }
-        format.json { render json: @request.errors, status: :unprocessable_entity }
       end
     end
-  end
 
   # DELETE /requests/1
   # DELETE /requests/1.json
@@ -408,6 +408,43 @@ class RequestsController < ApplicationController
     end
   end
 
+  def invite_supplier
+    if participant_params.nil?
+
+      flash[:error] = 'You need to add at least one participiant.'
+      redirect_back fallback_location: new_request_url
+
+    else
+
+      respond_to do |format|
+
+        participant_params.each do |participant|
+          supplier = Supplier.find_or_create_by(email: participant)
+          if supplier.bids.where(request_id: @request.id).where(status: 'reject').exists?
+            supplier.bids.where(request_id: @request.id).where(status: 'reject').first.destroy
+          else       
+            @request.suppliers << supplier
+          end
+          if User.where(email: supplier.email).exists?
+            supplier.update( user_id: User.where(email: supplier.email).first.id )
+          end
+          TenderBooksNotifierMailer.invite_supplier(supplier, @request).deliver_later
+          @request.messages.create!(
+            from: 'buyer',
+            read: false,
+            user_id: current_user.id,
+            supplier_id: supplier.id,
+            content: 'Please apply...'
+            )
+        end
+
+        format.html { redirect_to @request, notice: "Invitation was successfully sent to suppliers you just added." }
+        format.json { render :show, status: :ok, location: @request }
+
+      end    
+    end
+  end
+
   def assign_request
     request = Request.find assign_params[:request]
     buyer   = User.find assign_params[:buyer]
@@ -446,9 +483,9 @@ class RequestsController < ApplicationController
     failer_subject = winner_params[:subject2]
     winner_content = winner_params[:content1]
     failer_content = winner_params[:content2]
-    
+
     respond_to do |format|
-      
+
       if request.update( folder_id: 2 )
         request.bids.each do |bid|
           if bid == win_bid
@@ -473,7 +510,7 @@ class RequestsController < ApplicationController
       end
 
     end
-    
+
   end
 
   def delete_document
@@ -498,8 +535,8 @@ class RequestsController < ApplicationController
 
     respond_to do |format|
       format.xlsx{
-                    response.headers['Content-Disposition'] = "attachment; filename=#{filename}"
-                  } 
+        response.headers['Content-Disposition'] = "attachment; filename=#{filename}"
+      } 
     end
   end
 
@@ -632,9 +669,9 @@ class RequestsController < ApplicationController
     end
 
     def url_decode(s)
-       s.gsub(/((?:%[0-9a-fA-F]{2})+)/n) do
-         [$1.delete('%')].pack('H*')
-       end
-    end
+     s.gsub(/((?:%[0-9a-fA-F]{2})+)/n) do
+       [$1.delete('%')].pack('H*')
+     end
+   end
 
-  end
+ end
