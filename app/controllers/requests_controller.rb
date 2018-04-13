@@ -179,7 +179,6 @@ class RequestsController < ApplicationController
                 end
                 if request_params['folder_id'] == 1
                   TenderBooksNotifierMailer.invite_supplier(supplier, @request).deliver_later
-                  TenderBooksNotifierMailer.invite_notifier(current_user, supplier, @request).deliver_later
                   @request.messages.create!(
                     from: 'buyer',
                     read: false,
@@ -189,6 +188,8 @@ class RequestsController < ApplicationController
                     )
                 end
               end
+
+              TenderBooksNotifierMailer.invite_notifier(current_user, @request).deliver_later
 
             end
 
@@ -341,7 +342,6 @@ class RequestsController < ApplicationController
               else
                 @request.suppliers.each do |supplier|
                   TenderBooksNotifierMailer.invite_supplier(supplier, @request).deliver_later
-                  TenderBooksNotifierMailer.invite_notifier(current_user, supplier, @request).deliver_later
                   @request.messages.create!(
                     from: 'buyer',
                     read: false,
@@ -350,6 +350,7 @@ class RequestsController < ApplicationController
                     content: 'Please apply...'
                     )
                 end
+                TenderBooksNotifierMailer.invite_notifier(current_user, @request).deliver_later                  
               end
             end
 
