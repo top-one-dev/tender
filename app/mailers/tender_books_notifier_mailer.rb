@@ -39,11 +39,10 @@ class TenderBooksNotifierMailer < ApplicationMailer
 		mail( :to => @supplier.email,	:subject => 'You are invited!' )
 	end
 
-	def invite_notifier(buyer, supplier, request)
+	def invite_notifier(buyer, request)
 		@buyer 		= buyer
-		@supplier 	= supplier
 		@request 	= request
-		mail( :to => @buyer.email,	:subject => 'You sent invite!' )
+		mail( :to => @buyer.email,	:subject => 'You created request and sent invites!' )
 	end
 
 	def update_supplier(supplier, request, extend)

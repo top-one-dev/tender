@@ -50,7 +50,11 @@
 				</tr>
 				<tr>
 					<td>Difference</td>
-					<td><%= request.bids.maximum(:bid_budget) - request.bids.minimum(:bid_budget) %></td>
+					<td>
+						<% if request.bids.where(status: 'sent').exists? %>
+							<%= request.bids.maximum(:bid_budget) - request.bids.minimum(:bid_budget) %>
+						<% end %>
+					</td>
 				</tr>
 			<% end %>
 		</table>
