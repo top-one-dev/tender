@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   post  'request/delete/document',    to: 'requests#delete_document', as: 'delete_document'
   get   'request/:id/status/:status', to: 'requests#change_status',   as: 'change_status'
   post  'request/preview/invitation', to: 'requests#preview_invite',  as: 'preview_invitation'
+  post  'request/:id/invite',         to: 'requests#invite_supplier', as: 'invite_supplier'
   
   resources :suppliers
   get   'request/:id/view/:token',    to: 'suppliers#view_request',   as: 'view_request'

@@ -482,7 +482,8 @@
 
 <div id="inviteSupplierModal"  class="modal fade" role="dialog">
   <div class="modal-dialog">
-    <div class="modal-content">      
+    <div class="modal-content">
+      <%= form_tag invite_supplier_path(@request.id), method: :post do %>    
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Invite Suppliers</h4>
@@ -521,8 +522,9 @@
       </div>
       <div class="modal-footer">
         <a class="btn btn-default" data-dismiss="modal">Close</a>
-        <a class="btn btn-info" data-dismiss="modal">Send</a>
-      </div>      
+        <%= submit_tag 'Send', class: 'btn btn-info' %>
+      </div>
+      <% end %>  
     </div>
   </div>
 </div>
