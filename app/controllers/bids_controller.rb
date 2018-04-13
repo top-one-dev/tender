@@ -58,13 +58,16 @@ class BidsController < ApplicationController
 
     respond_to do |format|
       if @bid.save
+        
+        @supplier = Supplier.find(bid_params[:supplier_id])
+        @supplier.update!(supplier_params)
+
         if @bid.status == 'reject'
           
           format.html { redirect_to view_request_url(@bid.request.id, crypt.encrypt_and_sign(bid_params[:supplier_id])), notice: 'You just rejected making a bid on the request. Thanks for your informing.' }
+          TenderBooksNotifierMailer.reject_invite(current_user, @supplier, @bid.request).deliver_later
         
-        else
-          @supplier = Supplier.find(bid_params[:supplier_id])
-          @supplier.update!(supplier_params)
+        else          
 
           @items  = @bid.request.items
 

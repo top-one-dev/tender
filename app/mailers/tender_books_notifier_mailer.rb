@@ -58,6 +58,13 @@ class TenderBooksNotifierMailer < ApplicationMailer
 		mail( :to => @supplier.email,	:subject => @subject )
 	end
 
+	def reject_invite(buyer, supplier, request)
+		@buyer 		= buyer
+		@supplier 	= supplier
+		@request 	= request
+		mail(:to => @buyer.email, :subject => "#{supplier.email} doesn't want to participate to your request #{@request.name}")
+	end
+
 	def assign_request_buyer(buyer, request)
 		@buyer 			= buyer
 		@request 		= request
