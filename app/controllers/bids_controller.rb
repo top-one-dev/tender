@@ -60,7 +60,9 @@ class BidsController < ApplicationController
       if @bid.save
         
         @supplier = Supplier.find(bid_params[:supplier_id])
-        @supplier.update!(supplier_params)
+        if params.has_key? 'supplier'
+          @supplier.update!(supplier_params)
+        end
 
         if @bid.status == 'reject'
           
