@@ -49,6 +49,9 @@
     <li><a data-toggle="tab" href="#item-anwers"><h4>Enter quotation</h4></a></li>
   <% end %>
   <li><a href="#document-comment" data-toggle="tab"><h4>Document & Comment</h4></a></li>
+  <% if bid.id.nil? %>
+    <li><a href="#supplier-contact" data-toggle="tab"><h4>Contact Information</h4></a></li>
+  <% end %>
 </ul>
 
 <div class="tab-content">
@@ -86,9 +89,9 @@
     <hr>
     <div class="text-right">
       <% unless @request.request_type == 'RFI' %>
-        <a data-toggle="tab" href="#item-anwers" class="btn btn-info btn-sm" > Next >></a>
+        <a data-toggle="tab" href="#item-anwers" class="btn btn-default btn-sm" > Next ></a>
       <% else %>
-        <a data-toggle="tab" href="#document-comment" class="btn btn-info btn-sm" > Next >></a>
+        <a data-toggle="tab" href="#document-comment" class="btn btn-default btn-sm" > Next ></a>
       <% end %>
     </div>
   </div>
@@ -137,7 +140,8 @@
     </div>
     <hr>
     <div class="text-right">
-      <a data-toggle="tab" href="#document-comment" class="btn btn-info btn-sm" > Next >></a>
+      <a data-toggle="tab" href="#question-anwers" class="btn btn-default btn-sm" > < Back</a>
+      <a data-toggle="tab" href="#document-comment" class="btn btn-sm btn-default" > Next ></a>
     </div>
   </div>
   <% end %>
@@ -153,47 +157,60 @@
     <b class="text-info text-uppercase" >Comment to buyer</b>
     <hr>
     <%= f.text_area :content, class: 'form-control', placeholder: 'Add comment to buyer...' %>
-  </div>
-</div>
-
-<hr>
-
-<% if bid.id.nil? %>
-<div class="row">
-  <div class="col-sm-8 col-sm-offset-2">
-    <h4><b>Contacts</b></h4>
-    <p>Please enter your contacts, so buyer can contact you when there's need.</p>
-    <div class="form-group required">
-      <label class="control-label">Email</label>
-      <input type="text" name="supplier[email]" value="<%= @supplier.email %>" class="form-control">
-    </div>
-    <div class="form-group required">
-      <label class="control-label">Name</label>
-      <input type="text" name="supplier[name]" value="<%= @supplier.name %>" class="form-control">
-    </div>
-    <div class="form-group requried">
-      <label class="control-label">Company</label>
-      <input type="text" name="supplier[company]" value="<%= @supplier.company %>" class="form-control">
-    </div>
-    <div class="form-group">
-      <label>Phone</label>
-      <input type="text" name="supplier[phone]" value="<%= @supplier.phone %>" class="form-control">
-    </div>
-    <div class="form-group">
-      <label>Mobile</label>
-      <input type="text" name="supplier[mobile]" value="<%= @supplier.mobile %>" class="form-control">
-    </div>
     <hr>
     <div class="text-right">
-      <%= f.submit 'Submit', class: 'btn btn-info' %>
+      <% unless @request.request_type == 'RFI' %>
+        <a data-toggle="tab" href="#item-anwers" class="btn btn-default btn-sm" > < Back</a>
+      <% else %>
+        <a data-toggle="tab" href="#question-anwers" class="btn btn-default btn-sm" > < Back</a>
+      <% end %>
+      <% if bid.id.nil? %>
+        <a data-toggle="tab" href="#supplier-contact" class="btn btn-default btn-sm" > Next ></a>
+      <% else %>
+        <hr>
+        <%= f.submit 'Submit', class: 'btn btn-info' %>
+      <% end  %>
     </div>
   </div>
+
+  <% if bid.id.nil? %>
+  <div class="tab-pane fade" id="supplier-contact">
+    <div class="row">
+      <div class="col-sm-8 col-sm-offset-2">
+        <h4><b>Contacts</b></h4>
+        <p>Please enter your contacts, so buyer can contact you when there's need.</p>
+        <div class="form-group required">
+          <label class="control-label">Email</label>
+          <input type="text" name="supplier[email]" value="<%= @supplier.email %>" class="form-control">
+        </div>
+        <div class="form-group required">
+          <label class="control-label">Name</label>
+          <input type="text" name="supplier[name]" value="<%= @supplier.name %>" class="form-control">
+        </div>
+        <div class="form-group requried">
+          <label class="control-label">Company</label>
+          <input type="text" name="supplier[company]" value="<%= @supplier.company %>" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Phone</label>
+          <input type="text" name="supplier[phone]" value="<%= @supplier.phone %>" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Mobile</label>
+          <input type="text" name="supplier[mobile]" value="<%= @supplier.mobile %>" class="form-control">
+        </div>
+        <hr>
+        <div class="text-right">
+          <a data-toggle="tab" href="#document-comment" class="btn btn-default btn-sm" > < Back</a>
+          <hr>
+          <%= f.submit 'Submit', class: 'btn btn-info' %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% end %>
 </div>
-<% else %>
-<div class="text-right">
-  <%= f.submit 'Submit', class: 'btn btn-info' %>
-</div>
-<% end %>
+
 
 <% end %>
 

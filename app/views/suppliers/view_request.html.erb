@@ -238,7 +238,7 @@
 </section>
 <% unless @supplier.nil? %>
 <% if @supplier.bids.where(:request_id => @request.id ).where(:status => 'sent').exists? %>
-<% bid = @supplier.bids.where(:request_id => @request.id ).where(:status => 'sent').first %>
+<% bid = @supplier.bids.where(:request_id => @request.id ).where(:status => 'sent').last %>
 <!-- showBidModal -->
 <div id="showBidModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
