@@ -473,7 +473,7 @@ class RequestsController < ApplicationController
 
   def compare_bids
     @total_bids = @request.bids
-    @bids       = @request.bids.group_by(&:supplier)    
+    @bids       = @request.bids.where.not(status: 'reject').group_by(&:supplier)    
   end
 
   def set_winner
@@ -529,7 +529,7 @@ class RequestsController < ApplicationController
 
   def export_excel
     @total_bids = @request.bids
-    @bids       = @request.bids.group_by(&:supplier)
+    @bids       = @request.bids.where.not(status: 'reject').group_by(&:supplier)
     @suppliers  = @request.suppliers
     filename    = "Bid_comparison_table_##{@request.id}_#{@request.name.tr(" ", "_")}.xlsx"
 
