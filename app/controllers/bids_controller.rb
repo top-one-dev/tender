@@ -152,10 +152,17 @@ class BidsController < ApplicationController
   def destroy
     request  = @bid.request
     supplier = @bid.supplier
-    request.bids.create(supplier_id: supplier.id, status: 'reject')
+    if params[:from] == 'supplier'
+      request.bids.create(supplier_id: supplier.id, status: 'reject')
+      redirect_url = view_request_url(request.id, crypt.encrypt_and_sign(supplier.id))
+      notice       = "You just declined your bid on the request<br> Thanks for your informing...".html_safe
+    else
+      redirect_url = request_url(request.id)
+      notice       = "Bid ##{@bid.id} of #{supplier.email} was successfully removed.".html_safe
+    end
     @bid.destroy
     respond_to do |format|
-      format.html { redirect_to view_request_url(request.id, crypt.encrypt_and_sign(supplier.id)), notice: "You just declined your bid on the request<br> Thanks for your informing...".html_safe }
+      format.html { redirect_to redirect_url, notice: notice }
       format.json { head :no_content }
     end
   end

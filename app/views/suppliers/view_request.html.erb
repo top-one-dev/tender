@@ -36,7 +36,7 @@
 			<% elsif @supplier.bids.where(:request_id => @request.id ).where(:status => 'sent').exists? %>
 				<div class="bg-info bid-nav">
 					<%= link_to 'Edit Bid', edit_bid_path(@supplier.bids.where(:request_id => @request.id ).where(:status => 'sent').first.id), class: 'btn btn-lg btn-info' %>
-					<%= link_to 'Decline', @supplier.bids.where(:request_id => @request.id ).where(:status => 'sent').first, class: 'btn btn-lg btn-danger', method: :delete, data: { confirm: 'Are you sure?' } %>
+					<%= link_to 'Decline', bid_path( @supplier.bids.where(:request_id => @request.id ).where(:status => 'sent').first, from: 'supplier'), class: 'btn btn-lg btn-danger', method: :delete, data: { confirm: 'Are you sure?' } %>
 					<%= link_to 'My Bids', 'javascript:;', 'data-toggle': "modal", 'data-target': "#showBidModal", class: 'btn btn-lg btn-default' %>
 				</div>
 			<% else %>
