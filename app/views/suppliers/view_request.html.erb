@@ -248,6 +248,35 @@
         <h4 class="modal-title">Show Bid</h4>
       </div>
       <div class="modal-body">
+      	<div class="text-right">
+      		<%= link_to 'Download PDF', bid_pdf_url(bid.id), class: 'btn btn-sm btn-default', target: '_blank' %>
+      	</div>
+      	<div class="row">
+      		<div class="col-sm-8 col-sm-offset-2">
+      			<h4 class="text-center"><%= @request.name %></h4>
+      			<table class="table">
+      				<tbody>
+      					<tr>
+      						<td>Company:</td>
+      						<td><b><%= @request.company.name %></b></td>
+      					</tr>
+      					<tr>
+      						<td>Contact:</td>
+      						<td><b><%= @request.user.name %></b></td>
+      					</tr>
+      					<tr>
+      						<td>Bid made:</td>
+      						<td><b><%= bid.created_at.strftime("%b %d, %Y %H:%M") %></b></td>
+      					</tr>
+      					<tr>
+      						<td>Grand total:</td>
+      						<td><b><%= bid.item_total %> <%= bid.bid_currency %></b></td>
+      					</tr>
+      				</tbody>
+      			</table>
+      		</div>
+      	</div>
+
       	<ul class="nav nav-tabs">			      
 			<li class="active" >
 				<a data-toggle="tab" href="#questionarie"><b>Questionarie</b></a>
