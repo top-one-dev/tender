@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   resources :stockholders
   resources :requisitions
   resources :bids
+  get   'bid/:id/pdf',              to: 'bids#pdf',                 as: 'bid_pdf'
   resources :qanswers
   resources :ianswers
   resources :messages

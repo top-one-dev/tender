@@ -1,6 +1,6 @@
 class BidsController < ApplicationController
   # before_action :authenticate_user!, only: [:show, :edit, :update, :destroy]
-  before_action :set_bid, only: [:show, :edit, :update, :destroy]
+  before_action :set_bid, only: [:show, :edit, :update, :destroy, :pdf]
   before_action :set_s3_direct_post, only: [:new, :create, :edit, :update]
   before_action :set_qanswer_s3_direct_post, only: [:new, :create, :edit, :update]
   
@@ -88,7 +88,7 @@ class BidsController < ApplicationController
             end       
           end
 
-          TenderBooksNotifierMailer.bid_supplier(@bid.request.user, @bid.supplier, @bid.request).deliver_later
+          TenderBooksNotifierMailer.bid_supplier(@bid.request.user, @bid.supplier, @bid).deliver_later
           TenderBooksNotifierMailer.bid_buyer(@bid.request.user, @bid.supplier, @bid.request).deliver_later
 
           if @bid.supplier.user.nil?
@@ -156,6 +156,11 @@ class BidsController < ApplicationController
       format.html { redirect_to view_request_url(request.id, crypt.encrypt_and_sign(supplier.id)), notice: "You just declined your bid on the request<br> Thanks for your informing...".html_safe }
       format.json { head :no_content }
     end
+  end
+
+  def pdf
+    @bid.to_pdf
+    send_file "#{Rails.root}/public/download/#{@bid.request.created_at.strftime("%Y-%m-%d")}-#{@bid.request.name}-##{@bid.request.id}/Bids/#{@bid.supplier.company}_#{@bid.supplier.id}/#{@bid.id}/#{@bid.supplier.company}_#{@bid.request.id}_#{@bid.id}.pdf"
   end
 
   private
