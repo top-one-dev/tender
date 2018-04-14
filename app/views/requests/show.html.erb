@@ -314,6 +314,35 @@
               <% end %>
             </tbody>
           </table>
+
+          <label class="text-info">Does Not Want To Bid</label>
+          <table class="table">
+            <% @suppliers.each do |supplier| %>
+              <% if supplier.bids.where(request_id: @request.id).where(status: 'reject').exists? %>
+                <tr>
+                  <td>
+                    <b>
+                    <%= supplier.company %>
+                    </b> : 
+                    <%= supplier.name %> ( <%= supplier.email %> )
+                  </td>
+                  <td>
+                    <%= supplier.bids.where(request_id: @request.id).where(status: 'reject').last.created_at.strftime("%b %d, %Y %H:%M ( %Z%z )") %>                      
+                  </td>
+                  <td>
+                    <%= link_to '<i class="glyphicon glyphicon-envelope text-muted"></i>'.html_safe, "#{messages_url}?id=#{@request.id}", class: "btn btn-default" %>
+                  </td>
+                  </tr>
+              <% end %>
+            <% end %>
+          </table>
+
+          <label class="text-info">Read</label>
+          <table class="table"></table>
+
+          <label class="text-info">Not Read</label>
+          <table class="table"></table>
+
         </div>
         <div id="bids" class="tab-pane fade">
           <br>
@@ -341,7 +370,6 @@
                       <span class="caret"></span></button>
                       <ul class="dropdown-menu">
                         <li><%= link_to 'View bid', @request.bids.where(status: 'win').first %></li>
-                        <li><%= link_to 'Remove bid', '#' %></li>
                       </ul>
                     </div>                
                   </td>
@@ -386,7 +414,7 @@
                     <span class="caret"></span></button>
                     <ul class="dropdown-menu">
                       <li><%= link_to 'View bid', bid %></li>
-                      <li><%= link_to 'Remove bid', '#' %></li>
+                      <li><%= link_to 'Remove bid', bid_path(bid, from: 'buyer'), method: :delete, data: { confirm: 'Are you sure?' } %></li>
                     </ul>
                   </div>                
                 </td>
