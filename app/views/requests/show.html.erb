@@ -276,7 +276,7 @@
         <table class="table">
           <tbody>
             <% @suppliers.each do |supplier| %>
-              <% if supplier.bids.where(request_id: @request.id).exists? %>
+              <% if supplier.bids.where(request_id: @request.id).where.not(status: 'reject').exists? %>
                 <tr>
                   <td>
                     <b>
@@ -364,7 +364,7 @@
               <tr><th>Company</th><th>Total</th><th>Difference</th><th>Bid time</th><th></th></tr>
             </thead>
             <tbody>
-              <% @request.bids.each do |bid| %>
+              <% @request.bids.where.not(status: 'reject').each do |bid| %>
               <tr>                
                 <td>
                   <b>

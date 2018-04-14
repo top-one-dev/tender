@@ -120,8 +120,10 @@
 				<b><%= question.title %></b><br>
 				<span class="text-muted"><%= question.description %></span><br>
 				<b class="text-success"><%= bid.qanswers[index].answer %></b>
-				<% unless bid.qanswers[index].attach.empty? %>
-					<%= link_to "<i class='glyphicon glyphicon-file'></i> #{url_decode(bid.qanswers[index].attach).split('/').last}".html_safe, bid.qanswers[index].attach.html_safe %>
+				<% unless bid.qanswers[index].attach.nil? %>
+					<% unless bid.qanswers[index].attach.empty? %>
+						<%= link_to "<i class='glyphicon glyphicon-file'></i> #{url_decode(bid.qanswers[index].attach).split('/').last}".html_safe, bid.qanswers[index].attach.html_safe %>
+					<% end %>
 				<% end %>
 				<hr>
 			</li>
