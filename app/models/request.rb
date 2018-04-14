@@ -34,7 +34,7 @@ class Request < ApplicationRecord
 
   private
   def as_html
-    render template: "requests/pdf", layout: "pdf", locals: { request: self, bids: self.bids.group_by(&:supplier) }   
+    render template: "requests/pdf", layout: "pdf", locals: { request: self, bids: self.bids.where('status != ?', 'reject').group_by(&:supplier) }   
   end
   
 end

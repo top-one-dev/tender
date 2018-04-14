@@ -588,7 +588,9 @@ class RequestsController < ApplicationController
   def download
     @request.to_pdf
     @request.bids.each do |bid|
-      bid.to_pdf
+      unless bid.status == 'reject'
+        bid.to_pdf
+      end
     end
     inputs  = "#{Rails.root}/public/download/#{@request.created_at.strftime("%Y-%m-%d")}-#{@request.name}-##{@request.id}"
     outputs = "#{Rails.root}/public/download/#{@request.created_at.strftime("%Y-%m-%d")}-#{@request.name}-##{@request.id}.zip"
