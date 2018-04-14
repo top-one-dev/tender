@@ -6,5 +6,13 @@
   <body>
     <h2>Hi, <%= @supplier.email %></h2>
     <h3>You made a bid on request - <b><%= @request.name %></b>.</h3>
+    
+    <% unless @request.request_type.nil? %>
+        <%= link_to 'View Request', view_request_url(@request.id, @supplier_token ), target: '_blank' %>
+    <% end %>
+
+    <hr>
+    <em>You can see your bid details in pdf with below link...</em>
+    <%= link_to 'Download PDF', bid_pdf_url(@bid.id), target: '_blank' %>
   </body>
 </html>
