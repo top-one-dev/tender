@@ -13,7 +13,8 @@ $(document).on 'turbolinks:load', ->
 		val = $('#request_end_time').val()
 		$('#request_end_time').attr( 'value', val )
 	
-	$('input[type="checkbox"].toggle').bootstrapToggle()		
+	if $('input[type="checkbox"].toggle').length
+		$('input[type="checkbox"].toggle').bootstrapToggle()		
 
 	$('.request-perm').on 'click', ->
 		$('.request-perm').removeClass('btn-success').addClass('btn-default')
