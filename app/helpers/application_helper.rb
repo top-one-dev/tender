@@ -1897,7 +1897,12 @@ module ApplicationHelper
     
     item_total      = Money.new(bid.item_total*100, bid.bid_currency).exchange_to(bid.request.preferred_currency)
     
-    expected_budget = Money.new(bid.request.expected_budget*100, bid.request.preferred_currency)
+    if bid.request.expected_budget.nil?
+      expected_budget = Money.new(0*100, bid.request.preferred_currency)
+    else
+      expected_budget = Money.new(bid.request.expected_budget*100, bid.request.preferred_currency)
+    end
+    
     min_difference  = Money.new(1000000000000000000000000000, bid.request.preferred_currency)
     nearest_total   = Money.new(0, bid.request.preferred_currency)
 
