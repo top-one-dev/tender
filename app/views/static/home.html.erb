@@ -1,107 +1,137 @@
 <% provide(:title, "Home") %>
 
-	<section>
-		<div class="container">
-			<div class="text-center home-banner">
-				<h1>“What We Do”</h1>
-				<p class="text-blue">
-					“If you are a procuring entity, We are leaders in tender automation and supplier information management. We run supplier pre-qualification programmes, validate data, carry out industry audits and mitigate risks”<br>
-					“If you are a supplier, we help you become more competitive and profitable by helping you win and manage more tenders by helping you structure more compelling winning bids to any tender. All you need to do is register as a supplier with tenderbooks.”
-				</p>
-				<div id="myCarousel" class="carousel slide wow fadeInUp" data-ride="carousel">
-					<div class="carousel-inner">
-						<!-- <div class="item active">
-							<%= image_tag 'home/banner3.png' %>
-						</div>
- -->
-						<div class="item active">
-							<%= image_tag 'home/banner2.png' %>
-						</div>
+<section style="margin-top: -20px;">
+	<div id="myCarousel" class="carousel slide" data-ride="carousel">
+		<!-- Indicators -->
+		<ol class="carousel-indicators">
+			<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+			<li data-target="#myCarousel" data-slide-to="1"></li>
+			<li data-target="#myCarousel" data-slide-to="2"></li>
+		</ol>
 
-						<div class="item">
-							<%= image_tag 'home/banner1.png' %>
-						</div>
-					</div>
-				</div>			
+		<!-- Wrapper for slides -->
+		<div class="carousel-inner">
+			<div class="item active">
+				<%= image_tag 'home/sliders/1.jpg', class: 'img-responsive' %>
+				<div class="carousel-caption">
+					<h2 class="text-blue">“What We Do”</h2>
+					<p>
+						“If you are a procuring entity, We are leaders in tender automation and supplier information management. We run supplier pre-qualification programmes, validate data, carry out industry audits and mitigate risks”
+					</p>
+				</div>
+			</div>
+
+			<div class="item">
+				<%= image_tag 'home/sliders/2.jpg', class: 'img-responsive' %>
+				<div class="carousel-caption">
+					<h2 class="text-blue">“What We Do”</h2>
+					<p>
+						“If you are a supplier, we help you become more competitive and profitable by helping you win and manage more tenders by helping you structure more compelling winning bids to any tender. All you need to do is register as a supplier with tenderbooks.”
+					</p>
+				</div>
+			</div>
+
+			<div class="item">
+				<%= image_tag 'home/sliders/3.jpg', class: 'img-responsive' %>
+				<div class="carousel-caption">
+					<h2 class="text-blue">“What We Do”</h2>
+					<p>
+						“If you are a procuring entity, We are leaders in tender automation and supplier information management. We run supplier pre-qualification programmes, validate data, carry out industry audits and mitigate risks”
+					</p>
+				</div>
 			</div>
 		</div>
-	</section>
 
-	<section class="home-companies">
-		<div class=" container text-center">
-			<%= image_tag 'home/companies.png', class: 'img-responsive' %>
-		</div>
-	</section>
+		<!-- Left and right controls -->
+		<a class="left carousel-control" href="#myCarousel" data-slide="prev">
+			<span class="glyphicon glyphicon-chevron-left"></span>
+			<span class="sr-only">Previous</span>
+		</a>
+		<a class="right carousel-control" href="#myCarousel" data-slide="next">
+			<span class="glyphicon glyphicon-chevron-right"></span>
+			<span class="sr-only">Next</span>
+		</a>
+	</div>
+</section>
 
-	<hr>
-
-	<section id="testimonial">
-      <div class="container">
-        <div class="testimonial-heading">
-              <h1>Solutions We Provide to Procuring Entities</h1>
-            </div><!--testimonial-heading-->
-
-            <div class="flexslider1">
-              <ul class="slides new-slides">
-                <li data-thumb="<%= asset_path 'home/testimations/test-1.png' %>">
-                    <p>Tenderbooks is a powerfull procurement, supplier onboarding, Supplier diversity and compliance software.
-                      <span>SUPPLIER MANAGEMENT</span>
-                    </p>
-                </li>
-                <li data-thumb="<%= asset_path 'home/testimations/test-2.png' %>">
-                    <p>Tenderbooks provides you with a branded supplier self-registration and pre-qualification portal that easily converts your paper-based pre-qualification document into digital format where suppliers can easily take part in your supplier registration process and you as the procuring entity can easily evaluate the suppliers submissions.
-                      <span>SUPPLIER ENABLEMENT</span>
-                    </p>
-                </li>
-                <li data-thumb="<%= asset_path 'home/testimations/test-3.png' %>">
-                    <p>A single non-compliant vendor could cost you thousands and damage your reputation. For example awarding a tender to a supplier who was pre-qualified last year but at the moment some of his documents have expired. Tenderbooks gives you an early warning if any suppliers’ documents have expired or show any signs of red flags.
-                      <span>SUPPLIER COMPLIANCE</span>
-                    </p>
-                </li>
-                <li data-thumb="<%= asset_path 'home/testimations/test-4.png' %>">
-                    <p>Automated supplier pre-qualification with tenderbooks saves your team countless hours when evaluating new suppliers. Our Solution also helps you track expired supplier documents long after the pre-qualification process was completed.
-                      <span>AUTOMATED SUPPLIER  PRE-QUALIFICATION</span>
-                    </p>
-                </li>
-                <li data-thumb="<%= asset_path 'home/testimations/test-5.png' %>">
-                    <p>Tenderbooks provides you with a branded supplier self-registration and pre-qualification portal that easily converts your paper-based pre-qualification document into digital format where suppliers can easily take part in your supplier registration process and you as the procuring entity can easily evaluate the suppliers submissions.
-                      <span>SUPPLIER ENABLEMENT</span>
-                    </p>
-                </li>
-                <li data-thumb="<%= asset_path 'home/testimations/test-6.png' %>">
-                    <p>A single non-compliant vendor could cost you thousands and damage your reputation. For example awarding a tender to a supplier who was pre-qualified last year but at the moment some of his documents have expired. Tenderbooks gives you an early warning if any suppliers’ documents have expired or show any signs of red flags.
-                      <span>SUPPLIER COMPLIANCE</span>
-                    </p>
-                </li>
-                <li data-thumb="<%= asset_path 'home/testimations/test-7.png' %>">
-                    <p>Automated supplier pre-qualification with tenderbooks saves your team countless hours when evaluating new suppliers. Our Solution also helps you track expired supplier documents long after the pre-qualification process was completed.
-                      <span>AUTOMATED SUPPLIER  PRE-QUALIFICATION</span>
-                    </p>
-                </li>
-             </ul>
-          </div>
-      </div>
-  </section>  
-
-	<hr>
-
-	<section class="home-section">
-		<div class="container">
+<section class="home-section">
+	<div class="container">
+		<h1 class="text-center text-uppercase text-blue"><b>Core Features</b></h2>
+			<hr>			
 			<div class="row">
-				<div class="col-md-6 wow fadeInLeft">
-					<br><br>
-					<h2 class="text-blue">Supplier Pre-qualification</h2>
+				<div class="col-md-6 text-center" style="padding: 40px;">
+					<i class="fa fa-dashboard icon-5x text-blue"></i>
+					<h3 class="text-blue">Supplier Pre-qualification</h3>
 					<p class="text-muted">Our automated pre-qualification process which uses your pre-defined requirements helps you save countless hours when evaluating suppliers. Tenderbooks also helps you close the loop quickly by sending automated emails to pre-qualified and dis-qualified vendors in one click.</p>
-					<h2 class="text-blue">Categorise Suppliers & Invite them for requisitions</h2>
-					<p class="text-muted">Label suppliers by category and pull up their information in seconds. Quickly see which suppliers are qualified and which have been blacklisted. Select qualified suppliers to participate in an RFQs with just one click.</p>
 				</div>
-				<div class="col-md-6 wow fadeInRight">
-					<%= image_tag 'home/home1.png', class: 'img-responsive' %>
+				<div class="col-md-6 text-center" style="padding: 40px;">
+					<i class="fa fa-users icon-5x text-blue"></i>
+					<h3 class="text-blue">Categorise Suppliers & Invite them for requisitions</h3>
+					<p class="text-muted">Label suppliers by category and pull up their information in seconds. Quickly see which suppliers are qualified and which have been blacklisted. Select qualified suppliers to participate in an RFQs with just one click.</p>
 				</div>
 			</div>
 		</div>		
 	</section>
 
+	<hr>
+	<section class="home-section">
+		<div class="container">
+			<h1 class="text-center text-blue text-uppercase"><b>Pricing Plans</b></h1>
+			<hr>
+			<div class="row">
+				<div class="col-sm-3">
+					<div class="card">
+						<h2><b>Starter</b></h2>
+						<h3 class="text-blue price-digit"><em>Free!</em></h3>
+						<h4>3 User Accounts</h4>
+						<h4>3 Private Projects</h4>
+						<h4>Unlimited Public Projects</h4>
+						<h4>5GB of space</h4>
+						<hr>
+						<button class="btn btn-info"> Sign Up</button>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="card active">
+						<h2><b>Pro <em>plus</em></b></h2>
+						<h3 class="bg-blue price-digit"><small>$</small> 49.95 <small>/ MO</small></h3>
+						<h4>50 User Accounts</h4>
+						<h4>50 Private Projects</h4>
+						<h4>Unlimited Public Projects</h4>
+						<h4>Unlimited space</h4>
+						<hr>
+						<button class="btn btn-info"> Sign Up</button>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="card active">
+						<div class="card-ribbon bg-blue text-center card-ribbon-top card-ribbon-left">Popular</div>
+						<h2><b>Biz <em>plus</em></b></h2>
+						<h3 class="bg-blue price-digit"><small>$</small> 199.95 <small>/ MO</small></h3>
+						<h4>Unlimited User Accounts</h4>
+						<h4>Unlimited Private Projects</h4>
+						<h4>Unlimited Public Projects</h4>
+						<h4>Unlimited space</h4>
+						<hr>
+						<button class="btn btn-info"> Sign Up</button>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="card">
+						<div class="card-ribbon text-center card-ribbon-top card-ribbon-right text-muted"><b>Best Buy</b></div>
+						<h2><b>Starter <em>plus</em></b></h2>
+						<h3 class="text-blue price-digit"><small>$</small> 19.95 <small>/ MO</small></h3>
+						<h4>10 User Accounts</h4>
+						<h4>10 Private Projects</h4>
+						<h4>Unlimited Public Projects</h4>
+						<h4>15GB of space</h4>
+						<hr>
+						<button class="btn btn-info"> Sign Up</button>
+					</div>
+				</div>
+			</div>
+		</div>		
+	</section>
 	<hr>
 
 	<section class="home-section" id="home-last-section">
@@ -135,66 +165,3 @@
 		</div>
 	</section>
 
-	<!-- <section class="home-section">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-6 wow fadeInUp">
-					<%= image_tag 'home/home2.png', class: 'img-responsive' %>
-				</div>
-				<div class="col-md-6 wow fadeInRight">
-					<br><br>
-					<h2 class="text-blue">Lorem ipsum dolor sit amet</h2>
-					<p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-					<h2 class="text-blue">Lorem ipsum dolor sit amet</h2>
-					<p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-					<h2 class="text-blue">Lorem ipsum dolor sit amet</h2>
-					<p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-				</div>
-			</div>
-		</div>		
-	</section>
-
-	<section class="bg-blue home-bar">
-		<div class="container text-center">
-			<h2>Lorem ipsum dolor sit amet</h2>
-			<button class="btn btn-default text-blue">
-				Start Now
-			</button>
-		</div>		
-	</section>
-
-	<section class="home-section">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-6 wow fadeInLeft">
-					<br><br>
-					<h2 class="text-blue">Lorem ipsum dolor sit amet</h2>
-					<p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-					<h2 class="text-blue">Lorem ipsum dolor sit amet</h2>
-					<p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-				</div>
-				<div class="col-md-6 wow fadeInRight">
-					<%= image_tag 'home/home3.png', class: 'img-responsive' %>
-				</div>
-			</div>
-		</div>		
-	</section>
-
-	<hr>
-
-	<section class="home-section">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-6 wow fadeInUp">
-					<%= image_tag 'home/home4.png', class: 'img-responsive' %>
-				</div>
-				<div class="col-md-6 wow fadeInRight">
-					<br><br>
-					<h2 class="text-blue">Lorem ipsum dolor sit amet</h2>
-					<p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-					<h2 class="text-blue">Lorem ipsum dolor sit amet</h2>
-					<p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-				</div>
-			</div>
-		</div>		
-	</section> -->
