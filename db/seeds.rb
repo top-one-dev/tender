@@ -40,4 +40,8 @@ categories.each do |category|
 		puts "#{category[:name]} category already exists..."
 	end
 end
-AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?
+if AdminUser.all.count < 1
+	AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password')
+else 
+	puts "Exists"
+end
