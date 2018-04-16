@@ -6,14 +6,14 @@
 
 /*----- common styles ------*/
 .text-blue{
-	color: #09a3e0;
+	color: #55A79A;
 }
 .bg-blue{
-	background-color: #09a3e0;
+	background-color: #55A79A;
 	color: #fff;
 }
 .btn-info{
-	background-color: #09a3e0;
+	background-color: #55A79A;
 }
 .bg-gray{
 	background-color: #f8f8f8;
@@ -32,6 +32,59 @@
 	li{
 		margin-left: 20px;
 	}
+}
+
+.icon-5x {
+    font-size: 5em!important;
+}
+
+.card{
+	margin-top: 30px;
+	text-align: center;
+	box-shadow: 1px 1px 6px #dee2e6;
+	border-radius: .25rem !important;
+	border: 1px solid rgba(0,0,0,.125);
+	padding-bottom: 20px;
+	overflow: hidden;
+	position: relative;
+	.price-digit{
+		border: 1px solid transparent;
+    	border-color: #e9ecef!important;
+		padding: 20px 0;
+		small{
+			color: #fff;
+		}
+	}
+	.card-ribbon{
+		width: 200px;
+	    padding: 2px 5px;
+	    position: absolute;
+	    text-align: center;
+	    font-size: 12px;
+	    z-index: 1;
+	}
+	.card-ribbon-left {
+	    left: -70px;
+	}
+	.card-ribbon-top {
+	    top: 20px;
+	}
+	.card-ribbon-right {
+	    right: -70px;
+	}
+	.card-ribbon-bottom.card-ribbon-right, .card-ribbon-top.card-ribbon-left {
+	    -webkit-transform: rotate(-45deg);
+	    transform: rotate(-45deg);
+	}
+	.card-ribbon-bottom.card-ribbon-left, .card-ribbon-top.card-ribbon-right {
+	    -webkit-transform: rotate(45deg);
+	    transform: rotate(45deg);
+	}
+}
+
+.card.active{
+	border-color: #55A79A;
+	padding: 20px 0 30px;
 }
 
 /*flash*/
@@ -76,7 +129,7 @@
 }
 .navbar .nav > li > a,
 .navbar .nav > li > ul > li > a{
-	color: #09a3e0;
+	color: #55A79A;
 	transition: all .7s ease;
 }
 .navbar .nav > li > a:hover,
