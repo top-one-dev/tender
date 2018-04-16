@@ -14,6 +14,9 @@
 }
 .btn-info{
 	background-color: #55A79A;
+	&:hover{
+		background-color: #55A79A;
+	}
 }
 .bg-gray{
 	background-color: #f8f8f8;
