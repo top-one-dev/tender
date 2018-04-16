@@ -65,6 +65,12 @@ gem 'axlsx_rails'
 
 gem 'activerecord-session_store'
 
+# admin
+gem 'activeadmin'
+gem 'cancan' # or cancancan
+gem 'draper'
+gem 'pundit'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'sqlite3'
