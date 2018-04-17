@@ -32,22 +32,12 @@ class Bid < ApplicationRecord
   end
 
   def winner
-    unless self.supplier.user.nil?
-      supplier_name = self.supplier.user.name
-      if supplier.user.companies.exists?
-        company = supplier.user.companies.first.name
-      else
-        company = 'Unknown Company'
-      end
-    else
-      supplier_name = 'Anonymous Supplier'
-      company       = 'Unknown Company'
-    end
     { request:    "##{self.request.id} #{self.request.name}",
       id:         self.id,
-      name:       supplier_name, 
+      name:       self.supplier.name, 
       email:      self.supplier.email, 
-      company:    company, 
+      company:    self.supplier.company,
+      buyer:      "#{self.request.user.name}\n #{self.request.company.name}\n #{self.request.company.phone}", 
       bid_budget: "#{self.item_total} #{self.bid_currency}" }.to_json
   end
 
