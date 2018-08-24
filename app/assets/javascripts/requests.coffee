@@ -348,22 +348,6 @@ $(document).on 'turbolinks:load', ->
 		else
 			$('#preview-invite-alert').html('Invalid email...').show()
 
-	$('#open-report').on 'click', (e)->
-		url = $(this).attr 'data-report'
-		$(this).attr 'disabled', true
-		$.ajax
-			type: 'POST'
-			url: url
-			timeout: 1000000
-			success: (res) ->
-				$(this).attr 'disabled', false
-				if res.status == 'success'
-					$.fileDownload(res.url).done(->
-						alert 'File download a success!'
-					).fail ->
-						alert 'File download failed!'
-				else
-					alert res.status
 
 
 validateEmail = (email) ->

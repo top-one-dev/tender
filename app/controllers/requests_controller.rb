@@ -581,11 +581,8 @@ class RequestsController < ApplicationController
   end
 
   def pdf
-    if @request.to_pdf
-      render json: { status: 'ok', url: "#{Rails.root}/public/download/#{@request.created_at.strftime("%Y-%m-%d")}-#{@request.name}-##{@request.id}/#{@request.name}.pdf" }
-    else
-      render json: { status: 'error' }
-    end
+    @request.to_pdf
+    send_file "#{Rails.root}/public/download/#{@request.created_at.strftime("%Y-%m-%d")}-#{@request.name}-##{@request.id}/#{@request.name}.pdf"
   end
 
   def download

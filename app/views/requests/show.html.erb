@@ -38,10 +38,7 @@
           <a href="javascript:;" onclick="alert('Sorry. This is A sealed Bid, And you shall only be able to access this feature after the Closing date & Time has Passed!')" class="btn btn-sm btn-default" ><b>Download as zip</b></a>
         <% else %>
           <% if @request.bids.where.not(status: 'reject').count > 0 %>
-            <button data-report="<%= open_report_path(@request) %>" class="btn btn-sm btn-default" id="open-report">
-              <b>Open report</b>
-            </button>
-            <!-- <%= link_to '<b>Open report</b>'.html_safe, open_report_path(@request), target: '_blank', class: 'btn btn-sm btn-default' %> -->
+            <%= link_to '<b>Open report</b>'.html_safe, open_report_path(@request), target: '_blank', class: 'btn btn-sm btn-default' %>
             <%= link_to '<b>Download as zip</b>'.html_safe, download_path(@request), target: '_blank', class: 'btn btn-sm btn-default' %>
           <% else %>
             <a href="javascript:;" onclick="alert('Sorry, there is no bids for this request. You can open report after at least one more bids.')" class="btn btn-sm btn-default" ><b>Open report</b></a>
@@ -73,10 +70,7 @@
               <a href="javascript:;" onclick="alert('“Sorry. This is A sealed Bid, And you shall only be able to access this feature after the Closing date & Time has Passed!')" class="btn btn-sm btn-default" ><b>Download as zip</b></a>
             <% else %>
               <% if @request.bids.where.not(status: 'reject').count > 0 %>
-                <button data-report="<%= open_report_path(@request) %>" class="btn btn-sm btn-default" id="open-report">
-                  <b>Open report</b>
-                </button>
-                <!-- <%= link_to '<b>Open report</b>'.html_safe, open_report_path(@request), target: '_blank', class: 'btn btn-sm btn-default' %>  -->
+                <%= link_to '<b>Open report</b>'.html_safe, open_report_path(@request), target: '_blank', class: 'btn btn-sm btn-default' %>
                 <%= link_to '<b>Download as zip</b>'.html_safe, download_path(@request), target: '_blank', class: 'btn btn-sm btn-default' %>
               <% else %>
                 <a href="javascript:;" onclick="alert('Sorry, there is no bids for this request. You can open report after at least one more bids.')" class="btn btn-sm btn-default" ><b>Open report</b></a>
@@ -106,10 +100,7 @@
           <a href="javascript:;" onclick="alert('“Sorry. This is A sealed Bid, And you shall only be able to access this feature after the Closing date & Time has Passed!')" class="btn btn-sm btn-default" ><b>Download as zip</b></a>
         <% else %>
           <% if @request.bids.where.not(status: 'reject').count > 0 %>
-            <button data-report="<%= open_report_path(@request) %>" class="btn btn-sm btn-default" id="open-report">
-              <b>Open report</b>
-            </button>
-            <!-- <%= link_to '<b>Open report</b>'.html_safe, open_report_path(@request), target: '_blank', class: 'btn btn-sm btn-default' %> -->
+            <%= link_to '<b>Open report</b>'.html_safe, open_report_path(@request), target: '_blank', class: 'btn btn-sm btn-default' %>
             <%= link_to '<b>Download as zip</b>'.html_safe, download_path(@request), target: '_blank', class: 'btn btn-sm btn-default' %>
           <% else %>
             <a href="javascript:;" onclick="alert('Sorry, there is no bids for this request. You can open report after at least one more bids.')" class="btn btn-sm btn-default" ><b>Open report</b></a>
