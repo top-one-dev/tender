@@ -354,6 +354,7 @@ $(document).on 'turbolinks:load', ->
 		$.ajax
 			type: 'POST'
 			url: url
+			timeout: 1000000
 			success: (res) ->
 				$(this).attr 'disabled', false
 				if res.status == 'success'
