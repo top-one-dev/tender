@@ -352,7 +352,7 @@ $(document).on 'turbolinks:load', ->
 		url = $(this).attr 'data-report'
 		$(this).attr 'disabled', true
 		$.ajax
-			type: 'GET'
+			type: 'POST'
 			url: url
 			success: (res) ->
 				$(this).attr 'disabled', false
@@ -363,7 +363,7 @@ $(document).on 'turbolinks:load', ->
 						alert 'File download failed!'
 				else
 					alert res.status
-					
+
 
 validateEmail = (email) ->
 	re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
