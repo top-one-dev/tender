@@ -348,27 +348,22 @@ $(document).on 'turbolinks:load', ->
 		else
 			$('#preview-invite-alert').html('Invalid email...').show()
 
-
-  $('#open-report').on 'click', (e)->
-    url = $(this).attr 'data-report'
-    $(this).attr 'disabled', true
-    $.ajax
-      type: 'GET'
-      url: url
-      success: (res) ->
-        $(this).attr 'disabled', false
-        if res.status == 'success'
-          $.fileDownload(res.url)
-            .done(->
-              alert 'File download a success!'
-            ).fail ->
-              alert 'File download failed!'
-        else
-          alert res.status
-
-
-
-
+	$('#open-report').on 'click', (e)->
+		url = $(this).attr 'data-report'
+		$(this).attr 'disabled', true
+		$.ajax
+			type: 'GET'
+			url: url
+			success: (res) ->
+				$(this).attr 'disabled', false
+				if res.status == 'success'
+					$.fileDownload(res.url).done(->
+						alert 'File download a success!'
+					).fail ->
+						alert 'File download failed!'
+				else
+					alert res.status
+					
 
 validateEmail = (email) ->
 	re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
