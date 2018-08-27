@@ -27,4 +27,4 @@ production:
   pool: 5
   username: ENV['DB_USER_NAME']
   password: ENV['DB_USER_PASS']
-  host: localhost
+  host: ENV['DB_HOST']
