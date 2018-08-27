@@ -159,7 +159,7 @@ class TenderBooksNotifierMailer < ApplicationMailer
 
 	def contact_admin(contact)
 		@contact = contact
-		mail(:to => 'team@tenderbooks.com', :subject => @contact.subject )
+		mail(:to => 'team@mtenders.com', :subject => @contact.subject )
 	end
 
 	def contact_user(contact)
@@ -171,7 +171,7 @@ class TenderBooksNotifierMailer < ApplicationMailer
 
 	def demo_admin(demo)
 		@demo = demo
-		mail(:to => 'team@tenderbooks.com', :subject => "Request a demo from #{@demo.email}")
+		mail(:to => 'team@mtenders.com', :subject => "Request a demo from #{@demo.email}")
 	end
 
 	def demo_user(demo)
