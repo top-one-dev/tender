@@ -86,8 +86,8 @@ Rails.application.configure do
 
   # remove if no need
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.default_url_options = { host: Rails.root }
-  config.action_mailer.asset_host = Rails.root
+  config.action_mailer.default_url_options = { host: 'mtendersafrica.com' }
+  config.action_mailer.asset_host = 'http://mtendersafrica.com'
 
   ActionMailer::Base.smtp_settings = {
       :address        => 'smtp.sendgrid.net',
