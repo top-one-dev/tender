@@ -4,7 +4,12 @@ class SuppliersController < ApplicationController
   # GET /suppliers
   # GET /suppliers.json
   def index
-    @suppliers = current_company.suppliers
+  	if current_company.nil?
+      flash[:notice] = 'You need to set company first.'
+      redirect_to new_company_path
+    else
+    	@suppliers = current_company.suppliers
+    end
   end
 
   # GET /suppliers/1
