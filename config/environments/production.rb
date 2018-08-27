@@ -86,8 +86,8 @@ Rails.application.configure do
 
   # remove if no need
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.default_url_options = { host: 'tenderbooks.herokuapp.com' }
-  config.action_mailer.asset_host = 'https://tenderbooks.herokuapp.com'
+  config.action_mailer.default_url_options = { host: Addressable::URI.parse(Rails.root).host }
+  config.action_mailer.asset_host = Rails.root
 
   ActionMailer::Base.smtp_settings = {
       :address        => 'smtp.sendgrid.net',

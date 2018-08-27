@@ -23,8 +23,8 @@ test:
 production:
   adapter: postgresql
   encoding: unicode
-  database: production_tenderbooks
+  database: ENV['DB_NAME']
   pool: 5
-  username: root
-  password: root
+  username: ENV['DB_USER_NAME']
+  password: ENV['DB_USER_PASS']
   host: localhost
