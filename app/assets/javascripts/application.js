@@ -14,7 +14,6 @@
 //= require bootstrap
 //= require moment
 //= require bootstrap-datetimepicker
-//= require bootstrap-toggle
 //= require jquery_ujs
 //= require dropzone
 //= require turbolinks

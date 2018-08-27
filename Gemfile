@@ -40,7 +40,6 @@ gem 'dropzonejs-rails'
 gem 'bootstrap3-rails'
 gem 'momentjs-rails', '>= 2.9.0'
 gem 'bootstrap3-datetimepicker-rails', '~> 4.17.47'
-gem 'bootstrap-toggle-rails'
 
 gem 'money'
 gem 'google_currency'

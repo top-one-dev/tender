@@ -80,7 +80,6 @@ GEM
       rails (>= 3.1)
     bcrypt (3.1.11)
     bindex (0.5.0)
-    bootstrap-toggle-rails (2.2.1.0)
     bootstrap3-datetimepicker-rails (4.17.47)
       momentjs-rails (>= 2.8.1)
     bootstrap3-rails (3.2.0)
@@ -308,7 +307,6 @@ DEPENDENCIES
   aws-sdk (~> 2)
   axlsx (= 2.1.0.pre)
   axlsx_rails
-  bootstrap-toggle-rails
   bootstrap3-datetimepicker-rails (~> 4.17.47)
   bootstrap3-rails
   byebug
