@@ -194,7 +194,7 @@ wb.styles do |s|
 	  	sheet.merge_cells sheet.rows.last.cells[(0..4)]
 	  	sheet.add_row [ 
           	@request.winner.company, 
-          	@request.winner.correct_user.name, 
+          	@request.winner.name, 
           	@request.winner.email,
           	"#{@request.winner.bids.where(request_id: @request.id).count} bids",
           	"#{@request.bids.where(status: 'win').first.bid_budget} #{@request.bids.where(status: 'win').first.bid_currency}",
