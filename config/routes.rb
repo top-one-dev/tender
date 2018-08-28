@@ -20,7 +20,7 @@ Rails.application.routes.draw do
   get   'request/:id/bids',           to: 'requests#compare_bids',    as: 'compare_bids'
   post  'request/set/winner',         to: 'requests#set_winner',      as: 'set_winner'
   get   'request/:id/export',         to: 'requests#export_excel',    as: 'export_excel'
-  post  'request/:id/report',         to: 'requests#pdf',             as: 'open_report'
+  get   'request/:id/report',         to: 'requests#pdf',             as: 'open_report'
   get   'request/:id/download',       to: 'requests#download',        as: 'download'
   post  'request/delete/document',    to: 'requests#delete_document', as: 'delete_document'
   get   'request/:id/status/:status', to: 'requests#change_status',   as: 'change_status'
