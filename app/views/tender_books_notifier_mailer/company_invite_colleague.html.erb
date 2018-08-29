@@ -6,11 +6,11 @@
   <body>
     <h3>Hi, <%= @user.name %></h3>
     <p>
-		I am <b><%= @company.owner.name %></b> representing a company <b><%= @company.name %></b> on Mtenders portal. I invite you to become a part of our company profile on Mtenders.<br><br>
+		I am <b><%= @company.owner.name %></b> representing a company <b><%= @company.name %></b> on Tenderbooks portal. I invite you to become a part of our company profile on Tenderbooks.<br><br>
 
-		Mtenders is a portal for companies, where you can conduct and participate on requests. Find new customers and stay up to date with your partners' activities. Mtenders helps to make collaboration more efficient and achieve better results.<br><br>
+		Tenderbooks is a portal for companies, where you can conduct and participate on requests. Find new customers and stay up to date with your partners' activities. Tenderbooks helps to make collaboration more efficient and achieve better results.<br><br>
 		<% if @is_new_user %>
-			( We already sent a confirm link to your email. To confirm that you want to be part of our company profile, activate your account with the link and login with this password  "<%= @user.email %>password" on Mtenders. )<br><br>
+			( We already sent a confirm link to your email. To confirm that you want to be part of our company profile, activate your account with the link and login with this password  "<%= @user.email %>password" on Tenderbooks. )<br><br>
 		<% end %>
 			To confirm that you want to be part of our company profile, <%= link_to 'Click here', accept_invite_url(@user.id, @company.id) %>.
 		<br><br>

@@ -1,6 +1,6 @@
 class TenderBooksNotifierMailer < ApplicationMailer
 
-	default :from => 'mtenders@support.com'
+	default :from => 'tenderbooks@support.com'
 
 	# Bids....
 
