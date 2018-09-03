@@ -294,7 +294,7 @@
             <% end %>
             </tbody>
           </table>
-          <label class="text-info">Wants To Bid</label>
+          <label class="text-info">Invited To Bid</label>
           <table class="table">
           <tbody>
             <% @suppliers.each do |supplier| %>
@@ -337,7 +337,7 @@
             <% end %>
           </table>
 
-          <label class="text-info">Read</label>
+          <label class="text-info">Read(Has shown Interest)</label>
           <table class="table"></table>
 
           <label class="text-info">Not Read</label>
@@ -389,7 +389,7 @@
           <label class="text-info">Bids</label>
           <table class="table">
             <thead>
-              <tr><th>Company</th><th>Total</th><th>Difference</th><th>Bid time</th><th></th></tr>
+              <tr><th>Company</th><th>Total</th><th>Variation with Budget</th><th>Bid time</th><th></th></tr>
             </thead>
             <tbody>
               <% @request.bids.where.not(status: 'reject').each do |bid| %>
@@ -414,7 +414,7 @@
                     <span class="caret"></span></button>
                     <ul class="dropdown-menu">
                       <li><%= link_to 'View bid', bid %></li>
-                      <li><%= link_to 'Remove bid', bid_path(bid, from: 'buyer'), method: :delete, data: { confirm: 'Are you sure?' } %></li>
+                      <li><%= link_to 'Archive bid', bid_path(bid, from: 'buyer'), method: :delete, data: { confirm: 'Are you sure?' } %></li>
                     </ul>
                   </div>                
                 </td>
