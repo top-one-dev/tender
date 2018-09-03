@@ -4,7 +4,9 @@
 $(document).on 'turbolinks:load', ->	
 
 	if $('#request_end_time').length
-		$('#request-end-time').datetimepicker format: 'YYYY-MM-DD HH:mm'
+		$('#request-end-time').datetimepicker 
+			format: 'YYYY-MM-DD HH:mm'
+			minDate: moment()
 
 	if $('.selectpicker').length
 		$('.selectpicker').selectpicker()
