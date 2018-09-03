@@ -20,6 +20,12 @@
     <% else %>
 
     <div class="row">
+    	<div class="pull-right">
+    		<%= link_to 'Back to Request', @request, class: "btn btn-default btn-sm" %>
+    	</div>
+    </div>
+
+    <div class="row">
       <div class="col-md-4">
         <% unless @requests.nil? %>
           <% @requests.each do |request| %>
