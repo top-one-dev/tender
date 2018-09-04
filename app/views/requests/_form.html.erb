@@ -762,10 +762,12 @@
             <% end %>
           </select>
         </div>
-        <div class="text-right">
-          <a href="javascript:;" class="btn btn-default btn-sm" id="load-template"><b class="text-muted">Load template</b></a>
+        <div class="text-right">        	
+          <a href="javascript:;" class="btn btn-default btn-sm" id="load-template">
+          	<b class="text-muted">Load template</b>
+          </a>
         </div>
-        <hr>
+        <hr> 
         <div class="form-group">
           <label>Question title</label>
           <input type="text" class="form-control" id="question-title">
@@ -817,7 +819,7 @@
                 <th>Title</th><th>Description</th><th>Type</th><th>Options</th><th>Enable attach</th><th>Mandatory</th><th></th>
               </tr>
             </thead>
-            <tbody>
+            <tbody>            	
               <% unless @questions.nil? %>
                 <% @questions.each do |question| %>
                 <tr>
