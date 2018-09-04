@@ -24,6 +24,7 @@ class DashboardController < ApplicationController
     else
       @requests = @users = []
     end
+    redirect_to root_path if @requests.empty?
   end
 
   private

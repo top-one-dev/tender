@@ -27,6 +27,7 @@ class MessagesController < ApplicationController
       @requests.uniq!
     else
       @requests = []
+      redirect_to root_path
     end 
     
   end

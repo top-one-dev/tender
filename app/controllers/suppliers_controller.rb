@@ -9,6 +9,7 @@ class SuppliersController < ApplicationController
       redirect_to new_company_path
     else
     	@suppliers = current_company.suppliers
+    	redirect_to root_path if @suppliers.empty?
     end
   end
 
