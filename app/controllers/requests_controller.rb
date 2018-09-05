@@ -142,8 +142,7 @@ class RequestsController < ApplicationController
   # POST /requests
   # POST /requests.json
   def create
-
-    if ( request_params['folder_id'] == 1 ) and ( participant_params.nil? or item_params.empty? or question_params.empty? )
+  	if ( request_params['folder_id'].to_i == 1 ) and ( participant_params.nil? or item_params.empty? or question_params.empty? )
 
       flash[:error] = 'You need to add at least one participiant, item list and questionaire.'
       redirect_back fallback_location: new_request_url
@@ -177,7 +176,7 @@ class RequestsController < ApplicationController
                 if User.where(email: supplier.email).exists?
                   supplier.update( user_id: User.where(email: supplier.email).first.id )
                 end
-                if request_params['folder_id'] == 1
+                if request_params['folder_id'].to_i == 1
                   TenderBooksNotifierMailer.invite_supplier(supplier, @request).deliver_later
                   @request.messages.create!(
                     from: 'buyer',

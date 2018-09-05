@@ -364,7 +364,7 @@
         <div class="row">
           <div class="col-md-5">
             <div class="input-group form-group">
-              <input type="text" class="form-control" name="email" id="participant-email" placeholder="Email of the participant" >
+              <input type="text" class="form-control" id="participant-email" placeholder="Email of the participant" >
               <span class="input-group-addon" id="add-participant"><b>ADD</b></span>          
             </div>
           </div>
@@ -376,8 +376,9 @@
               <span class="input-group-addon">
                 <b class="text-muted"><i class="glyphicon glyphicon-user"></i></b>
               </span>
-              <select class="form-control" id="suppliers-list">
+              <select class="form-control" id="suppliers-list" autocomplete="off">
                 <% current_company.suppliers.each do |supplier| %>
+                	<option value="" disabled selected>Select supplier</option>
                   <option value="<%= supplier[:email] %>" data-name="<%= supplier[:name] %>">
                     <%= "#{supplier[:email]}" %>                      
                   </option>
