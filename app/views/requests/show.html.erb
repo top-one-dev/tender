@@ -12,7 +12,8 @@
     </h3>
     <hr>
     <% if @request.company.owner == current_user or @request.user == current_user %>
-      <% if @request.folder_id == 1 %>
+      <% if @request.folder_id == 1 %> 
+      <!-- Active requests -->
       
       <div>
         <% if @request.company.owner == current_user %>
@@ -20,7 +21,9 @@
         <% end %>
         <%= link_to '<b>Edit request</b>'.html_safe, 'javascript:;', class: 'btn btn-sm btn-default', 'data-toggle': "modal", 'data-target': "#editRequestModal" %>
         <%= link_to '<b>Extend closing time</b>'.html_safe, 'javascript:;', class: 'btn btn-sm btn-default', 'data-toggle': "modal", 'data-target': "#extendRequestModal" %>
-        <%= link_to '<b>Invite suppliers</b>'.html_safe, 'javascript:;', class: 'btn btn-sm btn-default', 'data-toggle': "modal", 'data-target': "#inviteSupplierModal" %>
+        <% if Time.now < @request.end_time %>
+        	<%= link_to '<b>Invite suppliers</b>'.html_safe, 'javascript:;', class: 'btn btn-sm btn-default', 'data-toggle': "modal", 'data-target': "#inviteSupplierModal" %>
+        <% end %>
 
         <% if Time.now > @request.end_time%>
         <%= link_to '<b>Archive request</b>'.html_safe, change_status_path(@request.id, 3), class: 'btn btn-sm btn-default' %>
@@ -49,6 +52,7 @@
       </div>
       
       <% elsif @request.folder_id == 2 %>
+      <!-- Closed requests -->
         <% if @request.winner.nil? %>
           <div class="alert alert-warning">
             This request was closed by <b class="text-info"><%= @request.user.name %></b> at <%= @request.updated_at.strftime("%b %d, %Y %H:%M ( %Z%z )") %>
@@ -83,6 +87,8 @@
         <% end %>
 
       <% elsif @request.folder_id == 3 %>
+
+      <!-- Archived requests -->
       
       <div class="alert alert-warning">
         This request was archived by <b class="text-info"><%= @request.user.name %></b> at <%= @request.updated_at.strftime("%b %d, %Y %H:%M ( %Z%z )") %>
