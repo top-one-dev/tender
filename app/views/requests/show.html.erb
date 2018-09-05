@@ -29,11 +29,15 @@
         <%= link_to '<b>Archive request</b>'.html_safe, change_status_path(@request.id, 3), class: 'btn btn-sm btn-default' %>
         <% end %>
 
-        <% if @request.bids.where.not(status: 'reject').count > 0 %>
-          <%= link_to '<b>Compare bids</b>'.html_safe, compare_bids_path(@request.id), class: 'btn btn-sm btn-default' %>
+        <% if @request.sealed_bids and Time.now < @request.end_time %>
+        	<a href="javascript:;" onclick="alert('Sorry. This is A sealed Bid, And you shall only be able to access this feature after the Closing date & Time has Passed!')" class="btn btn-sm btn-default" ><b>Compare bids</b></a>
         <% else %>
-          <a href="javascript:;" onclick="alert('Sorry, there is no bids for this request. You can compare bids after at least one more bids.')" class="btn btn-sm btn-default" ><b>Compare bids</b></a>
-        <% end %>
+	        <% if @request.bids.where.not(status: 'reject').count > 0 %>
+	        	<%= link_to '<b>Compare bids</b>'.html_safe, compare_bids_path(@request.id), class: 'btn btn-sm btn-default' %>
+	        <% else %>
+	          <a href="javascript:;" onclick="alert('Sorry, there is no bids for this request. You can compare bids after at least one more bids.')" class="btn btn-sm btn-default" ><b>Compare bids</b></a>
+	        <% end %>
+	      <% end %>
         
         <%= link_to '<b>Cancel request</b>'.html_safe, 'javascript:;', class: 'btn btn-sm btn-default', 'data-toggle': "modal", 'data-target': "#cancelRequestModal" %>
         <% if @request.sealed_bids and @request.end_time > Time.now %>
