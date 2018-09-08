@@ -81,6 +81,7 @@
               <div class="well dropzone dropzone-small qanswer_document" id="qanswer<%= index %>_document" data-url="<%= @qanswer_s3_direct_post.url %>" data-fields="<%= @qanswer_s3_direct_post.fields.to_json %>">
                 <div class="dz-message"><b class="text-muted">Drag & drop file here</b></div> 
               </div>
+              <div id="qanswer<%= index %>_document_view" class="qanswer_document_view" data-url="<%= delete_document_path %>"></div>
             </div>
           </div>
         <% end %>
@@ -154,6 +155,8 @@
         <span>Drag document here</span>
       </div> 
     </div>
+    <div id="bid_document_view" data-url="<%= delete_document_path %>"></div>
+    <hr>
     <b class="text-info text-uppercase" >Comment to buyer</b>
     <hr>
     <%= f.text_area :content, class: 'form-control', placeholder: 'Add comment to buyer...' %>
