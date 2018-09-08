@@ -1,7 +1,7 @@
 class RequestsController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, :except => [:delete_document]
   before_action :set_request, only: [:show, :edit, :update, :destroy, :change_status, :compare_bids, :export_excel, :pdf, :download, :invite_supplier]
-  before_action :set_company
+  before_action :set_company, :except => [:delete_document]
   before_action :set_s3_direct_post, only: [:new, :create, :edit, :update]
 
   # GET /requests
