@@ -41,7 +41,7 @@
   </div>
 </div>
 
-<ul class="nav nav-tabs">
+<!-- <ul class="nav nav-tabs">
   <li class="active">
     <a data-toggle="tab" href="#question-anwers"><h4>Fill in questonarie</h4></a>
   </li>
@@ -52,10 +52,12 @@
   <% if bid.id.nil? %>
     <li><a href="#supplier-contact" data-toggle="tab"><h4>Contact Information</h4></a></li>
   <% end %>
-</ul>
+</ul> -->
 
 <div class="tab-content">
   <div id="question-anwers" class="tab-pane fade in active">
+  	<h4 class="text-info">Fill in questonarie</h4>
+  	<hr>
     <% @questions.each_with_index do |question, index| %>
       <div class="form-group <%= "required" unless question.mandatory.nil? %>">
         <label class="control-label"><%= "#{index+1}. #{question.title}" %></label><br>
@@ -81,7 +83,12 @@
               <div class="well dropzone dropzone-small qanswer_document" id="qanswer<%= index %>_document" data-url="<%= @qanswer_s3_direct_post.url %>" data-fields="<%= @qanswer_s3_direct_post.fields.to_json %>">
                 <div class="dz-message"><b class="text-muted">Drag & drop file here</b></div> 
               </div>
-              <div id="qanswer<%= index %>_document_view" class="qanswer_document_view" data-url="<%= delete_document_path %>"></div>
+              <div id="qanswer<%= index %>_document_view" class="qanswer_document_view" data-url="<%= delete_document_path %>">
+              	<% unless bid.qanswers[index].nil? %>
+              		<%= link_to "<i class='glyphicon glyphicon-file'></i> #{url_decode(bid.qanswers[index].attach).split('/').last}".html_safe, bid.qanswers[index].attach.html_safe %>&nbsp;&nbsp;&nbsp;
+	              	<i class='glyphicon glyphicon-remove text-danger' data-key='<%= bid.qanswers[index].attach %>' data-url='<%= delete_document_path %>' data-dzid='qanswer<%= index %>_document'></i>
+              	<% end%>
+              </div>
             </div>
           </div>
         <% end %>
@@ -98,6 +105,8 @@
   </div>
   <% unless @request.request_type == 'RFI' %>
   <div id="item-anwers" class="tab-pane fade">
+  	<h4 class="text-info">Enter quotation</h4>
+  	<hr>
     <table class="table table-striped">
       <thead>
         <tr>
@@ -147,6 +156,7 @@
   </div>
   <% end %>
   <div class="tab-pane fade" id="document-comment">
+  	<h4 class="text-info">Document & Comment</h4><hr>
     <b class="text-info text-uppercase" >Document</b> <span class="text-muted">( Here you can attach more documents like company profile, marketing material etc. These may help the procuring team to better understand that you are very capable in meeting their needs. )</span>
     <hr>
     <%= f.hidden_field :document %>
@@ -155,7 +165,12 @@
         <span>Drag document here</span>
       </div> 
     </div>
-    <div id="bid_document_view" data-url="<%= delete_document_path %>"></div>
+    <div id="bid_document_view" data-url="<%= delete_document_path %>">
+    	<% unless bid.document.nil? %>
+	    	<%= link_to "<i class='glyphicon glyphicon-file'></i> #{url_decode(bid.document).split('/').last}".html_safe, bid.document.html_safe %>&nbsp;&nbsp;&nbsp;
+	    	<i class='glyphicon glyphicon-remove text-danger' data-key='<%= bid.document %>' data-url='<%= delete_document_path %>' ></i>
+    	<% end %>
+    </div>
     <hr>
     <b class="text-info text-uppercase" >Comment to buyer</b>
     <hr>
@@ -178,6 +193,7 @@
 
   <% if bid.id.nil? %>
   <div class="tab-pane fade" id="supplier-contact">
+  	<h4 class="text-info">Contact Information</h4><hr>
     <div class="row">
       <div class="col-sm-8 col-sm-offset-2">
         <br><br>
