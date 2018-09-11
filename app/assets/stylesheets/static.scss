@@ -129,6 +129,9 @@
 /*----- navbar ------*/
 .navbar.navbar-default{
 	padding: 10px;
+	&.navbar-fixed-top{
+		background-color: transparent;
+	}
 }
 .navbar .nav > li > a,
 .navbar .nav > li > ul > li > a{
@@ -162,60 +165,18 @@
 .navbar-brand:hover{
 	transform: scale(1.1);
 }
-
-/*----- Home page -----*/
 html, body{
 	overflow-x: hidden;	
 }
 p{
 	letter-spacing: 1px;
 }
-.home-banner h1{
-	margin-top: 50px;
-}
-.home-banner p{
-	margin: 20px 0;
-	overflow: hidden;
-}
-.carousel-inner>.item>a>img, 
-.carousel-inner>.item>img{
-	margin-right: auto;
-	margin-left: auto;
-}
-.home-companies{
-	padding: 40px 0 20px;
-	background: #fff;
-}
-.home-section{
-	padding: 100px 0;
-}
-#home-last-section{
-	text-align: center;
-	img.img-responsive{
-		max-width: 70%;
-		margin: 20px auto;
-	}
-}
-.home-bar{
-	padding: 30px 0;
-}
-.home-bar button{
-	border: none;
-	font-size: 16px;
-	font-weight: 600;
-	padding: 10px 30px;
-	transition: all .7s ease;
-}
-.home-bar button:hover{
-	background-color: rgba(255, 255, 255, .2);
-	color: #fff; 
-}
-
 
 /*-----footer----*/
 footer{
 	padding: 30px 0;
 	background-color: #ececec;
+	overflow: hidden;
 }
 footer *{
 	margin: 10px 0;
@@ -275,86 +236,54 @@ footer *{
 }
 
 
-// ----- Landing page
+// homepage
 
-#landing-page{
-	background: url(asset_path('home/landing_page.jpg')) no-repeat center;
-	background-color: #000;
-	background-size: cover;
-	div.container{
-		padding: calc(50vh - 350px) 20px calc(50vh - 200px);
-		div.row{
-			background: linear-gradient(rgba(0, 0, 0, .1), rgba(0, 0, 0, .5), rgba(0, 0, 0, .7));
-		}
-		.card{
-			background: url(asset_path('home/card.jpg')) no-repeat center;
-			background-size: cover;
-			margin: 40px;
-			padding: 100px 0;
-			a{
-				text-decoration: none;
-			}
-			h1{
-				line-height: 1.5;
-				font-family: Dancing Script;
-				font-weight: 600;
-				color: #fff;
-				text-shadow: 0 0 2px white;
-				transition: all .5s ease-in;
-			}			
-			h1:hover{
-				transform: scale(1.1);
-			}
-		}
-	}
+.img-comp-container {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.img-comp-img {
+  position: absolute;
+  width: auto;
+  height: auto;
+  overflow: hidden;
+}
+
+.img-comp-img img {
+  display: block;
+  vertical-align: middle;
+  width: 100vw;
+}
+
+.img-comp-img p{
+	position: absolute;
+    top: 45%;
+    font-size: 45px;
+    &.present{
+    	left: 25vw;
+    	min-width: 450px;
+    }
+    &.future{
+    	right: 25vw;
+    }    
+}
+
+.img-comp-slider {
+  position: absolute;
+  z-index: 9;
+  cursor: ew-resize;
+  /*set the appearance of the slider:*/
+  width: 40px;
+  height: 40px;
+  background-color: #2196F3;
+  opacity: 0.7;
+  border-radius: 50%;
 }
 
 
-/*------responsive------*/
-@media only screen and ( min-width:600px) and ( max-width:767px ){
-	.testimonial-heading h1{
-		background:none;
-	}
-
-	.testimonial-heading h1 {
-	    padding: 0px 80px;
-	    font-size: 34px;
-	}
-
-	.new-slides li p {
-	    margin: 0;
-	    padding: 70px 10px 120px;
-	    background-position: top center, bottom center;
-	}
-}
-
-
-
-@media only screen and ( min-width:768px) and ( max-width:960px ){
-	.flexslider1 .flex-control-thumbs img {
-	    width: 65px !important;
-	    height: 65px !important;
-	}
-}
-
-@media only screen and ( min-width: 320px) and ( max-width: 599px ){
-	.flex-control-nav{
-		display:none;
-	}
-	
-	.testimonial-heading h1{
-		font-size:29px;
-		background:none;
-	}
-
-	.new-slides li p {
-	    margin: 0px 0px;
-	    padding: 70px 10px 120px;
-	    font-size: 16px;
-	    line-height: 28px;
-	    background-position: top center, bottom center;
-	}
-}
+// responsive
 
 @media only screen and (max-width: 768px){
 	.nav-tabs>li{
@@ -366,14 +295,5 @@ footer *{
 	}
 	.nav-tabs>li.pull-right button{
 		margin-top: 5px;
-	}
-
-	#landing-page{
-		div.container{
-			padding: 10vh 0;
-			.card{
-				padding: 50px 0;
-			}
-		}
 	}
 }
