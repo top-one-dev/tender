@@ -9,8 +9,10 @@ $(document).on 'turbolinks:load', ->
 		top = $(this).scrollTop()
 		if top > 100
 			$('nav.navbar-fixed-top').css 'background-color', '#fff'
+			$('section#pros-section').css 'margin-top', '-40vh'
 		else
 			$('nav.navbar-fixed-top').css 'background-color', 'transparent'
+			$('section#pros-section').css 'margin-top', 'initial'
 
 	$('.flexslider1').flexslider
 		animation: 'slide'

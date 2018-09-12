@@ -250,7 +250,7 @@ footer *{
 
 .img-comp-container {
   position: relative;
-  height: 120vh;
+  height: 130vh;
   overflow: hidden;
 }
 
@@ -284,40 +284,11 @@ footer *{
   position: absolute;
   z-index: 9;
   cursor: ew-resize;
-  /*set the appearance of the slider:*/
   width: 40px;
   height: 40px;
   background-color: #2196F3;
   opacity: 0.7;
   border-radius: 50%;
-}
-section#pros-section,
-section#contacts-vendors,
-section#supplier-setion,
-section#tenderbooks-you,
-section#counter-section
-{
-	padding: 200px 0;
-	background-attachment: fixed !important;
-    background-repeat: no-repeat !important;
-    background-size: cover !important;
-    font-family: "Open Sans", sans-serif;
-    letter-spacing: 1px;
-    h2{
-    	font-size: 40px;
-    }
-    h3{
-    	font-size: 18px;
-    	line-height: 1.5;
-    }
-    ul{
-    	list-style: none;
-    	display: flex;
-    	flex-wrap: wrap;
-    	li{
-    		margin: 10px;    		
-    	}
-    }
 }
 
 img.svg-img{
@@ -387,16 +358,46 @@ img.svg-img{
 
 }
 
+section#pros-section,
+section#contacts-vendors,
+section#supplier-setion,
+section#tenderbooks-you,
+section#posts-section,
+section#why-section,
+section#counter-section{
+	padding: 200px 0;
+	background-attachment: fixed !important;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+    font-family: "Open Sans", sans-serif;
+    letter-spacing: 1px;
+    h2{
+    	font-size: 40px;
+    }
+    h3{
+    	font-size: 18px;
+    	line-height: 1.5;
+    }
+    ul{
+    	list-style: none;
+    	display: flex;
+    	flex-wrap: wrap;
+    	li{
+    		margin: 10px;    		
+    	}
+    }
+}
+
 #pros-section{
-	background-image: url('home/pros.png');
+	background-image: url(asset-path('home/pros.png'));
 }
 
 #contacts-vendors{
-	background-image: url('home/contacts-vendors.png');
+	background-image: url(asset-path('home/contacts-vendors.png'));
 }
 
 #supplier-setion{
-	background-image: url('home/supper-selection.jpg');
+	background-image: url(asset-path('home/supper-selection.jpg'));
 }
 
 #testimonial-section{
@@ -445,7 +446,7 @@ img.svg-img{
 }
 
 #tenderbooks-you{
-	background-image: url('home/bonfire-you.jpg');
+	background-image: url(asset-path('home/bonfire-you.jpg'));
 	h2, h3{
 		color: #fff;
 	}
