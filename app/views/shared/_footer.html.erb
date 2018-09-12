@@ -1,5 +1,5 @@
-<footer>
-    <div class="container text-center">
+<footer class="<% unless user_signed_in? %>skew<% end %>">
+    <div class="container text-center" >
       <%= image_tag 'favicon.png', class: 'footer-logo' %>
       <!-- <p class="text-blue">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p> -->
       <div class="footer-navigation">
