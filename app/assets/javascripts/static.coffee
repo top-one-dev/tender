@@ -4,6 +4,14 @@
 
 $(document).on 'turbolinks:load', ->
 	initComparisons()
+	$(window).scroll (event) ->
+		event.preventDefault()
+		top = $(this).scrollTop()
+		if top > 100
+			$('nav.navbar-fixed-top').css 'background-color', '#fff'
+		else
+			$('nav.navbar-fixed-top').css 'background-color', 'transparent'
+
 	$('.flexslider1').flexslider
 		animation: 'slide'
 		controlNav: 'thumbnails'
