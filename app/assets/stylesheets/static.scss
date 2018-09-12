@@ -291,7 +291,12 @@ footer *{
   opacity: 0.7;
   border-radius: 50%;
 }
-section{
+section#pros-section,
+section#contacts-vendors,
+section#supplier-setion,
+section#tenderbooks-you,
+section#counter-section
+{
 	padding: 200px 0;
 	background-attachment: fixed !important;
     background-repeat: no-repeat !important;
@@ -396,6 +401,7 @@ img.svg-img{
 
 #testimonial-section{
 	padding: 0;
+	letter-spacing: 1px;
 	div.carousel{
 		margin: -110px 0;
 	}
