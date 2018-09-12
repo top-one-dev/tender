@@ -1,13 +1,306 @@
 <% provide(:title, "Home") %>
-<section>
-	<div class="img-comp-container">
-	  <div class="img-comp-img">
-	  	<p class="future">Your Future.</p>
-	  	<%= image_tag 'home/future.jpg' %>
+<div class="img-comp-container">
+  <div class="img-comp-img">
+  	<p class="future">Your Future.</p>
+  	<%= image_tag 'home/future.jpg' %>
+  </div>
+  <div class="img-comp-img img-comp-overlay">
+    <%= image_tag 'home/present.jpg' %>
+    <p class="present">Your Present.</p>
+  </div>
+</div>
+
+<section id="pros-section" class="skew">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-6">
+				<h2 class="text-blue">Powerful, flexible, visual.</h2>
+				<h3>Bonfire is the leading next-generation competitive bidding and RFx platform.</h3>
+				<div class="row">
+					<div class="col-xs-5">
+						<h3 style="border-right: 1px solid; padding: 5px 0;"><b class="text-uppercase">Trusted by</b></h3>
+					</div>
+					<div class="col-xs-7">
+						<%= image_tag 'home/partner-logo.png' %>
+					</div>
+				</div>
+				<h3>for 2x faster projects, 18% cost savings, richer visibility, and perfect compliance.</h3>
+			</div>
+			<div class="col-sm-6"></div>
+		</div>
+	</div>
+</section>
+
+<section id="testimonial-section" class="skew">
+	<div id="myCarousel" class="carousel slide" data-ride="carousel">
+	  <!-- Indicators -->
+	  <ol class="carousel-indicators">
+	    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+	    <li data-target="#myCarousel" data-slide-to="1"></li>
+	    <li data-target="#myCarousel" data-slide-to="2"></li>
+	  </ol>
+
+	  <!-- Wrapper for slides -->
+	  <div class="carousel-inner">
+	    <div class="item active">
+	    	<%= image_tag 'home/testimonial1.png' %>
+	      <div class="carousel-caption">
+	        <p>
+		        "Tenderbooks does more than we expected it to, and still has the potential to change the way we do things."
+		      </p>
+		      <h3 class="text-success">Michael John</h3>
+		      <p class="text-muted"><i>Principal, Contracts Manager,  Metropolitan Transportation Commission</i></p>
+	      </div>
+	    </div>
+
+	    <div class="item">
+	      <%= image_tag 'home/testimonial2.png' %>
+	      <div class="carousel-caption">
+	        <p>
+		        "Tenderbooks does more than we expected it to, and still has the potential to change the way we do things."
+		      </p>
+		      <h3 class="text-success">Michael John</h3>
+		      <p class="text-muted"><i>Principal, Contracts Manager,  Metropolitan Transportation Commission</i></p>
+	      </div>
+	    </div>
+
+	    <div class="item">
+	      <%= image_tag 'home/testimonial3.png' %>
+	      <div class="carousel-caption">
+	        <p>
+		        "Tenderbooks does more than we expected it to, and still has the potential to change the way we do things."
+		      </p>
+		      <h3 class="text-success">Michael John</h3>
+		      <p class="text-muted"><i>Principal, Contracts Manager,  Metropolitan Transportation Commission</i></p>
+	      </div>
+	    </div>
 	  </div>
-	  <div class="img-comp-img img-comp-overlay">
-	    <%= image_tag 'home/present.jpg' %>
-	    <p class="present">Your Present.</p>
-	  </div>
-	</div>	
+	</div>
+</section>
+
+<section id="supplier-setion" class="skew">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-9">
+				<h2 class="text-blue">Supplier Selection</h2>
+				<h3><b>Engaging, evaulating, and selecting suppliers - it's the most important part of your process.</b></h3>
+				<h3>Tenderbooks streamlines your workflow online, eliminates paper, and gives you visibility, richer, insights, and the confidence of perfect compliance.</h3>
+				<h3 class="text-muted">
+					Streamlined, online workflow for better, faster RFPs & bids
+				</h3>
+				<ul>
+					<li>
+						<a href="#" class="icon-button icon-purple">
+							<span class="icon-button_icon">
+								<%= image_tag 'home/overview.svg', class: 'svg-img'%>	
+							</span>
+							<span class="icon-button_label">Overview</span>					
+						</a>
+					</li>
+					<li>
+						<a href="#" class="icon-button icon-purple">
+							<span class="icon-button_icon">
+								<%= image_tag 'home/engage.svg', class: 'svg-img'%>	
+							</span>
+							<span class="icon-button_label">Engage</span>					
+						</a>
+					</li>
+					<li>
+						<a href="#" class="icon-button icon-purple">
+							<span class="icon-button_icon">
+								<%= image_tag 'home/receive.svg', class: 'svg-img'%>	
+							</span>
+							<span class="icon-button_label">Receive</span>					
+						</a>
+					</li>
+					<li>
+						<a href="#" class="icon-button icon-purple">
+							<span class="icon-button_icon">
+								<%= image_tag 'home/evaluate.svg', class: 'svg-img'%>	
+							</span>
+							<span class="icon-button_label">Evaluate</span>					
+						</a>
+					</li>
+					<li>
+						<a href="#" class="icon-button icon-purple">
+							<span class="icon-button_icon">
+								<%= image_tag 'home/award.svg', class: 'svg-img'%>	
+							</span>
+							<span class="icon-button_label">Award</span>					
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div class="col-sm-3">				
+			</div>
+		</div>
+	</div>
+</section>
+
+<section id="contacts-vendors" class="skew">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-6">				
+			</div>
+			<div class="col-sm-6">				
+				<h2 class="text-blue">Contracts & Vendors</h2>
+				<h3><b>Selecting suppliers isn't the end of the story.</b></h3>
+				<h3>Tenderbooks puts contracts and vondor performance management at your fingertips, streamining your information in an intuitive visual display.</h3>
+				<ul>
+					<li>
+						<a href="#" class="icon-button icon-blue">
+							<span class="icon-button_icon">
+								<%= image_tag 'home/contract-management.svg', class: 'svg-img'%>	
+							</span>
+							<span class="icon-button_label">Contract Management</span>					
+						</a>
+					</li>
+					<li>
+						<a href="#" class="icon-button icon-blue">
+							<span class="icon-button_icon">
+								<%= image_tag 'home/vendor-performance.svg', class: 'svg-img'%>	
+							</span>
+							<span class="icon-button_label">Vendor Performance</span>					
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section id="counter-section" class="skew">
+	<div class="container">
+		<ul>
+			<li>
+				<%= image_tag 'home/clients.svg' %>
+				<h4 class="text-center text-muted">Clients</h4>
+			</li>
+			<li>
+				<%= image_tag 'home/sourced.svg' %>
+				<h4 class="text-center text-muted">Sourced</h4>
+			</li>
+			<li>
+				<%= image_tag 'home/adoption-rate.svg' %>
+				<h4 class="text-center text-muted">Adoption rate</h4>
+			</li>
+			<li>
+				<%= image_tag 'home/return.svg' %>
+				<h4 class="text-center text-muted">Return on Investment</h4>
+			</li>			
+		</ul>
+	</div>
+</section>
+
+<section id="why-section" class="skew">
+	<div class="container">
+		<h1 class="text-center">
+			Why Buy Tenderbooks
+		</h1>
+		<hr>
+		<div class="text-center">
+			<a href="#" class="btn btn-success">Easy Adoption</a>
+			<a href="#" class="btn btn-success">Flexible + Scalable</a>
+			<a href="#" class="btn btn-success">True Partnership</a>
+		</div>
+		<br><br><br><br>
+		<div class="row">
+			<div class="col-sm-5">
+				<h2 class="text-blue">Easy adoption for everyone</h2>
+				<h3>Bonfire is easy to implement and easy to use for procurement teams and stakeholders alike. Your team will be up and running with Bonfire in two weeks or less – and you'll never look back.</h3>
+			</div>
+			<div class="col-sm-7">
+				<div class="row">
+					<div class="col-xs-4">
+						<%= image_tag 'home/weekly.svg', class: 'svg-img' %>
+						<p>
+							weeks or less to implement
+						</p>
+					</div>
+					<div class="col-xs-4">
+						<%= image_tag 'home/recommendation.svg', class: 'svg-img' %>
+						<p>
+							recommendation rates
+						</p>
+					</div>
+					<div class="col-xs-4">
+						<%= image_tag 'home/no-traning.svg', class: 'svg-img' %>
+						<p>
+							No training required for stakeholders
+						</p>
+					</div>
+					<div class="col-xs-4">
+						<%= image_tag 'home/pull-users.svg', class: 'svg-img' %>
+						<p>
+							Easy to dynamically pull in users
+						</p>
+					</div>
+					<div class="col-xs-4">
+						<%= image_tag 'home/98.svg', class: 'svg-img' %>
+						<p>
+							implementation success rate
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section id="tenderbooks-you" class="skew">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-6">
+				<h2>Tenderbooks +  You</h2>
+				<h3>See how we can help you sourcing team run better, faster RFPs and bids:</h3>
+				<div class="form-group">
+					<input type="" class="form-control input-lg" placeholder="Your work email" >
+				</div>
+				<div class="form-group">
+					<input type="" class="form-control input-lg" placeholder="Your organization name">
+				</div>				
+				<div class="form-group">
+					<button class="btn btn-lg btn-transparent">Request Demo</button>
+				</div>
+			</div>
+			<div class="col-sm-6"></div>
+		</div>
+	</div>
+</section>
+
+<section id="posts-section" class="skew">
+	<div class="container">
+		<h2 class="text-center">Read our success stories:</h2>
+		<hr><br><br>
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="post-card">
+					<%= image_tag 'home/post3.jpg', class: 'img-responsive' %>
+					<h3>Competitive Bidding, Sourcing and RFx Platform</h3>
+					<p>Bonfire is the leading next generation competitive bidding and RFx platform for 2x faster projects, 18% cost savings, richer visibility, and perfect compliance.</p>
+					<a href="#" class="btn btn-info btn-block">Read More</a>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="post-card">
+					<%= image_tag 'home/post3.jpg', class: 'img-responsive' %>
+					<h3>Competitive Bidding, Sourcing and RFx Platform</h3>
+					<p>Bonfire is the leading next generation competitive bidding and RFx platform for 2x faster projects, 18% cost savings, richer visibility, and perfect compliance.</p>
+					<a href="#" class="btn btn-info btn-block">Read More</a>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="post-card">
+					<%= image_tag 'home/post3.jpg', class: 'img-responsive' %>
+					<h3>Competitive Bidding, Sourcing and RFx Platform</h3>
+					<p>Bonfire is the leading next generation competitive bidding and RFx platform for 2x faster projects, 18% cost savings, richer visibility, and perfect compliance.</p>
+					<a href="#" class="btn btn-info btn-block">Read More</a>
+				</div>
+			</div>
+		</div>
+		<hr><br><br>
+		<div class="text-center">
+			<a href="#" class="btn btn-info btn-lg">View All Resources</a>
+		</div>		
+	</div>
 </section>
