@@ -54,6 +54,12 @@ Rails.application.routes.draw do
   get '/terms-of-use',    to: 'static#terms_of_use',    as: 'terms_of_use'
   get '/contact',         to: 'static#contact',         as: 'contact'
   get '/demo',            to: 'static#demo',            as: 'demo'
+  get '/prequalification',to: 'static#prequalification',as: 'prequalification'
+  get '/requisition/bid', to: 'static#requisition',     as: 'requisition_bid'
+  get '/vendor',          to: 'static#vendor',          as: 'vendor'
+  get '/diligence',       to: 'static#diligence',       as: 'diligence'
+  get '/about',		      to: 'static#company',         as: 'about'
+
 
   root 'static#home'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
