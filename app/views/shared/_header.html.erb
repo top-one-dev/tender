@@ -79,30 +79,33 @@
       </div>
       <div class="collapse navbar-collapse" id="myNavbar">
         <ul class="nav navbar-nav">
-          <li>
-            <%= link_to 'Company', root_path %>
-          </li>
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tender Solutions <span class="caret"></span></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Solutions <span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-              <li role="presentation"><a role="menuitem" href="#">Supplier Onboarding System</a></li>
-              <li role="presentation"><a role="menuitem" href="#">Supplier Compliance Service</a></li>
-              <li role="presentation" class="divider"></li>
-              <li role="presentation"><a role="menuitem" href="#">Consultance & training</a></li>
+              <li role="presentation">
+              	<%= link_to 'Vendor Prequalification', prequalification_path %>
+              </li>
+              <li role="presentation">
+              	<%= link_to 'Requisition & Bids', requisition_bid_path %>
+              </li>
+              <li role="presentation">
+              	<%= link_to 'Vendor Registration', vendor_path %>
+              </li>              
             </ul>
           </li>
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Supplier Services <span class="caret"></span></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            	Supplier Due Diligence <span class="caret"></span>
+            </a>
             <ul class="dropdown-menu" role="menu" aria-labelledby="menu2">
-              <li role="presentation"><a href="#" role="menuitem">Business Opportunities</a></li>
+              <li role="presentation">
+              	<%= link_to 'Due dilligence', diligence_path %>
+              </li>
             </ul>
           </li>
           <!-- <li><a href="#">Pricing</a></li> -->
           <li>
-            <%= link_to 'Contact', contact_path %>
-          </li>
-          <li>
-            <%= link_to 'Demo', demo_path %>
+            <%= link_to 'Company', about_path %>
           </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">

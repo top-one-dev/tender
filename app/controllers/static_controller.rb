@@ -34,12 +34,25 @@ class StaticController < ApplicationController
     end     
   end
 
-  def privacy_policy
-  	
+  def privacy_policy  	
   end
 
-  def terms_of_use
-  	
+  def terms_of_use  	
+  end
+
+  def prequalification
+  end
+
+  def requisition
+  end
+
+  def vendor
+  end
+
+  def diligence
+  end
+
+  def company
   end
 
   private
