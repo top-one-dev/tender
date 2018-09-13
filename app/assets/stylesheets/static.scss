@@ -168,7 +168,7 @@
 	transform: scale(1.1);
 }
 html, body{
-	overflow-x: hidden;	
+	// overflow-x: hidden;	
 }
 p{
 	letter-spacing: 1px;
@@ -358,13 +358,7 @@ img.svg-img{
 
 }
 
-section#pros-section,
-section#contacts-vendors,
-section#supplier-setion,
-section#tenderbooks-you,
-section#posts-section,
-section#why-section,
-section#counter-section{
+section.skew{
 	padding: 200px 0;
 	background-attachment: fixed !important;
     background-repeat: no-repeat !important;
@@ -380,6 +374,7 @@ section#counter-section{
     }
     ul{
     	list-style: none;
+    	list-style-position: outside;
     	display: flex;
     	flex-wrap: wrap;
     	li{
@@ -449,6 +444,100 @@ section#counter-section{
 	background-image: url(asset-path('home/bonfire-you.jpg'));
 	h2, h3{
 		color: #fff;
+	}
+}
+
+// Supplier selection page
+#ss-banner{
+	padding: 300px 0 500px 0;
+	background-image: url(asset-path('solution/ss_banner.jpg'));
+	background-position: 100%;
+	h2{
+    	font-size: 50px;
+    }
+    h3{
+    	font-size: 25px;
+    	line-height: 1.5;
+    }
+}
+#project-section{
+	ul{
+		li{
+			width: 100%;
+			border: 2px solid transparent;			
+			a{
+				display: block;
+				font-size: 18px;
+				color: gray;
+				span{
+					font-size: 30px;
+				    top: 3px;
+				    position: relative;
+				}
+				span.ready{
+					display: inline-block;
+				}
+				span.active{
+					display: none;
+				}
+			}
+			&.active{
+				a{
+					color: #55A79A;
+					span.ready{
+						display: none;
+					}
+					span.active{
+						display: inline-block;
+					}
+				}				
+			}
+		}
+	}
+}
+
+// about page
+
+#about-banner{
+	padding: 300px 0 500px 0;
+	background-image: url(asset-path('about/about-banner.jpg'));
+	background-size: 100%;
+	h2{
+    	font-size: 50px;
+    }
+    h3{
+    	font-size: 25px;
+    	line-height: 1.5;
+    }
+}
+.about-svg-img{
+	height: 75px;
+}
+#contact-section{
+	background-image: url(asset-path('about/contact-cta-banner.jpg'));
+	color: #fff;
+}
+#final-section{
+	margin-bottom: 65px;
+	.card{
+		padding: 60px 30px;
+	    z-index: 100;
+	    background: #fff;
+	}
+}
+// Requisitions and bid page
+.img-modal-wrap{
+	transition: all .3s ease-in-out;
+	padding: 10px 20px;
+	.img-modal{
+		box-shadow: 4px 4px 20px 0px rgba(0, 0, 0, 0.5);
+		cursor: zoom-in;
+	}
+	&:hover{
+		background-color: rgba(0,0,0,.6);
+		.img-modal{
+			opacity: .3;
+		}
 	}
 }
 
