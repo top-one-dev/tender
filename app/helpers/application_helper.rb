@@ -1865,7 +1865,11 @@ module ApplicationHelper
     url = "http://api.ipstack.com/#{remote_ip}?access_key=#{ENV['COUNTRY_TOKEN']}"
     uri = URI(url)
     response = Net::HTTP.get(uri)
-    return JSON.parse(response)  
+   	unless JSON.parse(response)['success']
+   		return { 'currency'=> { 'code'=> 'USD' } }
+   	else
+   		return JSON.parse(response)  
+   	end      
   end
 
   def url_decode(s)
