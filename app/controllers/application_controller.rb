@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
     url = "http://api.ipstack.com/#{remote_ip}?access_key=#{ENV['COUNTRY_TOKEN']}"
     uri = URI(url)
     response = Net::HTTP.get(uri)
-    unless JSON.parse(response)['success']
+    unless JSON.parse(response).key?("currency")
    		return { 'currency'=> { 'code'=> 'USD' } }
    	else
    		return JSON.parse(response)  

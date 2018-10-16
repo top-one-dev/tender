@@ -377,8 +377,8 @@
                 <b class="text-muted"><i class="glyphicon glyphicon-user"></i></b>
               </span>
               <select class="form-control" id="suppliers-list" autocomplete="off">
-                <% current_company.suppliers.each do |supplier| %>
-                	<option value="" disabled selected>Select supplier</option>
+              	<option value="" disabled selected>Select supplier</option>
+                <% current_company.suppliers.each do |supplier| %>                	
                   <option value="<%= supplier[:email] %>" data-name="<%= supplier[:name] %>">
                     <%= "#{supplier[:email]}" %>                      
                   </option>
